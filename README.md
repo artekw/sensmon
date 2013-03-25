@@ -1,12 +1,11 @@
 #sensmon#
 In Polish, in English soon
 
-sensmon jest aplikacja webową do monitorowania czujników z projektu sensnode. Aplikacja działa w oparciu o Websockets.
+sensmon jest aplikacja webową do monitorowania czujników z projektu sensnode. Aplikacja działa w oparciu o [Websocket](http://pl.wikipedia.org/wiki/WebSocket).
 
 ##Wymagania##
 
-
-sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona oraz kilka innych zewnêtrznych aplikacji, m.in.
+sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona oraz kilka innych zewnętrznych aplikacji, m.in.
 
 - python2
 - redis
@@ -14,24 +13,27 @@ sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona oraz 
 - tornado
 - tornado-redis
 - python2-simplejson
-- (jak sobie przypomnê dodam kolejne :)
+- screen
+- git
+- (jak sobie przypomnę dodam kolejne :)
 
 
 ##Instalacja##
 
 Przykład instalacji na [Raspberry Pi](http://raspberrypi.org) z zainstalowanym [ArchlinuxARM](http://archlinuxarm.org)
 
-    $ pacman -Suy
-    $ pacman -S python2 redis remserial tornado tornado-redis python2-simplejson
+    $ pacman -Sy python2 redis remserial tornado tornado-redis python2-simplejson git screen
+    $ git clone https://github.com/artekw/sensmon.git
 
 
 ##Konfiguracja remserial##
 
-Potrzebujemy remserial do pobierania danych z układu sensbase, który komunikuje się z Raspberry Pi po interfejsie szeregowym (RS232).
+Potrzebujemy remserial do komunikacji modułu sensbase z Raspberry Pi po interfejsie szeregowym (RS232).
 
-Archlinux od pewnego czasu korzysta z systemd, więc trzeba przygotować skrytp do startowania remserial na starcie systemu
+Archlinux od pewnego czasu korzysta z systemd, więc trzeba przygotować skrypt do uruchamiania remserial na starcie systemu
 
     nano /etc/systemd/system/remserial.service
+
 
     [Service]
     Type=simple
@@ -47,8 +49,17 @@ Zapisz.
 
 ##Baza redis
 
+Odpal screen
+    python2 redisdb.py
+(Ctrl-A+D)
+
 ## Aplikacja Web
 
+Odpal screen
+     python2 webapp.py
+(Ctrl-A+D)
+
+Przeglądarka - http://<IP-RPI>:8080
 
 ##Screenshot
 
