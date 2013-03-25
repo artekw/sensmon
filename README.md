@@ -1,12 +1,12 @@
 #sensmon#
 In Polish, in English soon
 
-sensmon jest aplikacj¹ webow¹ do monitorowania czujników z projektu sensnode
+sensmon jest aplikacja webowa do monitorowania czujnikÃ³w z projektu sensnode. Aplikacja dziaÅ‚a w oparciu o Websockets.
 
 ##Wymagania##
 
 
-sensmon dzia³a tylko na systemie Linuks. Do dzia³ania potrzebuje Pythona oraz kilka innych zewnêtrznych aplikacji, m.in.
+sensmon dziaÅ‚a tylko na systemie Linuks. Do dziaÅ‚ania potrzebuje Pythona oraz kilka innych zewnÃªtrznych aplikacji, m.in.
 
 - python2
 - redis
@@ -14,12 +14,12 @@ sensmon dzia³a tylko na systemie Linuks. Do dzia³ania potrzebuje Pythona oraz ki
 - tornado
 - tornado-redis
 - python2-simplejson
-- (jak sobie przypomnê dodam kolejne :)
+- (jak sobie przypomnÃª dodam kolejne :)
 
 
 ##Instalacja##
 
-Przyk³ad instalacji na [Raspberry Pi](http://raspberrypi.org) z zainstalowanym [ArchlinuxARM](http://archlinuxarm.org)
+PrzykÅ‚ad instalacji na [Raspberry Pi](http://raspberrypi.org) z zainstalowanym [ArchlinuxARM](http://archlinuxarm.org)
 
     $ pacman -Suy
     $ pacman -S python2 redis remserial tornado tornado-redis python2-simplejson
@@ -27,9 +27,9 @@ Przyk³ad instalacji na [Raspberry Pi](http://raspberrypi.org) z zainstalowanym [
 
 ##Konfiguracja remserial##
 
-Potrzebujemy remserial do pobierania danych z uk³adu sensbase, który komunikuje siê z Raspberry Pi po interfejsie szeregowym (RS232).
+Potrzebujemy remserial do pobierania danych z ukÅ‚adu sensbase, ktÃ³ry komunikuje siÄ™ z Raspberry Pi po interfejsie szeregowym (RS232).
 
-Archlinux od pewnego czasy korzysta z systemd, wiêc trzeba przygotowaæ skrytp do startowania remserial na starcie systemu
+Archlinux od pewnego czasu korzysta z systemd, wiÄ™c trzeba przygotowaÄ‡ skrytp do startowania remserial na starcie systemu
 
     nano /etc/systemd/system/remserial.service
 
