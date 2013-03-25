@@ -1,0 +1,62 @@
+{
+    "artekroom":
+    {
+        "press":
+        {
+            "unit": "kPa",
+            "desc": "Ciśnienie",
+            "scale": 1
+        },
+        "batvol":
+        {
+            "unit": "V",
+            "desc": "Nap. zasilania",
+            "scale": 3
+        },
+        "humi":
+        {
+            "unit": "%",
+            "desc": "Wilgotność",
+            "scale": 1
+        },
+        "temp":
+        {
+            "unit": "°C",
+            "desc": "Temperatura",
+            "scale": 1
+        }
+    },
+    "testnode":
+    {
+        "count":
+        {
+            "unit": "",
+            "desc": "Licznik",
+            "scale": 0
+        }
+    },
+    "outnode":
+    {
+        "temp":
+        {
+            "unit": "°C",
+            "desc": "Temperatura",
+            "scale": 1
+        }
+    },
+    "powernode":
+    {
+        "vrms":
+        {
+            "unit": "V",
+            "desc": "Napięcie sieci",
+            "scale": 2
+        },
+        "power":
+        {
+            "unit": "W",
+            "desc": "Moc bierna",
+            "scale": 0
+        }
+    }
+}

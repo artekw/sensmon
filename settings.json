@@ -1,0 +1,15 @@
+{
+  "settings": {
+    "webapp": {
+      "host": "0.0.0.0",
+      "port": "8080"
+    },
+    "daemon": {
+      "host": "127.0.0.1",
+      "port": 2000
+    },
+    "redis": {
+      "host": "localhost"
+    }
+  }
+}
