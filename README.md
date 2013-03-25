@@ -50,16 +50,20 @@ Zapisz.
 ##Baza redis
 
 Odpal screen
+
     python2 redisdb.py
+
 (Ctrl-A+D)
 
 ## Aplikacja Web
 
 Odpal screen
+
      python2 webapp.py
+
 (Ctrl-A+D)
 
-Przeglądarka - http://<IP-RPI>:8080
+Przeglądarka - http://IP-RPI:8080
 
 ##Screenshot
 
