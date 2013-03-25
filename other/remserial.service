@@ -1,0 +1,6 @@
+[Service]
+Type=simple
+ExecStart=/usr/bin/remserial -m 2 -d -p 2000 -s "9600 raw" /dev/ttyAMA0 &
+
+[Install]
+WantedBy=multi-user.target

@@ -32,15 +32,8 @@ Potrzebujemy remserial do komunikacji modułu sensbase z Raspberry Pi po interfe
 
 Archlinux od pewnego czasu korzysta z systemd, więc trzeba przygotować skrypt do uruchamiania remserial na starcie systemu
 
-    nano /etc/systemd/system/remserial.service
-
-
-    [Service]
-    Type=simple
-    ExecStart=/usr/bin/remserial -m 2 -d -p 2000 -s "9600 raw" /dev/ttyAMA0 &
-
-    [Install]
-    WantedBy=multi-user.target
+    cp sensmon
+    sudo cp other/remserial.service /etc/systemd/system/remserial.service
 
 Zapisz.
 
