@@ -1,7 +1,7 @@
 #sensmon#
 In Polish, in English soon
 
-sensmon jest aplikacja webowa do monitorowania czujników z projektu sensnode. Aplikacja działa w oparciu o Websockets.
+sensmon jest aplikacja webową do monitorowania czujników z projektu sensnode. Aplikacja działa w oparciu o Websockets.
 
 ##Wymagania##
 
