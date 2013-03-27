@@ -26,19 +26,19 @@ Przykład instalacji na [Raspberry Pi](http://raspberrypi.org) z zainstalowanym 
     $ git clone https://github.com/artekw/sensmon.git
 
 
-##Konfiguracja remserial##
+###Konsola szeregowa###
 
-Potrzebujemy remserial do komunikacji modułu sensbase z Raspberry Pi po interfejsie szeregowym (RS232).
+Do poprawnej działania konsoli szeregowej w Raspberry Pi z remserial należy wykonać kilka czynności [opisanych] (https://github.com/artekw/sensmon/wiki/Konsola-szeregowa) na stronie wiki. Jest to proces wymagany, gdyż Raspberry Pi komunikuje się z modułem po tym protokole.
 
 Archlinux od pewnego czasu korzysta z systemd, więc trzeba przygotować skrypt do uruchamiania remserial na starcie systemu
 
     cp sensmon
-    sudo cp other/remserial.service /etc/systemd/system/remserial.service
+    sudo cp other/remserial.service /etc/systemd/system/remserial
 
 Zapisz.
 
-    sudo systemctl enable remserial.service
-    sudo systemctl start remserial.service
+    sudo systemctl enable remserial
+    sudo systemctl start remserial
 
 ##Baza redis
 
