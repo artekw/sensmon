@@ -30,29 +30,21 @@ Przykład instalacji na [Raspberry Pi](http://raspberrypi.org) z zainstalowanym 
 
 Do poprawnej działania konsoli szeregowej w Raspberry Pi z remserial należy wykonać kilka czynności [opisanych] (https://github.com/artekw/sensmon/wiki/Konsola-szeregowa) na stronie wiki. Jest to proces wymagany, gdyż Raspberry Pi komunikuje się z modułem po tym protokole.
 
-Archlinux od pewnego czasu korzysta z systemd, więc trzeba przygotować skrypt do uruchamiania remserial na starcie systemu
+Archlinux od pewnego czasu korzysta z systemd, więc trzeba przygotować skrypt do uruchamiania remserial.
 
     cp sensmon
     sudo cp other/remserial.service /etc/systemd/system/remserial
 
-Zapisz.
+Pozostaje uruchomić usługę:
 
     sudo systemctl enable remserial
     sudo systemctl start remserial
-
-##Baza redis
-
-Odpal screen
-
-    python2 redisdb.py
-
-(Ctrl-A+D)
 
 ## Aplikacja Web
 
 Odpal screen
 
-     python2 webapp.py
+     ./webapp.py
 
 (Ctrl-A+D)
 
