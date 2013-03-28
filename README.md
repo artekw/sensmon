@@ -28,7 +28,7 @@ Przykład instalacji na [Raspberry Pi](http://raspberrypi.org) z zainstalowanym 
 
 ###Konsola szeregowa###
 
-Do poprawnej działania konsoli szeregowej w Raspberry Pi z remserial należy wykonać kilka czynności [opisanych] (https://github.com/artekw/sensmon/wiki/Konsola-szeregowa) na stronie wiki. Jest to proces wymagany, gdyż Raspberry Pi komunikuje się z modułem po tym protokole.
+Do poprawnej współpracy konsoli szeregowej w Raspberry Pi z remserial należy wykonać kilka czynności [opisanych] (https://github.com/artekw/sensmon/wiki/Konsola-szeregowa) na stronie wiki. Jest to proces wymagany, gdyż Raspberry Pi komunikuje się z modułem po tym protokole.
 
 Archlinux od pewnego czasu korzysta z systemd, więc trzeba przygotować skrypt do uruchamiania remserial.
 
@@ -42,6 +42,7 @@ Pozostaje uruchomić usługę:
 
 ## Aplikacja Web
 
+###Uruchomienie###
 Odpal screen
 
      ./webapp.py
@@ -49,6 +50,18 @@ Odpal screen
 (Ctrl-A+D)
 
 Przeglądarka - http://IP-RPI:8080
+
+###Co działa?###
+
+- dashboard
+- logi z czujników
+
+###TODO###
+
+- upload do sensbase
+- kontrola np. przekaźnikami zdalnie
+- wykresy
+- panel admina
 
 ##Screenshot
 
