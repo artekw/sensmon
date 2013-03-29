@@ -16,10 +16,14 @@ class Config(object):
     def getNodeMap(self):
         """Tworzy slownik nodemap"""
         return dict(zip(self.nodemap_cfg['nodemap'].viewkeys(), self.nodemap_cfg['nodemap'].values()))
+
     def getCurrentSensors(self, name):
-        return self.nodes_cfg[name].keys()
+        tmp = self.nodes_cfg[name].keys()
+        return tmp
+
     def getCurrentNodes(self):
         return self.nodes_cfg.keys()
+
     def getScale(self, name):
         """Tworzy slownik sensor : skala"""
         # TODO: pomijanie wprowadzania skali
