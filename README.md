@@ -57,14 +57,16 @@ Przeglądarka - http://IP-RPI:8081
 - logi z czujników
 - sterowanie przekaźnikami
 
-###TODO###
+###Plany###
 
 - wykresy
 - panel administatora
 
 ##Screenshot
 
-![sensmon] (https://dl.dropbox.com/u/677573/Photos/sensmon.png)
+![sensmon dash] (https://dl.dropbox.com/u/677573/Photos/sensmon.png)
+![sensmon control] (https://dl.dropbox.com/u/677573/Photos/sensmon_c.png)
+![sensmon logs] (https://dl.dropbox.com/u/677573/Photos/sensmon_i.png)
 
 
 ![Valid XHTML] (http://w3.org/Icons/valid-xhtml10)
