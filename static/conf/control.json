@@ -1,0 +1,17 @@
+{
+    "relaynode": {
+        "00": {
+            "desc": "lampa",
+            "state": 0
+        },
+        "01": {
+            "desc": "zyrandol",
+            "state": 0
+        },
+        "02": {
+            "desc": "ledy",
+            "state": 0
+        }
+
+    }
+}

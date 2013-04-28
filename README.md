@@ -8,11 +8,11 @@ sensmon jest aplikacja webową do monitorowania czujników z projektu sensnode. 
 sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona oraz kilka innych zewnętrznych aplikacji, m.in.
 
 - python2
+- python2-simplejson
 - redis
 - remserial
-- tornado
+- tornado (3.0)
 - tornado-redis
-- python2-simplejson
 - screen
 - git
 - (jak sobie przypomnę dodam kolejne :)
@@ -22,7 +22,7 @@ sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona oraz 
 
 Przykład instalacji na [Raspberry Pi](http://raspberrypi.org) z zainstalowanym [ArchlinuxARM](http://archlinuxarm.org)
 
-    $ pacman -Sy python2 redis remserial tornado tornado-redis python2-simplejson git screen
+    $ pacman -Sy python2 redis tornado tornado-redis python2-simplejson git screen remserial
     $ git clone https://github.com/artekw/sensmon.git
 
 
@@ -45,11 +45,11 @@ Pozostaje uruchomić usługę:
 ###Uruchomienie###
 Odpal screen
 
-     ./webapp.py
+     $./sensmon.py
 
 (Ctrl-A+D)
 
-Przeglądarka - http://IP-RPI:8080
+Przeglądarka - http://IP-RPI:8081
 
 ###Co działa?###
 

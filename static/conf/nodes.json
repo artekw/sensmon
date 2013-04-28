@@ -1,0 +1,71 @@
+{
+    "artekroom":
+    {
+        "press":
+        {
+            "unit": "kPa",
+            "desc": "Ciśnienie",
+            "scale": 1
+        },
+        "humi":
+        {
+            "unit": "%",
+            "desc": "Wilgotność",
+            "scale": 1
+        },
+        "temp":
+        {
+            "unit": "°C",
+            "desc": "Temperatura",
+            "scale": 1
+        },
+        "batvol":
+        {
+            "unit": "V",
+            "desc": "Nap. baterii",
+            "scale": 3
+        },
+        "timestamp":
+        {
+            "unit": "",
+            "desc": "Aktualizacja",
+            "scale": 0
+        }
+    },
+    "outnode":
+    {
+        "temp":
+        {
+            "unit": "°C",
+            "desc": "Temperatura",
+            "scale": 1
+        },
+        "timestamp":
+        {
+            "unit": "",
+            "desc": "Aktualizacja",
+            "scale": 0
+        }
+    },
+    "powernode":
+    {
+        "vrms":
+        {
+            "unit": "V",
+            "desc": "Napięcie sieci",
+            "scale": 2
+        },
+        "power":
+        {
+            "unit": "W",
+            "desc": "Moc bierna",
+            "scale": 0
+        },
+        "timestamp":
+        {
+            "unit": "",
+            "desc": "Aktualizacja",
+            "scale": 0
+        }
+    }
+}

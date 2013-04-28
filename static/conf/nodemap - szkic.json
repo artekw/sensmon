@@ -1,0 +1,17 @@
+{
+    "testnode": {
+        "id": 12,
+        "title": "Test",
+        "mode": "dash"
+    },
+    "powernode": {
+        "id": 5,
+        "title": "Power@Home",
+        "mode": "dash"
+    },
+    "relaynode": {
+        "id": 1,
+        "title": "Relay0",
+        "mode": "control"
+    }
+}

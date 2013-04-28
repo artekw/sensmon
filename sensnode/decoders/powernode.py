@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
-import simplejson
+import simplejson as json
 
 def powernode(data, name):
     """Punkt mierzący pobór mocy biernej"""

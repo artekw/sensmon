@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
-import simplejson
-
+import simplejson as json
 
 def weathernode(data, name):
     """Pomiar:

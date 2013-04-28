@@ -2,7 +2,7 @@
 {% block title %}Dash{% end %}
 {% block content %}
     <h1>Dash</h1>
-    <div class="kafelki" ng-controller="tabCtrl">
+    <div class="kafelki" ng-controller="dashCtrl">
         <tab-Kafelki></tab-Kafelki>
         Aktualizacja: {{!lastupd|date:'dd/MM/yyyy @ H:mm:ss'}} z {{!updfrom}}
     </div>

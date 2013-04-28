@@ -14,23 +14,22 @@ import sys
 import logging
 import platform
 import os
-import simplejson
+import simplejson as json
 
-#debug = True
+debug = False
 
 logging.basicConfig(
         format='%(asctime)-25s %(threadName)-15s %(levelname)-10s %(message)s',
         level=logging.DEBUG,
         datefmt='%d/%m/%Y %H:%M:%S')
 
-#global settings_cfg, nodes_cfg, nodemap_cfg
 
-with open('settings.json') as settings_file:
-    settings_cfg = simplejson.load(settings_file)
-with open('static/nodes.json') as nodes_file:
-    nodes_cfg = simplejson.load(nodes_file)
-with open('static/nodemap.json') as nodemap_file:
-    nodemap_cfg = simplejson.load(nodemap_file)
+with open('static/conf/settings.json') as settings_file:
+    settings_cfg = json.load(settings_file)
+with open('static/conf/nodes.json') as nodes_file:
+    nodes_cfg = json.load(nodes_file)
+with open('static/conf/nodemap.json') as nodemap_file:
+    nodemap_cfg = json.load(nodemap_file)
 
 
 #########################################################
@@ -57,5 +56,11 @@ def this_mach():
 
 def loadavg():
     return os.getloadavg()
+
+def uptime():
+    with open('/proc/uptime', 'r') as f:
+        uptime_seconds = float(f.readline().split()[0])
+        uptime_string = str(datetime.timedelta(seconds = uptime_seconds))
+    return uptime_string
 
 ########################################################

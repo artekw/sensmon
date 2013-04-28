@@ -8,6 +8,7 @@
         <li>Architektura: {{ arch }}</li>
         {% if system == 'Linux' %}
             <li>Obciążenie: {{ lavg }}</li>
+            <li>Czas pracy: {{ uptime }}</li>
         {% end %}
     </ul>
     <br />

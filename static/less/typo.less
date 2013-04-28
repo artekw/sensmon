@@ -1,7 +1,7 @@
 /* =Typography
 -----------------------------------------------------------------------------*/
 body {
-	/*background: @colorWhite;*/
+	background: @colorWhite;
 	color: @colorBlack;
 	font-size: @baseFontSize / 16 * 1em;
 	line-height: @baseLine/@em;
@@ -10,8 +10,9 @@ body {
 a {
 	color: @colorLink;
 }
+a:focus,
 a:hover {
-	color: darken(@colorLink, 30%);
+	color: @colorLinkHover;
 }
 h1,
 h2,
@@ -19,45 +20,76 @@ h3,
 h4,
 h5,
 h6 {
+	font-family: @headingsFontFamily;
 	font-weight: bold;
-	margin-bottom: 0.5em;
 }
 h1 {
-	font-size: @h1 / @em; // headerSize / baseFontSize
-	line-height: 1em;
+	font-size: @baseFontSize * 2.142 / @em;
+	line-height: 1.1333em;
+	margin-bottom: .2666em;
 }
 h2 {
-	font-size: @h2 / @em;
-	line-height: 1.1em;
+	font-size: @baseFontSize * 1.714 / @em;
+	line-height: 1.1666em;
+	margin-bottom: .4555em;
 }
 h3 {
-	font-size: @h3 / @em;
-	line-height: 1.3em;
+	font-size: @baseFontSize * 1.429 / @em;
+	line-height: 1.4em;
+	margin-bottom: .4em;
 }
 h4 {
-	font-size: @h4 / @em;
-	line-height: 1.3em;
+	font-size: @baseFontSize * 1.143 / @em;
+	line-height: @baseLine / @em;
+	margin-bottom: .4555em;
 }
 h5 {
-	font-size: @h5 / @em;
-	line-height: 1.3em;
+	font-size: @baseFontSize / @em;
+	line-height: @baseLine / @em;
+	margin-bottom: .5em;
 }
 h6 {
-	font-size: @h6 / @em;
-	line-height: 1.3em;
+	font-size: @baseFontSize * 0.857  / @em;
+	line-height: 1.5em;
+	margin-bottom: .4555em;
 	text-transform: uppercase;
 }
 hgroup h1,
 hgroup h2,
 hgroup h3,
-hgroup h4 {
-	margin-bottom: .1em;
+hgroup h4,
+hgroup h5,
+hgroup h6 {
+	margin-bottom: 0;
+}
+hgroup {
+	margin-bottom: 0.6em;
 }
 .subheader {
-	font-size: 1.2em;
-	font-weight: normal;
-	color: #8f8f8f;
-	margin-bottom: 1em;
+	font-weight: 300;
+	color: #888;
+}
+
+h1.subheader {
+	font-size: @baseFontSize * 1.357 / @em;
+	line-height: 1.263em;
+}
+h2.subheader {
+	font-size: @baseFontSize * 1.214 / @em;
+	line-height: 1.412em;
+}
+h3.subheader {
+	font-size: @baseFontSize / @em;
+	line-height: 1.286em;
+}
+h4.subheader,
+h5.subheader {
+	font-size: @baseFontSize * 0.95 / @em;
+	line-height: 1.385em;
+}
+h6.subheader {
+	font-size: @baseFontSize * 0.8 / @em;
+	line-height: 1.364em;
 }
 p,
 ul,
@@ -66,8 +98,7 @@ dl,
 dd,
 dt,
 blockquote,
-/*
-td,*/
+td,
 th {
   line-height: @baseLine/@em;
 }
@@ -85,18 +116,17 @@ ol ol li {
 ol ol ol li {
 	list-style-type: lower-roman;
 }
-/*p,*/
+p,
 ul,
 ol,
 dl,
 blockquote,
 hr,
 pre,
-hgroup,
-/*table,*/
+table,
 form,
 fieldset {
-  margin-bottom: @baseLine/@em;
+	margin-bottom: @baseLine/@em;
 }
 dl dt {
 	font-weight: bold;
@@ -108,14 +138,15 @@ blockquote {
 	margin-bottom: @baseLine/@em;
 	padding-left: @baseLine/@em;
 	border-left: 1px solid #ccc;
-	color: #666;
+	color: @colorGrayDark;
 }
 blockquote small, cite {
-	color: #888;
-	font-style: italic;
+	color: @colorGrayLight;
+	font-style: normal;
 }
 blockquote p {
-	margin-bottom: 1em;
+	font-size: 1.1em;
+	margin-bottom: .5em;
 	font-style: italic;
 }
 small,
@@ -174,14 +205,14 @@ code,
 kbd,
 samp {
 	font-size: 90%;
-	font-family: Menlo, Monaco, monospace, sans-serif;
+	font-family: @codeFontFamily;
 }
 pre {
+	font-size: 90%;
+	color: #444;
 	background: @codeBackgroundColor;
-	border: 1px solid #ddd;
-	border-radius: 3px;
-	padding: @baseLine/@em;
-	white-space: pre;
+	padding: .85em;
+	white-space: pre-wrap;
 	overflow: auto;
 }
 code {
@@ -191,11 +222,9 @@ code {
 	background: @codeBackgroundColor;
 	border: 1px solid #ddd;
 }
-
-
 kbd {
-	padding: 0 6px;
-	border-radius: 4px;
+	padding: 0 .4em;
+	border-radius: .3em;
 	box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2),0 0 0 1px white inset;
 	background-color: #fafafa;
 	border-color: #ccc #ccc white;
@@ -209,7 +238,7 @@ input[type="text"],
 input[type="password"],
 input[type="email"],
 textarea {
-	font-size: 13px;
+	font-size: .95em;
 }
 fieldset {
 	padding: 2em @baseLine/@em;

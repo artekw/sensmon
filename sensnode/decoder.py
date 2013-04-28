@@ -5,22 +5,20 @@ import os
 import simplejson as json
 
 import common
-import reader
+import logging
 import config
 
-'''Import node decoders'''
+"""Import dekoderów punktów"""
 from decoders.weathernode import weathernode
 from decoders.powernode import powernode
 
-class Decoder(reader.Reader, config.Config):
+class Decoder(config.Config):
     """Dekodowanie pakietów"""
     def __init__(self, debug=False):
         self.debug = debug
-        reader.Reader.__init__(self, debug)
         config.Config.__init__(self, debug)
 
-    def decode(self):
-        line = reader.Reader.serialread(self)
+    def decode(self, line):
 
         if line.startswith("OK"):
             data = line.split(" ")
@@ -52,7 +50,7 @@ class Decoder(reader.Reader, config.Config):
             return
 
     def scaleValue(self, data):
-        '''TODO: napisać to lepiej'''
+        """TODO: napisać to lepiej"""
         scales = config.Config.getScale(self, data['name'])
         a = []
 

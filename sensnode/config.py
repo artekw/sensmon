@@ -1,8 +1,7 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-import simplejson
-
+import simplejson as json
 import common
 
 class Config(object):
@@ -25,7 +24,8 @@ class Config(object):
         return self.nodes_cfg.keys()
 
     def getScale(self, name):
-        """Tworzy slownik sensor : skala"""
-        # TODO: pomijanie wprowadzania skali
+        """Tworzy slownik sensor : skala
+
+        TODO: pomijanie wprowadzania skali"""
         scales = [self.nodes_cfg[name][str(x)]['scale'] for x in self.getCurrentSensors(name)]
         return dict(zip(self.nodes_cfg[name].viewkeys(), scales))
