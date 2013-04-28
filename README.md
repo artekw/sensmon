@@ -55,13 +55,12 @@ Przeglądarka - http://IP-RPI:8081
 
 - dashboard
 - logi z czujników
+- sterowanie przekaźnikami
 
 ###TODO###
 
-- upload do sensbase
-- kontrola np. przekaźnikami zdalnie
 - wykresy
-- panel admina
+- panel administatora
 
 ##Screenshot
 
