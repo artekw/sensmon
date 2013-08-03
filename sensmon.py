@@ -8,18 +8,13 @@ TODO:
 """
 
 debug = False  # tryb developerski - wyświetlanie dodatkowch komunikatów dla biblioteki sensnode
-timestore = False  # testowa baza danych "czasowych" lub  CoutchDB
 
 import os
 # https://github.com/leporo/tornado-redis
 import tornadoredis
 
-if timestore:
-    # https://github.com/mikestir/timestore
-    from sensnode.timestore import Client, TimestoreException
-else:
-    # http://samizdat.cc/corduroy/
-    from corduroy import Database, relax
+# http://samizdat.cc/corduroy/
+from corduroy import Database, relax
 
 import simplejson as json
 # http://pymotw.com/2/multiprocessing
@@ -55,19 +50,7 @@ filterout = ['powernode']
 c = tornadoredis.Client()
 c.connect()
 
-if timestore:
-    DB = '192.168.88.20:8080'
-    DEFAULT_KEY = 'P=>#{YH/<}P{2~s>e0^<I^C5l0/>6EX4'
-    ADMIN_KEY = os.getenv('TIMESTORE_ADMIN_KEY', DEFAULT_KEY)
-    INTERVAL = 30
-    DECIMATION = [10,5,2]
-    NPOINTS = 200
-    NODE = 0x900
-    READ_KEY = 'z' * 32
-    WRITE_KEY = 'a' * 32
-    tdb = Client(DB)
-else:
-    cdb = Database("%s/%s" % (options.couchdb_url, options.couchbd_dbname))
+cdb = Database("%s/%s" % (options.couchdb_url, options.couchbd_dbname))
 
 clients = []
 
@@ -265,29 +248,7 @@ def main():
 
     redisdb = sensnode.store.redisdb(debug=debug)
     decoder = sensnode.decoder.Decoder(debug=debug)
-    '''
-    try:
-        tdb.create_node(NODE, {
-                    'interval' : INTERVAL,
-                    'decimation' : DECIMATION,
-                    'metrics' : [ {
-                                'pad_mode' : 0,
-                                'downsample_mode' : 0
-                                } ]
-                    }, key = ADMIN_KEY)
-    except TimestoreException as e:
-            if e.status == 403:
-                print "Node creation was forbidden - already exists?"
-                try:
-                    print "Try to delete node"
-                    tdb.delete_node(NODE, key = ADMIN_KEY)
-                except TimestoreException as e:
-                    if e.status == 403:
-                        print "FAIL: Admin key rejected"
-                        raise
-    tdb.set_key(NODE, 'read', READ_KEY, key = ADMIN_KEY)
-    tdb.set_key(NODE, 'write', WRITE_KEY, key = ADMIN_KEY)
-    '''
+
     tornado.options.parse_command_line()
     application = tornado.web.Application([
         (r"/admin", AdminHandler),
@@ -313,8 +274,6 @@ def main():
     httpServer.listen(options.webapp_port)
     print "Nasluchuje na porcie:", options.webapp_port
 
-
-    #@tornado.gen.engine
     @relax
     def checkResults():
         if not resultQ.empty():
@@ -327,10 +286,7 @@ def main():
             if debug:
                 print "JSON: %s" % (decodedj)
             if decodedj['name'] not in filterout:
-                if timestore:
-                    tdb.submit_values(NODE, [123], key=WRITE_KEY)
-                else:
-                    yield cdb.save({'msg': decoded})
+                yield cdb.save({'msg': decoded})
             # koniec
             redisdb.pubsub(decoded)
             for c in clients:
