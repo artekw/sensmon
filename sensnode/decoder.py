@@ -11,8 +11,12 @@ import config
 """Import dekoderów punktów"""
 from decoders.weathernode import weathernode
 from decoders.powernode import powernode
+from decoders.pirnode import pirnode
+from decoders.testnode import testnode
+
 
 class Decoder(config.Config):
+
     """Dekodowanie pakietów"""
     def __init__(self, debug=False):
         self.debug = debug
@@ -25,22 +29,25 @@ class Decoder(config.Config):
 
         if data:
             nodemap = config.Config.getNodeMap(self)
-            nid = data[1] # nodeid
+            nid = data[1]  # nodeid
             if nid in nodemap:
                 decoder = nodemap.get(nid)
                 fields = config.Config.getCurrentSensors(self, decoder)
 
                 fields.append('name')
-                fields.append('timestamp') # dodajemy pozostałe pola
+                fields.append('timestamp')  # dodajemy pozostałe pola
 
                 if decoder in ['artekroom', 'outnode']:
                     tmp = self.filter(weathernode(data, decoder), fields)
                     return self.scaleValue(tmp)
                 if decoder == 'powernode':
-                    tmp =  self.filter(powernode(data, decoder), fields)
+                    tmp = self.filter(powernode(data, decoder), fields)
+                    return self.scaleValue(tmp)
+                if decoder == 'pirnode':
+                    tmp = self.filter(pirnode(data, decoder), fields)
                     return self.scaleValue(tmp)
                 if decoder == 'testnode':
-                    return self.filter(testnode(data, decoder), fields)
+                    tmp = self.filter(testnode(data, decoder), fields)
                     return self.scaleValue(tmp)
             else:
                 if self.debug:
@@ -54,10 +61,10 @@ class Decoder(config.Config):
         scales = config.Config.getScale(self, data['name'])
         a = []
 
-        for (k,v) in data.iteritems():
+        for (k, v) in data.iteritems():
             if k in scales.keys():
                 if scales[k] < 0:
-                    return # do przemyślenia
+                    return  # do przemyślenia
                 elif scales[k] >= 0:
                     v = float(data[k])
                     v /= pow(10, int(scales[k]))
@@ -65,5 +72,4 @@ class Decoder(config.Config):
         return json.dumps(dict(zip(data.keys(), a)))
 
     def filter(self, data, fields):
-        return dict((k,v) for (k,v) in data.iteritems() if k in fields)
-
+        return dict((k, v) for (k, v) in data.iteritems() if k in fields)

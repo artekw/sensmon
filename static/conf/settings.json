@@ -2,7 +2,9 @@
   "settings": {
     "webapp": {
       "host": "0.0.0.0",
-      "port": "8080"
+      "port": "8081",
+      "password": "admin",
+      "reset": 0
     },
     "remserial": {
       "port": 2000,

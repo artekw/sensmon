@@ -4,7 +4,7 @@
 import time
 import simplejson as json
 
-def testnode(self, data, name, fields):
+def testnode(data, name):
     """Punkt testowy"""
 
     a = int(data[2])

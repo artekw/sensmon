@@ -40,6 +40,48 @@
             "desc": "Temperatura",
             "scale": 1
         },
+        "light":
+        {
+            "unit": "",
+            "desc": "Nasłonecznienie",
+            "scale": 0
+        },
+        "timestamp":
+        {
+            "unit": "",
+            "desc": "Aktualizacja",
+            "scale": 0
+        }
+    },
+    "testnode":
+    {
+        "batvol":
+        {
+            "unit": "",
+            "desc": "Napięcie",
+            "scale": 3
+        },
+        "timestamp":
+        {
+            "unit": "",
+            "desc": "Aktualizacja",
+            "scale": 0
+        }
+    },
+    "pirnode":
+    {
+        "motion":
+        {
+            "unit": "",
+            "desc": "Ruch",
+            "scale": 0
+        },
+        "lowbat":
+        {
+            "unit": "",
+            "desc": "Lowbat",
+            "scale": 0
+        },
         "timestamp":
         {
             "unit": "",

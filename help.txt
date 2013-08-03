@@ -21,3 +21,9 @@
 # kolejki w pythonie http://kr.github.com/beanstalkd/
 # https://bitbucket.org/nephics/beanstalkt
 # http://niltoid.com/blog/raspberry-pi-arduino-tornado/
+
+# http://samizdat.cc/corduroy/guide/#conventions
+# http://www.chartjs.org/docs/
+# http://pouchdb.com/api.html
+# http://guide.couchdb.org/editions/1/en/views.html#lookups
+# http://wiki.apache.org/couchdb/Getting_started_with_JavaScript

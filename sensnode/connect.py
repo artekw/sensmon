@@ -8,7 +8,9 @@ import multiprocessing
 import logging
 import simplejson as json
 
+
 class Connect(multiprocessing.Process):
+
     """Odczyt danych z punktow"""
     def __init__(self, taskQ, resultQ, debug=False):
         multiprocessing.Process.__init__(self)
@@ -77,7 +79,6 @@ class Connect(multiprocessing.Process):
                 logging.info("Put result in queue: %s" % line)
         else:
             print "not connected!"
-
 
     def serialread(self):
         """Czyta z konsoli szeregowej"""

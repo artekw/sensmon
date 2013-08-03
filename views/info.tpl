@@ -4,17 +4,16 @@
     <h1>Info</h1>
     <p>Informacje o platformie:<p>
     <ul>
-        <li>System: {{ system }}</li>
-        <li>Architektura: {{ arch }}</li>
+        <li><b>System:</b> {{ system }}</li>
+        <li><b>Architektura:</b> {{ arch }}</li>
         {% if system == 'Linux' %}
-            <li>Obciążenie: {{ lavg }}</li>
-            <li>Czas pracy: {{ uptime }}</li>
+            <li><b>Obciążenie:</b> {{ lavg }}</li>
+            <li><b>Czas pracy:</b> {{ uptime }}</li>
+            <li><b>Temperatura CPU:</b> {{ cpu_temp }} *C</li>
+            <li><b>Dysk:</b></li>
+                <pre>{{ disksize }}</pre>
+            <li><b>Procesy:</b></li>
+                <pre>{{ process }}
         {% end %}
-    </ul>
-    <br />
-    <h1>Powered by:</h1>
-    <ul>
-        <li><a href="http://www.tornadoweb.org" title="tornadoweb"><img src="static/img/tornado.png"/></a></li>
-        <li><a href="http://angularjs.org/" title="angularjs"><img src="static/img/AngularJS-large.png"/></a></li>
     </ul>
 {% end %}

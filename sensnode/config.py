@@ -4,7 +4,9 @@
 import simplejson as json
 import common
 
+
 class Config(object):
+
     """Zarzadzanie konfiguracja w json"""
     def __init__(self, debug=False):
         self.nodes_cfg = common.nodes_cfg
@@ -27,5 +29,6 @@ class Config(object):
         """Tworzy slownik sensor : skala
 
         TODO: pomijanie wprowadzania skali"""
-        scales = [self.nodes_cfg[name][str(x)]['scale'] for x in self.getCurrentSensors(name)]
+        scales = [self.nodes_cfg[name][str(x)][
+                  'scale'] for x in self.getCurrentSensors(name)]
         return dict(zip(self.nodes_cfg[name].viewkeys(), scales))

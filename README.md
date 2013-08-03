@@ -8,26 +8,27 @@ sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona 2.7 o
 
 - python2
 - python2-simplejson
-- python2-pymongo
 - redis
 - remserial
 - tornado (3.0)
 - tornado-redis
 - screen
 - git
+- pil
+- qrcode
 
 ## Instalacja
 
 Przykład instalacji na [Raspberry Pi](http://raspberrypi.org) z zainstalowanym [ArchlinuxARM](http://archlinuxarm.org)
 
-    $ pacman -Sy python2 redis tornado tornado-redis python2-simplejson git screen remserial python2-pip python2-pymongo
-    $ sudo pip-2.7 install motor
+    $ pacman -Sy python2 redis tornado tornado-redis python2-simplejson git screen remserial python2-pip
+    $ sudo pip-2.7 install pil qrcode
     $ git clone https://github.com/artekw/sensmon.git
 
 
-### Konsola szeregowa
+### Transmisja szeregowa (UART)
 
-Do poprawnej współpracy konsoli szeregowej w Raspberry Pi z remserial należy wykonać kilka czynności [opisanych](https://github.com/artekw/sensmon/wiki/Konsola-szeregowa) na stronie wiki. Jest to proces wymagany, gdyż Raspberry Pi komunikuje się z modułem po tym protokole.
+Do poprawnej współpracy transmisji szeregowej(UART) w Raspberry Pi z remserial należy wykonać kilka czynności [opisanych](https://github.com/artekw/sensmon/wiki/Konsola-szeregowa) na stronie wiki. Jest to proces wymagany, gdyż Raspberry Pi komunikuje się z modułem po tym protokole.
 
 Archlinux od pewnego czasu korzysta z systemd, więc trzeba przygotować skrypt do uruchamiania remserial.
 
@@ -50,11 +51,9 @@ Pliki konfiguracyjne aplikacji znajduja sie w *static/conf*.
 - control.json - konfiguracja przekaźników
 
 ### Uruchomienie
-Odpal screen
 
-     $./sensmon.py
-
-(Ctrl-A+D)
+     $ cd sensmon
+     $ screen -d -m python2 sensmon.py
 
 Przeglądarka - http://IP-RPI:8081
 
@@ -63,6 +62,7 @@ Przeglądarka - http://IP-RPI:8081
 - dashboard
 - logi z czujników
 - sterowanie przekaźnikami
+- autoryzacja
 
 ### Plany
 
