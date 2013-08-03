@@ -7,7 +7,6 @@ import corduroy
 import simplejson as json
 import hashlib
 import random
-from timestore import Client, TimestoreException
 
 import common
 import logging
@@ -47,28 +46,3 @@ class redisdb():
 
     def getStatus(self, nodename):
         return self.rdb.hget("status", nodename)
-
-
-class History():
-
-    """
-    Baza Timestore
-    http://www.mike-stirling.com/redmine/projects/timestore
-    """
-    def __init__(self, host='127.0.0.1'):
-        tsdb = Client(host)
-
-    def createNode():
-        """Utwórz node"""
-        pass
-
-    def setAdminKey(self, node, path='/var/lib/timestore'):
-        """Ustaw klucz admina"""
-        rand = random.random()
-
-        ts.set_key()
-        pass
-
-    def setRWKeys(self, tskey):
-        "Wygeneruj klucz do zapisu i odczytu"
-        pass
