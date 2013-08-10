@@ -3,6 +3,7 @@
 
 import redis
 import os
+import sys
 import time
 import simplejson as json
 import hashlib
@@ -55,9 +56,11 @@ class History():
     Baza Timestore
     http://www.mike-stirling.com/redmine/projects/timestore
     """
-    def __init__(self, host='127.0.0.1:8080'):
+    def __init__(self, readkey, writekey, host='127.0.0.1:8080'):
         self.tsdb = Client(host)
         self.adminkey = self.getAdminKey()
+        self.readkey = readkey
+        self.writekey = writekey
 
     def createNode(self, node_id, interval, public=False):
         """Utwórz node"""
@@ -79,9 +82,9 @@ class History():
             if e.status == 403:
                 print "Node exist?"
                 try:
-                    print "Try to erase %s node..." % (node_id)
+                    print "Try to erase node %s..." % (node_id)
                     self.tsdb.delete_node(node_id, key = self.adminkey)
-                    print "Deleted, try to new one"
+                    print "Deleted, try to create new one"
                 except TimestoreException as e:
                     if e.status == 403:
                         print "Admin key rejected!"
@@ -100,21 +103,12 @@ class History():
                 return adminkey
         else:
             logging.warning('Uruchom bazę timestore, brak pliku z kluczem admina!')
-            pass
+            sys.exit(0)
 
     def setRWKeys(self, node_id):
-        "Wygeneruj klucz do zapisu i odczytu dla punktów prywatych"
+        """Wygeneruj klucz do zapisu i odczytu dla punktów prywatych"""
 
-        m = hashlib.md5()
-        m.update(str(random.random()))
-        readkey = m.hexdigest()
+        self.tsdb.set_key(node_id, 'read', self.readkey, key = self.adminkey)
+        self.tsdb.set_key(node_id, 'write', self.writekey, key = self.adminkey)
 
-        m.update(str(random.random()))
-        writekey = m.hexdigest()
-
-        self.tsdb.set_key(node_id, 'read', readkey, key = self.adminkey)
-        self.tsdb.set_key(node_id, 'write', writekey, key = self.adminkey)
-        print 'Read key: %s' % (readkey)
-        print 'Write key: %s' % (writekey)
-        # return readkey, writekey
-        print 'Keys generated!'
+        print 'Keys setup!'

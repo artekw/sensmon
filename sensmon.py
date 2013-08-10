@@ -7,13 +7,11 @@ TODO:
 - konfiguracja
 """
 
-debug = False  # tryb developerski - wyświetlanie dodatkowch komunikatów dla biblioteki sensnode
-timestore = False  # testowa baza danych "czasowych" lub  CoutchDB
+debug = True  # tryb developerski - wyświetlanie dodatkowch komunikatów dla biblioteki sensnode
 
 import os
 # https://github.com/leporo/tornado-redis
 import tornadoredis
-
 
 # https://github.com/mikestir/timestore
 from sensnode.timestore import Client, TimestoreException
@@ -50,7 +48,10 @@ filterout = ['powernode']
 c = tornadoredis.Client()
 c.connect()
 
-tsdb = sensnode.store.History()
+ts_readkey = '279612e4fd941ac44a93d69973756ccb'
+ts_writekey = '6477219d6e43eacfa0bac573643db216'
+
+tsdb = sensnode.store.History(ts_readkey, ts_writekey)
 
 clients = []
 
@@ -248,29 +249,7 @@ def main():
 
     redisdb = sensnode.store.redisdb(debug=debug)
     decoder = sensnode.decoder.Decoder(debug=debug)
-    '''
-    try:
-        tdb.create_node(NODE, {
-                    'interval' : INTERVAL,
-                    'decimation' : DECIMATION,
-                    'metrics' : [ {
-                                'pad_mode' : 0,
-                                'downsample_mode' : 0
-                                } ]
-                    }, key = ADMIN_KEY)
-    except TimestoreException as e:
-            if e.status == 403:
-                print "Node creation was forbidden - already exists?"
-                try:
-                    print "Try to delete node"
-                    tdb.delete_node(NODE, key = ADMIN_KEY)
-                except TimestoreException as e:
-                    if e.status == 403:
-                        print "FAIL: Admin key rejected"
-                        raise
-    tdb.set_key(NODE, 'read', READ_KEY, key = ADMIN_KEY)
-    tdb.set_key(NODE, 'write', WRITE_KEY, key = ADMIN_KEY)
-    '''
+
     tornado.options.parse_command_line()
     application = tornado.web.Application([
         (r"/admin", AdminHandler),
@@ -309,7 +288,7 @@ def main():
             if debug:
                 print "JSON: %s" % (decodedj)
             if decodedj['name'] not in filterout:
-                tdb.submit_values(NODE, [123], key=WRITE_KEY)
+                tdb.submit_values(99, [decodedj], key=ts_writekey)
             # koniec
             redisdb.pubsub(decoded)
             for c in clients:
