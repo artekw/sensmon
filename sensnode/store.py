@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import redis
+import os
 import time
-import corduroy
 import simplejson as json
 import hashlib
 import random
@@ -62,13 +62,20 @@ class History():
         """Utwórz node"""
         pass
 
-    def setAdminKey(self, node, path='/var/lib/timestore'):
+    def getAdminKey(self, path='/var/lib/timestore'):
         """Ustaw klucz admina"""
+
+        if os.path.isfile('%s/%s' % (path, 'adminkey.txt')):
+            with open('%s/%s' % (path, 'adminkey.txt'), 'r') as adminkey_file:
+                adminkey = adminkey_file.readline().rstrip()
+                return adminkey
+        else:
+            logging.warning('Uruchom bazę timestore, brak pliku z kluczem admina!')
+            pass
+
+    def setRWKeys(self, node, tskey):
+        "Wygeneruj klucz do zapisu i odczytu"
         rand = random.random()
 
         ts.set_key()
-        pass
-
-    def setRWKeys(self, tskey):
-        "Wygeneruj klucz do zapisu i odczytu"
         pass
