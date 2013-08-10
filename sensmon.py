@@ -50,16 +50,6 @@ filterout = ['powernode']
 c = tornadoredis.Client()
 c.connect()
 
-
-DB = '192.168.88.20:8080'
-DEFAULT_KEY = 'P=>#{YH/<}P{2~s>e0^<I^C5l0/>6EX4'
-ADMIN_KEY = os.getenv('TIMESTORE_ADMIN_KEY', DEFAULT_KEY)
-INTERVAL = 30
-DECIMATION = [10,5,2]
-NPOINTS = 200
-NODE = 0x900
-tdb = Client(DB)
-
 clients = []
 
 # --------------------------webapp code-----------------------#
