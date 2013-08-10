@@ -79,7 +79,7 @@ class History():
             if e.status == 403:
                 print "Node exist?"
                 try:
-                    print "Try to erase node..."
+                    print "Try to erase %s node..." % (node_id)
                     self.tsdb.delete_node(node_id, key = self.adminkey)
                     print "Deleted, try to new one"
                 except TimestoreException as e:
@@ -92,7 +92,7 @@ class History():
             self.setRWKeys(node_id)
 
     def getAdminKey(self, path='/var/lib/timestore'):
-        """Pobierz klucz admina"""
+        """Pobierz klucz admina z pliku"""
 
         if os.path.isfile('%s/%s' % (path, 'adminkey.txt')):
             with open('%s/%s' % (path, 'adminkey.txt'), 'r') as adminkey_file:
@@ -103,7 +103,7 @@ class History():
             pass
 
     def setRWKeys(self, node_id):
-        "Wygeneruj klucz do zapisu i odczytu"
+        "Wygeneruj klucz do zapisu i odczytu dla punktów prywatych"
 
         m = hashlib.md5()
         m.update(str(random.random()))
@@ -116,4 +116,5 @@ class History():
         self.tsdb.set_key(node_id, 'write', writekey, key = self.adminkey)
         print 'Read key: %s' % (readkey)
         print 'Write key: %s' % (writekey)
+        # return readkey, writekey
         print 'Keys generated!'

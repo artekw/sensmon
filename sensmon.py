@@ -50,6 +50,8 @@ filterout = ['powernode']
 c = tornadoredis.Client()
 c.connect()
 
+tsdb = sensnode.store.History()
+
 clients = []
 
 # --------------------------webapp code-----------------------#
