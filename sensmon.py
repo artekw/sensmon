@@ -14,12 +14,9 @@ import os
 # https://github.com/leporo/tornado-redis
 import tornadoredis
 
-if timestore:
-    # https://github.com/mikestir/timestore
-    from sensnode.timestore import Client, TimestoreException
-else:
-    # http://samizdat.cc/corduroy/
-    from corduroy import Database, relax
+
+# https://github.com/mikestir/timestore
+from sensnode.timestore import Client, TimestoreException
 
 import simplejson as json
 # http://pymotw.com/2/multiprocessing
