@@ -41,8 +41,6 @@ settings_cfg = sensnode.common.settings_cfg
 
 define("webapp_port", default=settings_cfg['settings'][
        'webapp']['port'], help="Run on the given port", type=int)
-define("couchbd_dbname", default='sensmon', help="CouchDB database name")
-define("couchdb_url", default='/', help="CouchDB database url")
 
 # dane dla tych punktów NIE SĄ umieszczane w bazie histori
 filterout = ['powernode']
@@ -52,19 +50,15 @@ filterout = ['powernode']
 c = tornadoredis.Client()
 c.connect()
 
-if timestore:
-    DB = '192.168.88.20:8080'
-    DEFAULT_KEY = 'P=>#{YH/<}P{2~s>e0^<I^C5l0/>6EX4'
-    ADMIN_KEY = os.getenv('TIMESTORE_ADMIN_KEY', DEFAULT_KEY)
-    INTERVAL = 30
-    DECIMATION = [10,5,2]
-    NPOINTS = 200
-    NODE = 0x900
-    READ_KEY = 'z' * 32
-    WRITE_KEY = 'a' * 32
-    tdb = Client(DB)
-else:
-    cdb = Database("%s/%s" % (options.couchdb_url, options.couchbd_dbname))
+
+DB = '192.168.88.20:8080'
+DEFAULT_KEY = 'P=>#{YH/<}P{2~s>e0^<I^C5l0/>6EX4'
+ADMIN_KEY = os.getenv('TIMESTORE_ADMIN_KEY', DEFAULT_KEY)
+INTERVAL = 30
+DECIMATION = [10,5,2]
+NPOINTS = 200
+NODE = 0x900
+tdb = Client(DB)
 
 clients = []
 
@@ -311,8 +305,7 @@ def main():
     print "Nasluchuje na porcie:", options.webapp_port
 
 
-    #@tornado.gen.engine
-    @relax
+    @tornado.gen.engine
     def checkResults():
         if not resultQ.empty():
             result = resultQ.get()
@@ -324,10 +317,7 @@ def main():
             if debug:
                 print "JSON: %s" % (decodedj)
             if decodedj['name'] not in filterout:
-                if timestore:
-                    tdb.submit_values(NODE, [123], key=WRITE_KEY)
-                else:
-                    yield cdb.save({'msg': decoded})
+                tdb.submit_values(NODE, [123], key=WRITE_KEY)
             # koniec
             redisdb.pubsub(decoded)
             for c in clients:
