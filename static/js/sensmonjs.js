@@ -31,8 +31,8 @@ sensmon.directive('tabKafelki', function($compile) {
             '<table class="boxes">' +
             '<tbody>' +
             '<tr ng-repeat="n in nodescfg">' +
-            '<td class="{{boxescolor[$index]}}-head"><h1 class="kafelki">Nazwa</h1><h3 class="kafelki">{{nodescfg|showkeys:$index}}</h3><span class="qrcode" style="display:none" showonhoverparent><img src="static/img/qrcodes/{{nodescfg|showkeys:$index}}.png"></span></td>' +
-            '<td class="{{boxescolor[$parent.$index]}}" ng-repeat="a in n"><h1 class="kafelki">{{a.desc}}</h1><h3 class="kafelki">{{array[$parent.$index][$index]|isdate}} {{a.unit}}</h3></td>' +
+            '<td class="{{boxescolor[$index]}}-head"><h3 class="kafelki">Nazwa</h3><h1 class="kafelki">{{nodescfg|showkeys:$index}}</h1><span class="qrcode" style="display:none" showonhoverparent><img src="static/img/qrcodes/{{nodescfg|showkeys:$index}}.png"></span></td>' +
+            '<td class="{{boxescolor[$parent.$index]}}" ng-repeat="a in n"><h3 class="kafelki">{{a.desc}}</h3><h1 class="kafelki">{{array[$parent.$index][$index]|isdate}} {{a.unit}}</h1></td>' +
             '</tr>' +
             '</tbody>' +
             '</table>',
