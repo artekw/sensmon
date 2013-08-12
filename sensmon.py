@@ -41,7 +41,7 @@ define("webapp_port", default=settings_cfg['settings'][
        'webapp']['port'], help="Run on the given port", type=int)
 
 # dane dla tych punktów NIE SĄ umieszczane w bazie histori
-filterout = ['powernode']
+filterout = ['powernode', 'outnode', 'pirnode', 'testnode']
 
 # ----------------------end webapp settings------------------#
 
@@ -51,7 +51,9 @@ c.connect()
 ts_readkey = '279612e4fd941ac44a93d69973756ccb'
 ts_writekey = '6477219d6e43eacfa0bac573643db216'
 
-tsdb = sensnode.store.History(ts_readkey, ts_writekey)
+# tsdb = sensnode.store.History(ts_readkey, ts_writekey)
+
+tsdb = sensnode.timestore.Client()
 
 clients = []
 
@@ -288,7 +290,7 @@ def main():
             if debug:
                 print "JSON: %s" % (decodedj)
             if decodedj['name'] not in filterout:
-                tdb.submit_values(99, [decodedj], key=ts_writekey)
+                tsdb.submit_values(99, [decodedj['temp']], key=ts_writekey)
             # koniec
             redisdb.pubsub(decoded)
             for c in clients:
