@@ -47,8 +47,8 @@ filterout = ['artekroom', 'outnode', 'pirnode', 'testnode']
 c = tornadoredis.Client()
 c.connect()
 
-ts_readkey = '279612e4fd941ac44a93d69973756ccb'
-ts_writekey = '6477219d6e43eacfa0bac573643db216'
+ts_readkey = settings_cfg['settings']['timestore']['ts_readkey']
+ts_writekey = settings_cfg['settings']['timestore']['ts_writekey']
 
 # tsdb = sensnode.store.History(ts_readkey, ts_writekey)
 
