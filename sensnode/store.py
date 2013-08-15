@@ -65,10 +65,16 @@ class History():
     def createNode(self, node_id, interval, public=False):
         """Utwórz node"""
 
+        metrics_num = 2
+
         array = {
                 'interval': interval,
                 'decimation': [20, 6, 6, 4, 7],
                 'metrics': [ {
+                            'pad_mode' : 0,
+                            'downsample_mode' : 0
+                            },
+                            {
                             'pad_mode' : 0,
                             'downsample_mode' : 0
                             } ]

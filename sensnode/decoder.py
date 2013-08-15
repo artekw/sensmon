@@ -3,7 +3,6 @@
 
 import os
 import simplejson as json
-from collections import OrderedDict
 
 import common
 import logging
@@ -70,8 +69,7 @@ class Decoder(config.Config):
                     v = float(data[k])
                     v /= pow(10, int(scales[k]))
             a.append(v)
-        new_dict = dict(zip(data.keys(), a))
-        return json.dumps(OrderedDict(sorted(new_dict.items(), key=lambda t: t[0])))
+        return json.dumps(dict(zip(data.keys(), a)))
 
     def filter(self, data, fields):
         return dict((k, v) for (k, v) in data.iteritems() if k in fields)

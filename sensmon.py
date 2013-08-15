@@ -30,7 +30,10 @@ from tornado.escape import json_encode
 from tornado.options import define, options
 
 # sensnode
-import sensnode.store, sensnode.decoder, sensnode.connect, sensnode.common
+from sensnode.store import redisdb, History
+from sensnode.decoder import Decoder
+from sensnode.connect import Connect
+import sensnode.common
 
 settings_cfg = sensnode.common.settings_cfg
 
@@ -40,8 +43,8 @@ settings_cfg = sensnode.common.settings_cfg
 define("webapp_port", default=settings_cfg['settings'][
        'webapp']['port'], help="Run on the given port", type=int)
 
-# dane dla tych punktów NIE SĄ umieszczane w bazie histori
-filterout = ['powernode', 'pirnode', 'testnode']
+# dane z tych punktów NIE SĄ umieszczane w bazie histori
+filterout = ['artekroom', 'outnode', 'pirnode', 'testnode']
 
 # ----------------------end webapp settings------------------#
 
@@ -225,7 +228,7 @@ class Websocket(tornado.websocket.WebSocketHandler):
 
     """Odbierz wiadomość od klienta"""
     def on_message(self, msg):
-        rdb = sensnode.store.redisdb()
+        rdb = redisdb()
         # zapisz status w bazie redis
         rdb.setStatus(msg)
         # wrzuć w kolejkę
@@ -245,12 +248,12 @@ def main():
     taskQ = multiprocessing.Queue()
     resultQ = multiprocessing.Queue()
 
-    connect = sensnode.connect.Connect(taskQ, resultQ, debug=debug)
+    connect = Connect(taskQ, resultQ, debug=debug)
     connect.daemon = True
     connect.start()
 
-    redisdb = sensnode.store.redisdb(debug=debug)
-    decoder = sensnode.decoder.Decoder(debug=debug)
+    redis = redisdb(debug=debug)
+    decoder = Decoder(debug=debug)
 
     tornado.options.parse_command_line()
     application = tornado.web.Application([
@@ -277,24 +280,21 @@ def main():
     httpServer.listen(options.webapp_port)
     print "Nasluchuje na porcie:", options.webapp_port
 
-
     @tornado.gen.engine
     def checkResults():
         if not resultQ.empty():
             result = resultQ.get()
+            decoded = decoder.decode(result)
             if debug:
                 print "BINARY: %s" % (result)
-            decoded = decoder.decode(result)
             # filtr - FIXME
             decodedj = json.loads(decoded)
             if debug:
-                print "JSON: %s" % (decodedj)
+                print "JSON: %s" % (decoded)
             if decodedj['name'] not in filterout:
-                del decodedj['timestamp']
-                print "TIMESTORE: %s" % (decodedj)
-                tsdb.submit_values(99, [decodedj['temp']], key=ts_writekey)
-            # koniec
-            redisdb.pubsub(decoded)
+                tsdb.submit_values(90, sensnode.common.dict2list_values(decodedj), key=ts_writekey)
+
+            redis.pubsub(decoded)
             for c in clients:
                 c.write_message(result)
 

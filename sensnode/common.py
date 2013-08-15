@@ -17,6 +17,7 @@ import subprocess
 import simplejson as json
 import hashlib
 from qrcode import *
+from collections import OrderedDict
 
 debug = False
 
@@ -123,3 +124,18 @@ def qrcode_gen(node, url, out='static/img/qrcodes', replace=False):
 
 for n in nodes_cfg.keys():
     qrcode_gen(n, "http://192.168.88.20/rest")
+
+
+def dict2list_values(d):
+    dict_sorted = OrderedDict(sorted(d.items(), key=lambda t: t[0]))
+    del dict_sorted['timestamp']
+    del dict_sorted['name']
+
+    return [v for k,v in dict_sorted.items()]
+
+def dict2list_keys(d):
+    dict_sorted = OrderedDict(sorted(d.items(), key=lambda t: t[0]))
+    del dict_sorted['timestamp']
+    del dict_sorted['name']
+
+    return [k for k,v in dict_sorted.items()]
