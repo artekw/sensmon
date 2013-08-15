@@ -290,6 +290,8 @@ def main():
             if debug:
                 print "JSON: %s" % (decodedj)
             if decodedj['name'] not in filterout:
+                del decodedj['timestamp']
+                print "TIMESTORE: %s" % (decodedj)
                 tsdb.submit_values(99, [decodedj['temp']], key=ts_writekey)
             # koniec
             redisdb.pubsub(decoded)
