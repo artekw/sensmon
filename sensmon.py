@@ -284,7 +284,7 @@ def main():
             # filtr - FIXME
             decodedj = json.loads(decoded)
             if debug:
-                print "JSON: %s" % (decodedj)
+                print "JSON: %s" % (decoded)
             if decodedj['name'] not in filterout:
                 yield cdb.save({'msg': decoded})
             # koniec
