@@ -41,7 +41,7 @@ define("webapp_port", default=settings_cfg['settings'][
        'webapp']['port'], help="Run on the given port", type=int)
 
 # dane dla tych punktów NIE SĄ umieszczane w bazie histori
-filterout = ['powernode', 'outnode', 'pirnode', 'testnode']
+filterout = ['powernode', 'pirnode', 'testnode']
 
 # ----------------------end webapp settings------------------#
 
