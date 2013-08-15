@@ -1,25 +1,21 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-"""
-TODO:
-- RDW na telefony, tablety
-- konfiguracja
-"""
-
 debug = True  # tryb developerski - wyświetlanie dodatkowch komunikatów dla biblioteki sensnode
 
 import os
+import simplejson as json
+
 # https://github.com/leporo/tornado-redis
 import tornadoredis
 
 # https://github.com/mikestir/timestore
 from sensnode.timestore import Client, TimestoreException
 
-import simplejson as json
 # http://pymotw.com/2/multiprocessing
 import multiprocessing
 
+# tornado
 import tornado.ioloop
 import tornado.web
 import tornado.template

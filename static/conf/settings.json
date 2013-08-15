@@ -12,6 +12,10 @@
     },
     "redis": {
       "host": "localhost"
+    },
+    "timestore": {
+      "ts_readkey": "279612e4fd941ac44a93d69973756ccb",
+      "ts_writekey": "6477219d6e43eacfa0bac573643db216"
     }
   }
 }
