@@ -15,7 +15,7 @@ def pirnode(data, name):
     template = ({
         'name':name,
         'motion': a & 1,
-        'lowbat': (b >> 2) & 1,
+        'lowbat': (a >> 2) & 1,
         'timestamp':timestamp
     })
 
