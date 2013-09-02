@@ -38,7 +38,9 @@
         {
             "unit": "°C",
             "desc": "Temperatura",
-            "scale": 1
+            "scale": 1,
+            "alarm-critic": -10,
+            "alarm-safe": -5
         },
         "light":
         {
