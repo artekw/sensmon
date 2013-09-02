@@ -4,7 +4,9 @@
       "host": "0.0.0.0",
       "port": "8081",
       "password": "admin",
-      "reset": 0,
+      "reset": 0
+      },
+      "alarms": {
       "alarm-email": "arteqw@gmail.com"
     },
     "remserial": {
