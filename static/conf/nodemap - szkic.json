@@ -2,7 +2,21 @@
     "testnode": {
         "id": 12,
         "title": "Test",
-        "mode": "dash"
+        "mode": "dash",
+        "sensors": {
+            "batvol":
+            {
+                "unit": "",
+                "desc": "Napięcie",
+                "scale": 3
+            },
+            "timestamp":
+            {
+                "unit": "",
+                "desc": "Aktualizacja",
+                "scale": 0
+            }
+        }
     },
     "powernode": {
         "id": 5,
