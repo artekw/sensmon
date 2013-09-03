@@ -8,6 +8,7 @@ from collections import OrderedDict
 import common
 import logging
 import config
+from functions import Alarms
 
 """Import dekoderów punktów"""
 from decoders.weathernode import weathernode

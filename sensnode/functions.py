@@ -5,17 +5,13 @@
 
 import common
 import logging
-import config
 
-class alarms(object):
+class Alarms(object):
     def __init__(self, debug=False):
-        self.settings_cfg = common.settings_cfg
-        self.nodes_cfg = common.nodes_cfg
         self.debug = debug
-        pass
 
-    def onAlarm():
-        pass
+    def onAlarm(kwargs*):
+        # args: cric=10, safe=2, now=1
 
     def sendMail():
         pass
