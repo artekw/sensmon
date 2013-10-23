@@ -191,7 +191,7 @@ class RESTHandler(BaseHandler):
         else:
             """Jak istnieje - pobierz"""
             nodevals = yield tornado.gen.Task(cl.hget, 'initv', query)
-            self.write(json_encode(nodevals))
+            self.write(nodevals)
         self.finish()
 
 
