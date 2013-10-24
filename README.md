@@ -16,6 +16,7 @@ sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona 2.7 o
 - git
 - pil
 - qrcode
+- leveldb
 
 ## Instalacja
 
