@@ -12,6 +12,7 @@ bin
 var
 tests
 sdist
+sensmon_db
 develop-eggs
 .installed.cfg
 sync.py

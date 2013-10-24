@@ -10,11 +10,13 @@ TODO:
 debug = False  # tryb developerski - wyświetlanie dodatkowch komunikatów dla biblioteki sensnode
 
 import os
+
 # https://github.com/leporo/tornado-redis
 import tornadoredis
 
-# http://samizdat.cc/corduroy/
-from corduroy import Database, relax
+# https://code.google.com/p/leveldb-py/
+# key-value database from Google :)
+import leveldb
 
 import simplejson as json
 # http://pymotw.com/2/multiprocessing
@@ -39,8 +41,8 @@ settings_cfg = sensnode.common.settings_cfg
 
 define("webapp_port", default=settings_cfg['settings'][
        'webapp']['port'], help="Run on the given port", type=int)
-define("couchbd_dbname", default='sensmon', help="CouchDB database name")
-define("couchdb_url", default='/', help="CouchDB database url")
+define("leveldb_dbname", default='sensmon_db', help="LevelDB database name")
+define("leveldb_path", default='.', help="LevelDB path do database")
 
 # dane dla tych punktów NIE SĄ umieszczane w bazie histori
 filterout = ['powernode']
@@ -50,7 +52,7 @@ filterout = ['powernode']
 c = tornadoredis.Client()
 c.connect()
 
-cdb = Database("%s/%s" % (options.couchdb_url, options.couchbd_dbname))
+leveldb = leveldb.DB("%s/%s" % (options.leveldb_path, options.leveldb_dbname), create_if_missing=True)
 
 clients = []
 
@@ -274,7 +276,7 @@ def main():
     httpServer.listen(options.webapp_port)
     print "Nasluchuje na porcie:", options.webapp_port
 
-    @relax
+    @tornado.gen.engine
     def checkResults():
         if not resultQ.empty():
             result = resultQ.get()
@@ -286,7 +288,9 @@ def main():
             if debug:
                 print "JSON: %s" % (decoded)
             if decodedj['name'] not in filterout:
-                yield cdb.save({'msg': decoded})
+                leveldb.put("%s-%s" % (decodedj['name'], decodedj['timestamp']), decoded)
+                if debug:
+                    print "LevelDB: %s-%s %s" % (decodedj['name'], decodedj['timestamp'], decoded)
             # koniec
             redisdb.pubsub(decoded)
             for c in clients:

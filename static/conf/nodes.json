@@ -28,8 +28,7 @@
         "timestamp":
         {
             "unit": "",
-            "desc": "Aktualizacja",
-            "scale": 0
+            "desc": "Aktualizacja"
         }
     },
     "outnode":
@@ -43,14 +42,12 @@
         "light":
         {
             "unit": "",
-            "desc": "Nasłonecznienie",
-            "scale": 0
+            "desc": "Nasłonecznienie"
         },
         "timestamp":
         {
             "unit": "",
-            "desc": "Aktualizacja",
-            "scale": 0
+            "desc": "Aktualizacja"
         }
     },
     "testnode":
@@ -64,8 +61,7 @@
         "timestamp":
         {
             "unit": "",
-            "desc": "Aktualizacja",
-            "scale": 0
+            "desc": "Aktualizacja"
         }
     },
     "pirnode":
@@ -73,20 +69,17 @@
         "motion":
         {
             "unit": "",
-            "desc": "Ruch",
-            "scale": 0
+            "desc": "Ruch"
         },
         "lowbat":
         {
             "unit": "",
-            "desc": "Lowbat",
-            "scale": 0
+            "desc": "Lowbat"
         },
         "timestamp":
         {
             "unit": "",
-            "desc": "Aktualizacja",
-            "scale": 0
+            "desc": "Aktualizacja"
         }
     },
     "powernode":
@@ -100,14 +93,12 @@
         "power":
         {
             "unit": "W",
-            "desc": "Moc bierna",
-            "scale": 0
+            "desc": "Moc bierna"
         },
         "timestamp":
         {
             "unit": "",
-            "desc": "Aktualizacja",
-            "scale": 0
+            "desc": "Aktualizacja"
         }
     }
 }

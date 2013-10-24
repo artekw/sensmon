@@ -26,9 +26,11 @@ class Config(object):
         return self.nodes_cfg.keys()
 
     def getScale(self, name):
-        """Tworzy slownik sensor : skala
-
-        TODO: pomijanie wprowadzania skali"""
-        scales = [self.nodes_cfg[name][str(x)][
-                  'scale'] for x in self.getCurrentSensors(name)]
-        return dict(zip(self.nodes_cfg[name].viewkeys(), scales))
+        """Tworzy slownik sensor : skala"""
+        keys = []
+        scales = []
+        for (k, v) in self.nodes_cfg[name].iteritems():
+            if "scale" in v:
+                keys.append(k)
+                scales.append(v['scale'])
+        return dict(zip(keys, scales))

@@ -3,7 +3,6 @@
 
 import redis
 import time
-import corduroy
 import simplejson as json
 import hashlib
 import random
