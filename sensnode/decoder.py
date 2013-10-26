@@ -13,8 +13,6 @@ import config
 from decoders.weathernode import weathernode
 from decoders.powernode import powernode
 from decoders.pirnode import pirnode
-from decoders.testnode import testnode
-
 
 class Decoder(config.Config):
 
@@ -38,7 +36,7 @@ class Decoder(config.Config):
                 fields.append('name')
                 fields.append('timestamp')  # dodajemy pozostałe pola
 
-                if decoder in ['artekroom', 'outnode']:
+                if decoder in ['artur', 'out', 'salon', 'kamil']:
                     tmp = self.filter(weathernode(data, decoder), fields)
                     return self.scaleValue(tmp)
                 if decoder == 'powernode':
@@ -46,9 +44,6 @@ class Decoder(config.Config):
                     return self.scaleValue(tmp)
                 if decoder == 'pirnode':
                     tmp = self.filter(pirnode(data, decoder), fields)
-                    return self.scaleValue(tmp)
-                if decoder == 'testnode':
-                    tmp = self.filter(testnode(data, decoder), fields)
                     return self.scaleValue(tmp)
             else:
                 if self.debug:

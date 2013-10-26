@@ -413,7 +413,7 @@ function dashCtrl($scope, $http) {
         console.log ("Mouse Over: " + out)
     }
 */
-    $scope.boxescolor  = ['bluebox', 'orangebox', 'concretebox', 'greenbox', 'amethystbox']
+    $scope.boxescolor  = ['bluebox', 'orangebox', 'concretebox', 'greenbox', 'amethystbox', 'yellowbox']
 
     $http.get('/static/conf/nodes.json').success(function(result) {
         console.log('Generuje tabele');

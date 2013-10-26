@@ -1,5 +1,5 @@
 {
-    "artekroom":
+    "artur":
     {
         "press":
         {
@@ -32,7 +32,7 @@
             "scale": 0
         }
     },
-    "outnode":
+    "out":
     {
         "temp":
         {
@@ -53,8 +53,14 @@
             "scale": 0
         }
     },
-    "testnode":
+    "salon":
     {
+        "temp":
+        {
+            "unit": "°C",
+            "desc": "Temperatura",
+            "scale": 1
+        },
         "batvol":
         {
             "unit": "",
@@ -68,19 +74,19 @@
             "scale": 0
         }
     },
-    "pirnode":
+    "kamil":
     {
-        "motion":
+        "temp":
         {
-            "unit": "",
-            "desc": "Ruch",
-            "scale": 0
+            "unit": "°C",
+            "desc": "Temperatura",
+            "scale": 1
         },
-        "lowbat":
+        "batvol":
         {
             "unit": "",
-            "desc": "Lowbat",
-            "scale": 0
+            "desc": "Napięcie",
+            "scale": 3
         },
         "timestamp":
         {
