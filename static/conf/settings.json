@@ -12,6 +12,10 @@
     },
     "redis": {
       "host": "localhost"
+    },
+    "leveldb": {
+      "dbname" : "sensmon_db",
+      "path": "."
     }
   }
 }

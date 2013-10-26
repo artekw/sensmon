@@ -14,10 +14,6 @@ import os
 # https://github.com/leporo/tornado-redis
 import tornadoredis
 
-# https://code.google.com/p/leveldb-py/
-# key-value database from Google :)
-import leveldb
-
 import simplejson as json
 # http://pymotw.com/2/multiprocessing
 import multiprocessing
@@ -28,21 +24,23 @@ import tornado.template
 import tornado.websocket
 import tornado.gen
 import tornado.httpserver
-from tornado.escape import json_encode
 from tornado.options import define, options
 
 # sensnode
-import sensnode.store, sensnode.decoder, sensnode.connect, sensnode.common
+import sensnode.store, sensnode.decoder, sensnode.connect, sensnode.common, sensnode.config
 
-settings_cfg = sensnode.common.settings_cfg
+# https://code.google.com/p/leveldb-py/
+# key-value database from Google :)
+import sensnode.leveldb
 
 # ------------------------webapp settings--------------------#
-# -----------------------------FIXME-------------------------#
 
-define("webapp_port", default=settings_cfg['settings'][
+define("webapp_port", default=sensnode.common.settings_cfg['settings'][
        'webapp']['port'], help="Run on the given port", type=int)
-define("leveldb_dbname", default='sensmon_db', help="LevelDB database name")
-define("leveldb_path", default='.', help="LevelDB path do database")
+define("leveldb_dbname", default=sensnode.common.settings_cfg['settings'][
+       'leveldb']['dbname'], help="LevelDB database name")
+define("leveldb_path", default=sensnode.common.settings_cfg['settings'][
+       'leveldb']['path'], help="LevelDB path do database")
 
 # dane dla tych punktów NIE SĄ umieszczane w bazie histori
 filterout = ['powernode']
@@ -52,7 +50,7 @@ filterout = ['powernode']
 c = tornadoredis.Client()
 c.connect()
 
-leveldb = leveldb.DB("%s/%s" % (options.leveldb_path, options.leveldb_dbname), create_if_missing=True)
+leveldb = sensnode.leveldb.DB("%s/%s" % (options.leveldb_path, options.leveldb_dbname), create_if_missing=True)
 
 clients = []
 
@@ -140,7 +138,7 @@ class DashHandler(BaseHandler):
         c = tornadoredis.Client()
         res = yield tornado.gen.Task(c.hvals, 'initv')
         self.render("dash.tpl",
-                    init=[json.loads(x) for x in res])  # sort_keys=True ?
+                    init=[json.loads(x) for x in res])
 
 
 class ControlHandler(BaseHandler):
@@ -152,7 +150,7 @@ class ControlHandler(BaseHandler):
         c = tornadoredis.Client()
         res = yield tornado.gen.Task(c.hvals, 'status')
         self.render("control.tpl",
-                    init=[json.loads(x) for x in res])  # sort_keys=True ?
+                    init=[json.loads(x) for x in res])
 
 
 class LogsHandler(BaseHandler):
@@ -240,6 +238,12 @@ class Websocket(tornado.websocket.WebSocketHandler):
             self.client.disconnect()
 
 
+class MiniDashHandler(BaseHandler):
+
+    def get(self):
+        self.write(".")
+
+
 def main():
     taskQ = multiprocessing.Queue()
     resultQ = multiprocessing.Queue()
@@ -258,6 +262,7 @@ def main():
         (r"/", DashHandler),
         (r"/graphs", GraphsHandler),
         (r"/m", MobileHomeHandler),
+        (r"/minidash", MiniDashHandler),
         (r"/info", InfoHandler),
         (r"/logs", LogsHandler),
         (r"/login", LoginHandler),

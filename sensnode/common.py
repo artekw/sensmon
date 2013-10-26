@@ -16,15 +16,15 @@ import os
 import subprocess
 import simplejson as json
 import hashlib
+from config import config # nowy
 from qrcode import *
 
-debug = False
-
+'''
 logging.basicConfig(
     format='%(asctime)-25s %(threadName)-15s %(levelname)-10s %(message)s',
     level=logging.DEBUG,
     datefmt='%d/%m/%Y %H:%M:%S')
-
+'''
 
 with open('static/conf/settings.json') as settings_file:
     settings_cfg = json.load(settings_file)

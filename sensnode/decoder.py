@@ -10,6 +10,7 @@ import logging
 import config
 
 """Import dekoderów punktów"""
+
 from decoders.weathernode import weathernode
 from decoders.powernode import powernode
 from decoders.pirnode import pirnode
@@ -20,10 +21,12 @@ class Decoder(config.Config):
 
     """Dekodowanie pakietów"""
     def __init__(self, debug=False):
+        self._logger = logging.getLogger(__name__)
         self.debug = debug
         config.Config.__init__(self, debug)
 
     def decode(self, line):
+        decoders = []
 
         if line.startswith("OK"):
             data = line.split(" ")
@@ -37,6 +40,13 @@ class Decoder(config.Config):
 
                 fields.append('name')
                 fields.append('timestamp')  # dodajemy pozostałe pola
+
+                # TODO
+                # lista modułów z katalogu 'decoders'
+                for f in os.listdir(os.path.abspath("./sensnode/decoders")):
+                    module_name, ext = os.path.splitext(f)
+                    if ext == ".py" and module_name != "__init__":
+                        decoders.append(module_name)
 
                 if decoder in ['artekroom', 'outnode']:
                     tmp = self.filter(weathernode(data, decoder), fields)
@@ -52,25 +62,23 @@ class Decoder(config.Config):
                     return self.scaleValue(tmp)
             else:
                 if self.debug:
-                    logging.debug('Received data from unknown node!')
-                    logging.debug('Data: %s' % (data))
+                    self._logger.debug('Received data from unknown node!')
+                    self._logger.debug('Data: %s' % (data))
         else:
             return
 
     def scaleValue(self, data):
         """TODO: napisać to lepiej"""
         scales = config.Config.getScale(self, data['name'])
-        a = []
+        scaled_values = []
 
         for (k, v) in data.iteritems():
             if k in scales.keys():
-                if scales[k] < 0:
-                    return  # do przemyślenia
-                elif scales[k] >= 0:
+                if scales[k] > 0:
                     v = float(data[k])
                     v /= pow(10, int(scales[k]))
-            a.append(v)
-        new_dict = dict(zip(data.keys(), a))
+            scaled_values.append(v)
+        new_dict = dict(zip(data.keys(), scaled_values))
         return json.dumps(OrderedDict(sorted(new_dict.items(), key=lambda t: t[0])))
 
     def filter(self, data, fields):

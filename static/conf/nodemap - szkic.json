@@ -6,15 +6,13 @@
         "sensors": {
             "batvol":
             {
-                "unit": "",
+                "unit": "V",
                 "desc": "Napięcie",
                 "scale": 3
             },
             "timestamp":
             {
-                "unit": "",
-                "desc": "Aktualizacja",
-                "scale": 0
+                "desc": "Aktualizacja"
             }
         }
     },

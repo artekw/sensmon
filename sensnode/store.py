@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import redis
+import leveldb
 import time
 import simplejson as json
 import hashlib
@@ -45,3 +46,11 @@ class redisdb():
 
     def getStatus(self, nodename):
         return self.rdb.hget("status", nodename)
+
+
+class history():
+    def __init__(self):
+        pass
+
+    def slice(self):
+        pass
