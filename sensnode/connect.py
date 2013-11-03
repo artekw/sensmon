@@ -7,6 +7,7 @@ import common
 import multiprocessing
 import logging
 import simplejson as json
+from config import config
 
 
 class Connect(multiprocessing.Process):
@@ -15,15 +16,14 @@ class Connect(multiprocessing.Process):
     def __init__(self, taskQ, resultQ, debug=False):
         self._logger = logging.getLogger(__name__)
         multiprocessing.Process.__init__(self)
-        self.settings_cfg = common.settings_cfg
         self.taskQ = taskQ
         self.resultQ = resultQ
         self.debug = debug
         self.connected = False
 
         try:
-            host = self.settings_cfg['settings']['remserial']['host']
-            port = self.settings_cfg['settings']['remserial']['port']
+            host = config().get("app", ['remserial', 'host'])
+            port = config().get("app", ['remserial', 'port'])
 
             if self.debug:
                 self._logger.debug('Trying connect to %s:%s' % (host, str(port)))

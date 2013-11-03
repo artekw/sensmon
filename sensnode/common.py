@@ -1,8 +1,6 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-# http://throwingfire.com/storing-passwords-securely/
-
 __author__ = 'Artur Wronowski'
 __version__ = '0.5-dev'
 __appname__ = 'sensnode-core'
@@ -16,7 +14,7 @@ import os
 import subprocess
 import simplejson as json
 import hashlib
-from config import config # nowy
+from config import config
 from qrcode import *
 
 '''
@@ -25,13 +23,6 @@ logging.basicConfig(
     level=logging.DEBUG,
     datefmt='%d/%m/%Y %H:%M:%S')
 '''
-
-with open('static/conf/settings.json') as settings_file:
-    settings_cfg = json.load(settings_file)
-with open('static/conf/nodes.json') as nodes_file:
-    nodes_cfg = json.load(nodes_file)
-with open('static/conf/nodemap.json') as nodemap_file:
-    nodemap_cfg = json.load(nodemap_file)
 
 #
 
@@ -104,7 +95,7 @@ def getDigest(password):
 def isPassword(password, digest):
     return getDigest(password) == digest
 
-
+'''
 def qrcode_gen(node, url, out='static/img/qrcodes', replace=False):
     if not os.path.isdir(out):
         os.makedirs(out)
@@ -121,5 +112,6 @@ def qrcode_gen(node, url, out='static/img/qrcodes', replace=False):
         img = qr.make_image()
         img.save('%s/%s.png' % (out, node))
 
-for n in nodes_cfg.keys():
+for n in config().get("nodes", ['keys']):
     qrcode_gen(n, "http://192.168.88.20/rest")
+'''

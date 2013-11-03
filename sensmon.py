@@ -1,13 +1,7 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-"""
-TODO:
-- RDW na telefony, tablety
-- konfiguracja
-"""
-
-debug = False  # tryb developerski - wyświetlanie dodatkowch komunikatów dla biblioteki sensnode
+debug = True  # tryb developerski - wyświetlanie dodatkowch komunikatów dla biblioteki sensnode
 
 import os
 
@@ -27,25 +21,27 @@ import tornado.httpserver
 from tornado.options import define, options
 
 # sensnode
-import sensnode.store, sensnode.decoder, sensnode.connect, sensnode.common, sensnode.config
+import sensnode.store, sensnode.decoder, sensnode.connect, sensnode.common
+from sensnode.config import config
 
 # https://code.google.com/p/leveldb-py/
 # key-value database from Google :)
 import sensnode.leveldb
 
+ci = config(init=True)
+
 # ------------------------webapp settings--------------------#
 
-define("webapp_port", default=sensnode.common.settings_cfg['settings'][
-       'webapp']['port'], help="Run on the given port", type=int)
-define("leveldb_dbname", default=sensnode.common.settings_cfg['settings'][
-       'leveldb']['dbname'], help="LevelDB database name")
-define("leveldb_path", default=sensnode.common.settings_cfg['settings'][
-       'leveldb']['path'], help="LevelDB path do database")
+define("webapp_port",default=config().get("app", ['webapp', 'port']),help="Run on the given port", type=int)
+define("leveldb_dbname",default=config().get("app", ['leveldb', 'dbname']),help="LevelDB database name")
+define("leveldb_path",default=config().get("app", ['leveldb', 'path']),help="LevelDB path do database")
 
 # dane dla tych punktów NIE SĄ umieszczane w bazie histori
 filterout = ['powernode']
 
 # ----------------------end webapp settings------------------#
+
+
 
 c = tornadoredis.Client()
 c.connect()
@@ -80,7 +76,7 @@ class LoginHandler(BaseHandler):
         username = self.get_argument('name', '')
         password = self.get_argument('pass', '')
 
-        settings_pass = settings_cfg['settings']['webapp']['password']
+        settings_pass = config().get("app", ['webapp']['password'])
 
         # logowanie - FIXME
         if not password:
@@ -288,6 +284,8 @@ def main():
             if debug:
                 print "BINARY: %s" % (result)
             decoded = decoder.decode(result)
+            print "Decoded %s" % decoded
+            '''
             # filtr - FIXME
             decodedj = json.loads(decoded)
             if debug:
@@ -300,6 +298,7 @@ def main():
             redisdb.pubsub(decoded)
             for c in clients:
                 c.write_message(result)
+            '''
 
     mainLoop = tornado.ioloop.IOLoop.instance()
     scheduler = tornado.ioloop.PeriodicCallback(

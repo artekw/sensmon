@@ -2,28 +2,25 @@
 # -*- coding: utf-8 -*-
 
 import os
+import imp
 import simplejson as json
 from collections import OrderedDict
 
 import common
 import logging
-import config
-
-"""Import dekoderów punktów"""
-
-from decoders.weathernode import weathernode
-from decoders.powernode import powernode
-from decoders.pirnode import pirnode
-from decoders.testnode import testnode
+from config import config
+from plugins import plugins
 
 
-class Decoder(config.Config):
+class Decoder(object):
 
     """Dekodowanie pakietów"""
     def __init__(self, debug=False):
         self._logger = logging.getLogger(__name__)
         self.debug = debug
-        config.Config.__init__(self, debug)
+
+        # inicjalizacja systemu pluginów - dekoderów nodów
+        p = plugins(init=True)
 
     def decode(self, line):
         decoders = []
@@ -32,15 +29,18 @@ class Decoder(config.Config):
             data = line.split(" ")
 
         if data:
-            nodemap = config.Config.getNodeMap(self)
-            nid = data[1]  # nodeid
-            if nid in nodemap:
-                decoder = nodemap.get(nid)
-                fields = config.Config.getCurrentSensors(self, decoder)
+            # nodeid z otrzymanych danych
+            nid = int(data[1])
+            # słownik id:name
+            nodemap = config().getMap()
+            # sprawdzam czy jest na liście
+            if nid in nodemap.keys():
+                # szukamy właściwej wtyczki - dekodera
+                plug = plugins().plugin(nodemap[nid])
+                # zwracamy zdekodowane dane wg szablonu
+                return plug(data, nodemap[nid])
 
-                fields.append('name')
-                fields.append('timestamp')  # dodajemy pozostałe pola
-
+                '''
                 # TODO
                 # lista modułów z katalogu 'decoders'
                 for f in os.listdir(os.path.abspath("./sensnode/decoders")):
@@ -50,24 +50,22 @@ class Decoder(config.Config):
 
                 if decoder in ['artekroom', 'outnode']:
                     tmp = self.filter(weathernode(data, decoder), fields)
-                    return self.scaleValue(tmp)
+                    return self.scale(tmp)
                 if decoder == 'powernode':
                     tmp = self.filter(powernode(data, decoder), fields)
-                    return self.scaleValue(tmp)
+                    return self.scale(tmp)
                 if decoder == 'pirnode':
                     tmp = self.filter(pirnode(data, decoder), fields)
-                    return self.scaleValue(tmp)
+                    return self.scale(tmp)
                 if decoder == 'testnode':
                     tmp = self.filter(testnode(data, decoder), fields)
-                    return self.scaleValue(tmp)
-            else:
-                if self.debug:
-                    self._logger.debug('Received data from unknown node!')
-                    self._logger.debug('Data: %s' % (data))
+                    return self.scale(tmp)
+                '''
         else:
             return
 
-    def scaleValue(self, data):
+
+    def scale(self, data):
         """TODO: napisać to lepiej"""
         scales = config.Config.getScale(self, data['name'])
         scaled_values = []

@@ -1,0 +1,149 @@
+{
+    "salon":
+    {
+        "id": 12,
+        "title": "Salon",
+        "type": "output",
+        "sensors":
+        {
+            "press":
+            {
+                "unit": "kPa",
+                "desc": "Ciśnienie",
+                "scale": 1
+            },
+            "humi":
+            {
+                "unit": "%",
+                "desc": "Wilgotność",
+                "scale": 1
+            },
+            "temp":
+            {
+                "unit": "°C",
+                "desc": "Temperatura",
+                "scale": 1
+            },
+            "batvol":
+            {
+                "unit": "V",
+                "desc": "Nap. baterii",
+                "scale": 3
+            },
+            "timestamp":
+            {
+                "unit": "",
+                "desc": "Aktualizacja"
+            }
+        }
+    },
+    "outnode":
+    {
+        "id": 15,
+        "title": "Na zewnątrz",
+        "type": "output",
+        "sensors":
+        {
+            "temp":
+            {
+                "unit": "°C",
+                "desc": "Temperatura",
+                "scale": 1
+            },
+            "light":
+            {
+                "desc": "Nasłonecznienie"
+            },
+            "timestamp":
+            {
+                "desc": "Aktualizacja"
+            }
+        }
+    },
+    "artekroom":
+    {
+        "id": 2,
+        "title": "Pokoj Artura",
+        "type": "output",
+        "sensors":
+        {
+            "press":
+            {
+                "unit": "kPa",
+                "desc": "Ciśnienie",
+                "scale": 1
+            },
+            "humi":
+            {
+                "unit": "%",
+                "desc": "Wilgotność",
+                "scale": 1
+            },
+            "temp":
+            {
+                "unit": "°C",
+                "desc": "Temperatura",
+                "scale": 1
+            },
+            "batvol":
+            {
+                "unit": "V",
+                "desc": "Nap. baterii",
+                "scale": 3
+            },
+            "timestamp":
+            {
+                "unit": "",
+                "desc": "Aktualizacja"
+            }
+        }
+    },
+    "kamilroom":
+    {
+        "id": 19,
+        "title": "Pokoj Kamila",
+        "type": "output",
+        "sensors":
+        {
+            "press":
+            {
+                "unit": "kPa",
+                "desc": "Ciśnienie",
+                "scale": 1
+            },
+            "humi":
+            {
+                "unit": "%",
+                "desc": "Wilgotność",
+                "scale": 1
+            },
+            "temp":
+            {
+                "unit": "°C",
+                "desc": "Temperatura",
+                "scale": 1
+            },
+            "batvol":
+            {
+                "unit": "V",
+                "desc": "Nap. baterii",
+                "scale": 3
+            },
+            "timestamp":
+            {
+                "unit": "",
+                "desc": "Aktualizacja"
+            }
+        }
+    },
+    "powernode": {
+        "id": 25,
+        "title": "Power@Home",
+        "type": "output"
+    },
+    "relaynode": {
+        "id": 1,
+        "title": "Relay0",
+        "type": "control"
+    }
+}
