@@ -5,7 +5,7 @@ import os
 import simplejson as json
 import logging
 
-# na podstwie
+# na podstawie
 # https://github.com/foosel/OctoPrint/blob/master/octoprint/settings.py
 
 instance = None

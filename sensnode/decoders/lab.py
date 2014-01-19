@@ -4,7 +4,7 @@
 import time
 import simplejson as json
 
-def outnode(data, name):
+def lab(data, name):
     """Pomiar:
     - swiatła,
     - wlgotności
@@ -36,7 +36,7 @@ def outnode(data, name):
 
     template = ({
         'name':name,
-        'light': str((256 * b) + a),
+        'humi': str((256 * d) + c),
         'temp': str(((256 * (f&3) + e) ^ 512) - 512),
         'batvol':str((256 * k) + j),
         'timestamp':timestamp

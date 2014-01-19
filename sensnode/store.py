@@ -23,7 +23,7 @@ Redis DB szablon:
 class redisdb():
 
     """Bazy Redis dla danych chwilowych"""
-    def __init__(self, debug=False):
+    def __init__(self, debug=True):
         self.initdb()
         self.debug = debug
 
@@ -32,9 +32,9 @@ class redisdb():
 
     def pubsub(self, data, channel='nodes'):
         if data:
-            dataj = json.loads(data)
-            self.rdb.hset("initv", dataj['name'], data)  # hash, field, data
-            self.rdb.publish(channel, data)
+            data_str = json.dumps(data)
+            self.rdb.hset("initv", data['name'], data_str)  # hash, field, data
+            self.rdb.publish(channel, data_str)
             if self.debug:
                 logging.debug('Data publish on channel')
                 logging.debug('Submit init values')

@@ -7,7 +7,7 @@
     <meta name="author" content="arteq">
 
     <link rel="stylesheet/less" type="text/css" href="static/less/kube.less" media="all"/>
-    <title>{% block title %}{% end %} - sensmon v0.2</title>
+    <title>{% block title %}{% end %} - sensmon v0.3</title>
     <link href='http://fonts.googleapis.com/css?family=Dosis:400,500,600,700|Lato:400,700,900,400italic|Monda:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <!--[if lte IE 8]>
       <script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.2.4/json3.min.js"></script>
@@ -36,7 +36,7 @@
 <body>
     <div id="wrapper">
         <div id="top" class="group">
-            <span class="title"><a href="/">sensmon</a></span>
+            <span class="title"><a href="/">sensmon v0.3<sup> alfa</sup></a></span>
             <nav>
                 <ul>
                     <li><a href="/">Dash</a></li>

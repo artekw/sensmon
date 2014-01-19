@@ -38,7 +38,8 @@ class Decoder(object):
                 # szukamy właściwej wtyczki - dekodera
                 plug = plugins().plugin(nodemap[nid])
                 # zwracamy zdekodowane dane wg szablonu
-                return plug(data, nodemap[nid])
+                decoded_data = plug(data, nodemap[nid])
+                return self.scale(decoded_data)
 
                 '''
                 # TODO
@@ -67,7 +68,7 @@ class Decoder(object):
 
     def scale(self, data):
         """TODO: napisać to lepiej"""
-        scales = config.Config.getScale(self, data['name'])
+        scales = config().getScale(data['name'])
         scaled_values = []
 
         for (k, v) in data.iteritems():
@@ -77,7 +78,11 @@ class Decoder(object):
                     v /= pow(10, int(scales[k]))
             scaled_values.append(v)
         new_dict = dict(zip(data.keys(), scaled_values))
-        return json.dumps(OrderedDict(sorted(new_dict.items(), key=lambda t: t[0])))
+        return json.loads(json.dumps(OrderedDict(sorted(new_dict.items(), key=lambda t: t[0]))))
+
+        #return new_dict.items()
+
+        #return  dict((k,v) for (k,v) in template.iteritems())
 
     def filter(self, data, fields):
         return dict((k, v) for (k, v) in data.iteritems() if k in fields)

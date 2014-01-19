@@ -1,17 +1,11 @@
 {
-    "salon":
+    "lab":
     {
         "id": 12,
-        "title": "Salon",
+        "title": "digi-lab",
         "type": "output",
         "sensors":
         {
-            "press":
-            {
-                "unit": "kPa",
-                "desc": "Ciśnienie",
-                "scale": 1
-            },
             "humi":
             {
                 "unit": "%",
@@ -44,6 +38,12 @@
         "type": "output",
         "sensors":
         {
+            "batvol":
+            {
+                "unit": "V",
+                "desc": "Nap. baterii",
+                "scale": 3
+            },
             "temp":
             {
                 "unit": "°C",
@@ -139,11 +139,25 @@
     "powernode": {
         "id": 25,
         "title": "Power@Home",
-        "type": "output"
-    },
-    "relaynode": {
-        "id": 1,
-        "title": "Relay0",
-        "type": "control"
+        "type": "output",
+        "sensors":
+        {
+            "vrms":
+            {
+                "unit": "V",
+                "desc": "Napięcie sieci",
+                "scale": 2
+            },
+            "power":
+            {
+                "unit": "W",
+                "desc": "Moc bierna"
+            },
+            "timestamp":
+            {
+                "unit": "",
+                "desc": "Aktualizacja"
+            }
+        }
     }
 }

@@ -56,8 +56,8 @@ class Plugins(object):
             f, filename, description = imp.find_module(p, [filenamep])
             self.plugins[p] = imp.load_module(p, f, filename, description)
 
-        self._logger.info("Załadowano %s wtyczek (plugins)" % len(self.plugins))
-        print ("Załadowano %s wtyczek (plugins)" % len(self.plugins))
+        self._logger.info("Zaladowano %s wtyczek (plugins)" % len(self.plugins))
+        print ("Zaladowano %s wtyczek (plugins)" % len(self.plugins))
 
 
     def plugin(self, plugin):

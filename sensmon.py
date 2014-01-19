@@ -295,10 +295,11 @@ def main():
                 if debug:
                     print "LevelDB: %s-%s %s" % (decodedj['name'], decodedj['timestamp'], decoded)
             # koniec
+            '''
             redisdb.pubsub(decoded)
             for c in clients:
                 c.write_message(result)
-            '''
+
 
     mainLoop = tornado.ioloop.IOLoop.instance()
     scheduler = tornado.ioloop.PeriodicCallback(

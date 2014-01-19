@@ -12,14 +12,15 @@ https://github.com/ankane/chartkick.js
 
 
 var sensmon = angular.module('sensmon', []);
-
+/*
 sensmon.run(function($rootScope, $http) {
   $rootScope.nodes = function() {
-    $http.get('/static/conf/nodes.json').success(function(result) {
+    $http.get('/static/conf/nodemap2.json').success(function(result) {
         return result
     })
   }
 });
+*/
 
 /* directives */
 // http://doc.owncloud.org/server/5.0/developer_manual/angular.html#using-angularjs-in-your-project
@@ -31,8 +32,8 @@ sensmon.directive('tabKafelki', function($compile) {
             '<table class="boxes">' +
             '<tbody>' +
             '<tr ng-repeat="n in nodescfg">' +
-            '<td class="{{boxescolor[$index]}}-head"><h1 class="kafelki">Nazwa</h1><h3 class="kafelki">{{nodescfg|showkeys:$index}}</h3><span class="qrcode" style="display:none" showonhoverparent><img src="static/img/qrcodes/{{nodescfg|showkeys:$index}}.png"></span></td>' +
-            '<td class="{{boxescolor[$parent.$index]}}" ng-repeat="a in n"><h1 class="kafelki">{{a.desc}}</h1><h3 class="kafelki">{{array[$parent.$index][$index]|isdate}} {{a.unit}}</h3></td>' +
+            '<td class="{{boxescolor[$index]}}-head"><h1 class="kafelki">Nazwa</h1><h3 class="kafelki">{{nodescfg|showkeys:$index}}</h3></td>' +
+            '<td class="{{boxescolor[$parent.$index]}}" ng-repeat="a in n.sensors"><h1 class="kafelki">{{a.desc}}</h1><h3 class="kafelki">{{array[$parent.$index][$index]|isdate}} {{a.unit}}</h3></td>' +
             '</tr>' +
             '</tbody>' +
             '</table>',
@@ -355,7 +356,6 @@ function dashCtrl($scope, $http) {
         }
 
         sortedJSONObj = sortObject(jsonObj); // sortowanie po kluczu
-
         $scope.lastupd = sortedJSONObj['timestamp']*1000
         $scope.updfrom = sortedJSONObj['name']
 
@@ -415,10 +415,10 @@ function dashCtrl($scope, $http) {
 */
     $scope.boxescolor  = ['bluebox', 'orangebox', 'concretebox', 'greenbox', 'amethystbox']
 
-    $http.get('/static/conf/nodes.json').success(function(result) {
+    $http.get('/static/conf/nodemap2.json').success(function(result) {
         console.log('Generuje tabele');
         $scope.nodescfg = result;
         nodes = _.keys(result).sort();
-        $scope.init(); // init values
+        $scope.init(); // ostatnie dane
     });
 }

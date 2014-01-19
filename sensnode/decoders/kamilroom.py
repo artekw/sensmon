@@ -36,11 +36,9 @@ def kamilroom(data, name):
 
     template = ({
         'name':name,
-        'light': str((256 * b) + a),
         'humi': str((256 * d) + c),
         'temp': str(((256 * (f&3) + e) ^ 512) - 512),
         'press': str((256 * h) + g),
-        'lobat': str(i),
         'batvol':str((256 * k) + j),
         'timestamp':timestamp
          })
