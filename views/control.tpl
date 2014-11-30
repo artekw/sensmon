@@ -1,11 +1,10 @@
 {% extends "base.tpl" %}
 {% block title %}Control{% end %}
 {% block content %}
-    <h1>Control</h1>
-    <p>LED Demo</p>
+    <h1 class="page-header">Sterowanie <small>Sterowanie przekaźnikami</small></h1>
 
     <div class="control" ng-controller="controlCtrl">
-        <div class="container row"><!-- poczatek wiersza-->
+        <div class="container"><!-- poczatek wiersza-->
             <div class="third">
                 <fieldset>
                     <legend>relayNode01</legend>

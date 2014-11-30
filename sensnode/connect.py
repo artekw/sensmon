@@ -7,25 +7,26 @@ import common
 import multiprocessing
 import logging
 import simplejson as json
+from config import config
 
 
 class Connect(multiprocessing.Process):
 
     """Odczyt danych z punktow"""
     def __init__(self, taskQ, resultQ, debug=False):
+        self._logger = logging.getLogger(__name__)
         multiprocessing.Process.__init__(self)
-        self.settings_cfg = common.settings_cfg
         self.taskQ = taskQ
         self.resultQ = resultQ
         self.debug = debug
         self.connected = False
 
         try:
-            host = self.settings_cfg['settings']['remserial']['host']
-            port = self.settings_cfg['settings']['remserial']['port']
+            host = config().get("app", ['remserial', 'host'])
+            port = config().get("app", ['remserial', 'port'])
 
             if self.debug:
-                logging.debug('Trying connect to %s:%s' % (host, str(port)))
+                self._logger.debug('Trying connect to %s:%s' % (host, str(port)))
         except:
             print "Can't read from config."
             sys.exit(3)
@@ -36,12 +37,12 @@ class Connect(multiprocessing.Process):
             self.connected = True
 
             if self.debug:
-                logging.debug('Connected to %s:%s' % (host, str(port)))
+                self._logger.debug('Connected to %s:%s' % (host, str(port)))
 
         except socket.error:
             self.connected = False
 
-            logging.warning("Can't connect to %s:%s" % (host, str(port)))
+            self._logger.warning("Can't connect to %s:%s" % (host, str(port)))
             sys.exit(3)
 
     def is_connected(self):
@@ -72,13 +73,13 @@ class Connect(multiprocessing.Process):
                     task = self.parseInput(self.taskQ.get())
                     self.soc.sendall(task)
                     if self.debug:
-                        logging.info("Put task in queue: %s" % task)
+                        self._logger.info("Put task in queue: %s" % task)
                 # odbiór
                 self.resultQ.put(self.serialread())
             if self.debug:
-                logging.info("Put result in queue: %s" % line)
+                self._logger.info("Put result in queue: %s" % line)
         else:
-            print "not connected!"
+            print "Not connected!"
 
     def serialread(self):
         """Czyta z konsoli szeregowej"""

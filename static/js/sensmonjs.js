@@ -1,9 +1,12 @@
 /*
 TODO:
 - port websocket z konfiguracji
+- dostosowac do nowego angularjs
+- aktualizacja poprzez podswietlenie wiersza tabeli (jeelabs)
 */
 
 /*
+Linki:
 http://plnkr.co/edit/FFBhPIRuT0NA2DZhtoAD?p=preview
 http://vxtindia.com/blog/8-tips-for-angular-js-beginners/
 http://andru.co/building-a-simple-single-page-application-using-angularjs
@@ -13,14 +16,6 @@ https://github.com/ankane/chartkick.js
 
 var sensmon = angular.module('sensmon', []);
 
-sensmon.run(function($rootScope, $http) {
-  $rootScope.nodes = function() {
-    $http.get('/static/conf/nodes.json').success(function(result) {
-        return result
-    })
-  }
-});
-
 /* directives */
 // http://doc.owncloud.org/server/5.0/developer_manual/angular.html#using-angularjs-in-your-project
 
@@ -28,11 +23,11 @@ sensmon.directive('tabKafelki', function($compile) {
     return {
         restrict: 'E',
         template:
-            '<table class="boxes">' +
+            '<table class="table table-striped">' +
             '<tbody>' +
-            '<tr ng-repeat="n in nodescfg">' +
-            '<td class="{{boxescolor[$index]}}-head"><h1 class="kafelki">Nazwa</h1><h3 class="kafelki">{{nodescfg|showkeys:$index}}</h3><span class="qrcode" style="display:none" showonhoverparent><img src="static/img/qrcodes/{{nodescfg|showkeys:$index}}.png"></span></td>' +
-            '<td class="{{boxescolor[$parent.$index]}}" ng-repeat="a in n"><h1 class="kafelki">{{a.desc}}</h1><h3 class="kafelki">{{array[$parent.$index][$index]|isdate}} {{a.unit}}</h3></td>' +
+            '<tr ng-repeat="n in nodescfg" class={{nodescfg|showkeys:$index}}-row>' +
+            '<td> <h5>Nazwa</h5><h4>{{nodescfg|showkeys:$index}}</h4></td>' +
+            '<td ng-repeat="a in n.sensors"><h5>{{a.desc}}</h5><h4>{{array[$parent.$index][$index]|isdate}} {{a.unit}}</h4></td>' +
             '</tr>' +
             '</tbody>' +
             '</table>',
@@ -160,15 +155,11 @@ sensmon.filter('isdate', function(dateFilter) {
 
 /* controllers */
 
-function mobileCtrl($scope, $rootScope){
-    $scope.testt = 'from scope :)'
-}
-
 // https://github.com/jcw/housemon/blob/master/client/code/modules/graphs.coffee
 // http://www.humblesoftware.com/flotr2/documentation
 // http://stackoverflow.com/questions/6064987/using-map-reduce-in-couchdb-to-output-fewer-rows/6066433#6066433
 // http://dygraphs.com/#usage
-https://github.com/jcw/housemon/blob/develop/client/code/modules/graphs.coffee
+// https://github.com/jcw/housemon/blob/develop/client/code/modules/graphs.coffee
 // http://jsfiddle.net/KmXTy/14/ - loading
 function graphsCtrl($scope){
     // ustawienia
@@ -355,7 +346,6 @@ function dashCtrl($scope, $http) {
         }
 
         sortedJSONObj = sortObject(jsonObj); // sortowanie po kluczu
-
         $scope.lastupd = sortedJSONObj['timestamp']*1000
         $scope.updfrom = sortedJSONObj['name']
 
@@ -403,22 +393,21 @@ function dashCtrl($scope, $http) {
     ws.onclose = function() {
         console.log('Narazie :)')
     }
-/*
-    $scope.mouseoverKaf = function(n, index) {
-        var out = [];
-        out = Object.keys(n);
-        out = out.sort()
-        index = index || 0;
-        out = out[index];
-        console.log ("Mouse Over: " + out)
-    }
-*/
-    $scope.boxescolor  = ['bluebox', 'orangebox', 'concretebox', 'greenbox', 'amethystbox', 'yellowbox']
 
-    $http.get('/static/conf/nodes.json').success(function(result) {
+    $scope.boxescolor  = ['bluebox', 'orangebox', 'concretebox', 'greenbox', 'amethystbox']
+
+    $http.get('/static/conf/nodemap2.json').success(function(result) {
         console.log('Generuje tabele');
         $scope.nodescfg = result;
         nodes = _.keys(result).sort();
-        $scope.init(); // init values
+        $scope.init(); // ostatnie dane
     });
+}
+
+function HeaderController($scope, $location) 
+{ 
+    $scope.navClass = function (page) {
+        var currentRoute = $location.path().substring(1) || '/';
+        return page === currentRoute ? 'active' : '';
+    };    
 }

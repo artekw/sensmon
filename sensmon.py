@@ -1,20 +1,13 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-"""
-TODO:
-- RDW na telefony, tablety
-- konfiguracja
-"""
-
 debug = False  # tryb developerski - wyświetlanie dodatkowch komunikatów dla biblioteki sensnode
+version = '0.3-dev'
 
 import os
+
 # https://github.com/leporo/tornado-redis
 import tornadoredis
-
-# http://samizdat.cc/corduroy/
-from corduroy import Database, relax
 
 import simplejson as json
 # http://pymotw.com/2/multiprocessing
@@ -26,31 +19,37 @@ import tornado.template
 import tornado.websocket
 import tornado.gen
 import tornado.httpserver
-from tornado.escape import json_encode
 from tornado.options import define, options
 
 # sensnode
 import sensnode.store, sensnode.decoder, sensnode.connect, sensnode.common
+from sensnode.config import config
 
-settings_cfg = sensnode.common.settings_cfg
+
+ci = config(init=True)
 
 # ------------------------webapp settings--------------------#
-# -----------------------------FIXME-------------------------#
 
-define("webapp_port", default=settings_cfg['settings'][
-       'webapp']['port'], help="Run on the given port", type=int)
-define("couchbd_dbname", default='sensmon', help="CouchDB database name")
-define("couchdb_url", default='/', help="CouchDB database url")
+define("webapp_port",default=config().get("app", ['webapp', 'port']),
+		help="Run on the given port", type=int)
+define("leveldb_dbname",default=config().get("app", ['leveldb', 'dbname']),
+		help="LevelDB database name")
+define("leveldb_path",default=config().get("app", ['leveldb', 'path']),
+		help="LevelDB path do database")
 
 # dane dla tych punktów NIE SĄ umieszczane w bazie histori
 filterout = ['powernode']
 
 # ----------------------end webapp settings------------------#
 
+
+
 c = tornadoredis.Client()
 c.connect()
 
-cdb = Database("%s/%s" % (options.couchdb_url, options.couchbd_dbname))
+leveldb = sensnode.store.history(options.leveldb_path, 
+								options.leveldb_dbname,
+								True)
 
 clients = []
 
@@ -79,8 +78,9 @@ class LoginHandler(BaseHandler):
     def post(self):
         username = self.get_argument('name', '')
         password = self.get_argument('pass', '')
+        print username, password
 
-        settings_pass = settings_cfg['settings']['webapp']['password']
+        settings_pass = config().get("app", ['webapp', 'password'])
 
         # logowanie - FIXME
         if not password:
@@ -138,7 +138,7 @@ class DashHandler(BaseHandler):
         c = tornadoredis.Client()
         res = yield tornado.gen.Task(c.hvals, 'initv')
         self.render("dash.tpl",
-                    init=[json.loads(x) for x in res])  # sort_keys=True ?
+                    init=[json.loads(x) for x in res])
 
 
 class ControlHandler(BaseHandler):
@@ -150,7 +150,7 @@ class ControlHandler(BaseHandler):
         c = tornadoredis.Client()
         res = yield tornado.gen.Task(c.hvals, 'status')
         self.render("control.tpl",
-                    init=[json.loads(x) for x in res])  # sort_keys=True ?
+                    init=[json.loads(x) for x in res])
 
 
 class LogsHandler(BaseHandler):
@@ -176,21 +176,32 @@ class RESTHandler(BaseHandler):
 
     @tornado.web.asynchronous
     @tornado.gen.engine
-    def get(self, query):
+    def get(self, node, sensor):
+        if not sensor:
+            sensor = None
         self.set_header("Content-Type", "application/json")
-        cl = tornadoredis.Client()
+        _cl = tornadoredis.Client()
         """Pobieram wszystkie nazwy punktów"""
-        nodes = yield tornado.gen.Task(cl.hkeys, 'initv')
-        if query == 'list':
+        _nodes = yield tornado.gen.Task(_cl.hkeys, 'initv')
+        if node == 'list':
             """Wypisz liste dostępnch nodów"""
-            self.write("%s" % (nodes))
-        elif query not in nodes:
+            self.write("%s" % (_nodes))
+        elif node not in _nodes:
             """Brak punktu - poinformuj"""
             self.write(
-                "Brak danych, wybierz inny punkt. Dostępne: %s" % (nodes))
+                "Brak danych, wybierz inny punkt. Dostępne: %s" % (_nodes))
+        elif node in _nodes and sensor:
+            nodevals = yield tornado.gen.Task(_cl.hget, 'initv', node)
+            _key = sensor
+            if sensor in json.loads(nodevals):
+                _value = json.loads(nodevals)[sensor]
+                self.write({_key:_value})
+            else:
+                self.write("Brak czujnika")
+
         else:
             """Jak istnieje - pobierz"""
-            nodevals = yield tornado.gen.Task(cl.hget, 'initv', query)
+            nodevals = yield tornado.gen.Task(_cl.hget, 'initv', node)
             self.write(nodevals)
         self.finish()
 
@@ -238,6 +249,12 @@ class Websocket(tornado.websocket.WebSocketHandler):
             self.client.disconnect()
 
 
+class MiniDashHandler(BaseHandler):
+
+    def get(self):
+        self.write(".")
+
+
 def main():
     taskQ = multiprocessing.Queue()
     resultQ = multiprocessing.Queue()
@@ -256,11 +273,12 @@ def main():
         (r"/", DashHandler),
         (r"/graphs", GraphsHandler),
         (r"/m", MobileHomeHandler),
+        (r"/minidash", MiniDashHandler),
         (r"/info", InfoHandler),
         (r"/logs", LogsHandler),
         (r"/login", LoginHandler),
         (r"/logout", LogoutHandler),
-        (r"/rest/([a-z]+)", RESTHandler),
+        (r"/rest/(?P<node>[^\/]+)/?(?P<sensor>[^\/]+)?", RESTHandler),
         (r"/websocket", Websocket),
         (r'/favicon.ico', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")})],
         queue=taskQ,
@@ -272,25 +290,30 @@ def main():
 
     httpServer = tornado.httpserver.HTTPServer(application)
     httpServer.listen(options.webapp_port)
-    print "Nasluchuje na porcie:", options.webapp_port
+    print "sensmon %s started at %s port" % (version, options.webapp_port)
 
-    @relax
+    @tornado.gen.engine
     def checkResults():
         if not resultQ.empty():
             result = resultQ.get()
-            if debug:
-                print "BINARY: %s" % (result)
             decoded = decoder.decode(result)
-            # filtr - FIXME
-            decodedj = json.loads(decoded)
             if debug:
-                print "JSON: %s" % (decoded)
-            if decodedj['name'] not in filterout:
-                yield cdb.save({'msg': decoded})
+                print "RAW: %s" % (result)
+                print "JSON %s" % (decoded)
+            # filtr - FIXME
+
+            if decoded['name'] not in filterout:
+                key = ('%s-%d' %  (decoded['name'], decoded['timestamp'])).encode('ascii')
+                value = ('%s' % decoded).encode('ascii')
+                leveldb.put(key, value)
+                if debug:
+                    print "LevelDB: %s %s" % (key, decoded)
             # koniec
+
             redisdb.pubsub(decoded)
             for c in clients:
                 c.write_message(result)
+
 
     mainLoop = tornado.ioloop.IOLoop.instance()
     scheduler = tornado.ioloop.PeriodicCallback(

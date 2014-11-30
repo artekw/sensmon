@@ -1,5 +1,5 @@
 {
-    "artur":
+    "artekroom":
     {
         "press":
         {
@@ -28,11 +28,10 @@
         "timestamp":
         {
             "unit": "",
-            "desc": "Aktualizacja",
-            "scale": 0
+            "desc": "Aktualizacja"
         }
     },
-    "out":
+    "outnode":
     {
         "temp":
         {
@@ -43,24 +42,16 @@
         "light":
         {
             "unit": "",
-            "desc": "Nasłonecznienie",
-            "scale": 0
+            "desc": "Nasłonecznienie"
         },
         "timestamp":
         {
             "unit": "",
-            "desc": "Aktualizacja",
-            "scale": 0
+            "desc": "Aktualizacja"
         }
     },
-    "salon":
+    "testnode":
     {
-        "temp":
-        {
-            "unit": "°C",
-            "desc": "Temperatura",
-            "scale": 1
-        },
         "batvol":
         {
             "unit": "",
@@ -70,29 +61,25 @@
         "timestamp":
         {
             "unit": "",
-            "desc": "Aktualizacja",
-            "scale": 0
+            "desc": "Aktualizacja"
         }
     },
-    "kamil":
+    "pirnode":
     {
-        "temp":
-        {
-            "unit": "°C",
-            "desc": "Temperatura",
-            "scale": 1
-        },
-        "batvol":
+        "motion":
         {
             "unit": "",
-            "desc": "Napięcie",
-            "scale": 3
+            "desc": "Ruch"
+        },
+        "lowbat":
+        {
+            "unit": "",
+            "desc": "Lowbat"
         },
         "timestamp":
         {
             "unit": "",
-            "desc": "Aktualizacja",
-            "scale": 0
+            "desc": "Aktualizacja"
         }
     },
     "powernode":
@@ -106,14 +93,12 @@
         "power":
         {
             "unit": "W",
-            "desc": "Moc bierna",
-            "scale": 0
+            "desc": "Moc bierna"
         },
         "timestamp":
         {
             "unit": "",
-            "desc": "Aktualizacja",
-            "scale": 0
+            "desc": "Aktualizacja"
         }
     }
 }

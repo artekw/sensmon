@@ -2,7 +2,7 @@
 {% block title %}Graphs{% end %}
 
 {% block content %}
-    <h1>Graphs</h1>
+    <h1 class="page-header">Wykresy <small>Wykresy odczytów</small></h1>
     <div id="graph" ng-controller="graphsCtrl">
         <div id="graph-forms">
             <form class="forms columnar">

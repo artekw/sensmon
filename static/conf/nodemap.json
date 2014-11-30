@@ -1,11 +1,10 @@
 {
   "nodemap": {
     "14": "outnodePT",
-    "2": "artur",
-    "15": "out",
+    "2": "artekroom",
+    "15": "outnode",
     "25": "powernode",
     "13": "pirnode",
-    "12": "salon",
-    "19": "kamil"
+    "12": "testnode"
     }
 }

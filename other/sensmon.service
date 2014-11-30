@@ -1,0 +1,15 @@
+[Unit]
+Description=sensmon - home automation webapp
+
+[Service]
+User=artek
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/home/artek/sensmon-dev/
+ExecStart=/usr/bin/screen -d -m -S sensmon /usr/bin/sensmon
+ExecStop=/usr/bin/killall -9 python2
+
+[Install]
+Wants=network.target
+WantedBy=multi-user.target
+

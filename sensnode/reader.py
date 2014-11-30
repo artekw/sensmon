@@ -3,22 +3,22 @@
 
 import socket
 import sys
-
-#import config
+import logging
+import config
 import common
 
 class Reader(object):
     """Odczyt danych z punktow"""
     def __init__(self, debug=False):
-        self.settings_cfg = common.settings_cfg
+        self._logger = logging.getLogger(__name__)
         self.debug = debug
         self.connected = False
 
         try:
-            host = self.settings_cfg['settings']['daemon']['host']
-            port = self.settings_cfg['settings']['daemon']['port']
+            host = config().get("app", ['daemon', 'host'])
+            port = config().get("app", ['daemon', 'port'])
             if self.debug:
-                logging.debug('Trying connect to %s:%s' % (host, str(port)))
+                self._logger.debug('Trying connect to %s:%s' % (host, str(port)))
         except:
             print "Can't read from config."
             sys.exit(3)
@@ -27,11 +27,11 @@ class Reader(object):
             self.soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.soc.connect((host, port))
             if self.debug:
-                logging.debug('Connected to %s:%s' % (host, str(port)))
+                self._logger.debug('Connected to %s:%s' % (host, str(port)))
             self.connected = True
 
         except socket.error:
-            logging.warning("Can't connect to %s:%s" % (host, str(port)))
+            self._logger.warning("Can't connect to %s:%s" % (host, str(port)))
             self.connected = False
             sys.exit(3)
 
