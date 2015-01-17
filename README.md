@@ -9,7 +9,7 @@ sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona 2.7 o
 - python2
 - python2-simplejson
 - redis
-- remserial
+- ser2net
 - tornado (3.0)
 - tornado-redis
 - screen
@@ -18,28 +18,15 @@ sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona 2.7 o
 - qrcode
 - leveldb
 
-## Instalacja
-
-Przykład instalacji na [Raspberry Pi](http://raspberrypi.org) z zainstalowanym [ArchlinuxARM](http://archlinuxarm.org)
-
-    $ pacman -Sy python2 redis tornado tornado-redis python2-simplejson git screen remserial python2-pip
-    $ sudo pip-2.7 install pil qrcode
-    $ git clone https://github.com/artekw/sensmon.git
-
-
 ### Transmisja szeregowa (UART)
 
-Do poprawnej współpracy transmisji szeregowej(UART) w Raspberry Pi z remserial należy wykonać kilka czynności [opisanych](https://github.com/artekw/sensmon/wiki/Konsola-szeregowa) na stronie wiki. Jest to proces wymagany, gdyż Raspberry Pi komunikuje się z modułem po tym protokole.
+Łącznikiem pomiędzy stroną WWW, a modułem jest ser2net. Aplikacja ta przekierowuje dane z UART na TCP. 
 
-Archlinux od pewnego czasu korzysta z systemd, więc trzeba przygotować skrypt do uruchamiania remserial.
+Zalecane ustawienie w pliku /etc/ser2net.conf:
 
-    $ cp sensmon
-    $ sudo cp other/remserial.service /etc/systemd/system/remserial
-
-Pozostaje uruchomić usługę:
-
-    $ sudo systemctl enable remserial
-    $ sudo systemctl start remserial
+    2000:raw:0:/dev/ttyAMA0:9600
+    
+Należy pamiętać, aby ustawić ten sam port w pliku settings.conf aplikacji sensmon (patrz niżej)
 
 ## Aplikacja Web
 ### Konfiguracja
@@ -47,7 +34,6 @@ Pozostaje uruchomić usługę:
 Pliki konfiguracyjne aplikacji znajduja sie w *static/conf*.
 
 - settings.json - ustawienia aplikacji
-- nodes.json - konfiguracja punktów
 - nodemap.json - mapowanie nazwy z id punktu
 - control.json - konfiguracja przekaźników
 
@@ -63,7 +49,6 @@ Przeglądarka - http://IP-RPI:8081
 - dashboard
 - logi z czujników
 - sterowanie przekaźnikami
-- autoryzacja
 
 ### Plany
 
@@ -76,5 +61,33 @@ Przeglądarka - http://IP-RPI:8081
 ![sensmon control](https://dl.dropbox.com/u/677573/Photos/sensmon_c.png)
 ![sensmon logs](https://dl.dropbox.com/u/677573/Photos/sensmon_i.png)
 
+# Uwaga
+Aplikacja jest we wstępnym stanie rozwoju autor nie ponosi odpowiedzialności na niewłaściwe działanie programu.
+
+## Licencja
+
+The MIT License (MIT)
+
+Copyright (c) 2015 Artur Wronowski
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
 
 ![Valid XHTML](http://w3.org/Icons/valid-xhtml10)
+
