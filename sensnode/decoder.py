@@ -27,6 +27,9 @@ class Decoder(object):
 
         if line.startswith("OK"):
             data = line.split(" ")
+        else:
+            print("WARNING: No data!")
+            return
 
         if data:
             # nodeid z otrzymanych danych

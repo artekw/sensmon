@@ -319,9 +319,9 @@ function controlCtrl($scope) {
 function dashCtrl($scope, $http) {
     var ws = new WebSocket("ws://"+document.location.hostname+":8081/websocket");
 
-    var data = []; // dane finalne jak tablica
+    var data = []; // dane finalne jako tablica
     var nodes = []; // lista punktów w konfiguracji
-
+    
     function sortObject(o) {
         var sorted = {},
         key, a = [];
@@ -341,10 +341,11 @@ function dashCtrl($scope, $http) {
     }
 
     $scope.parseObj = function (jsonObj) {
+		jsonObj = JSON.parse(jsonObj);
         if (_.isEmpty(jsonObj)) {
             return // pustym "obiektom" dziekujemy :)
         }
-
+        
         sortedJSONObj = sortObject(jsonObj); // sortowanie po kluczu
         $scope.lastupd = sortedJSONObj['timestamp']*1000
         $scope.updfrom = sortedJSONObj['name']
@@ -374,7 +375,8 @@ function dashCtrl($scope, $http) {
 
     // z redis dane chwilowe
     $scope.init = function() {
-        angular.forEach(initv, function(v) {
+		console.log($scope.initv);
+        angular.forEach($scope.initv, function(v) {
             $scope.parseObj(v)
         })
         console.log('Wczytuję wartosci wstępne z Redis')
@@ -382,7 +384,8 @@ function dashCtrl($scope, $http) {
     }
 
     ws.onmessage = function (evt) {
-        jsonObj = JSON.parse(evt.data);
+        //jsonObj = JSON.parse(evt.data);
+        jsonObj = evt.data;
         $scope.parseObj(jsonObj);
     }
 
@@ -394,14 +397,21 @@ function dashCtrl($scope, $http) {
         console.log('Narazie :)')
     }
 
-    $scope.boxescolor  = ['bluebox', 'orangebox', 'concretebox', 'greenbox', 'amethystbox']
+    $http.get('/static/conf/nodemap.json').success(function(data) {	
+			console.log('Generuje tabele');
+			$scope.nodescfg = data;
+			nodes = _.keys(data).sort();
+			
+		});
+		
+	$http.get('/rest/initv').success(function(data) {
+		console.log('Pobrano ostatnie wartości');
+		$scope.initv = data;
+		$scope.init(); // ostatnie dane
+	});
 
-    $http.get('/static/conf/nodemap2.json').success(function(result) {
-        console.log('Generuje tabele');
-        $scope.nodescfg = result;
-        nodes = _.keys(result).sort();
-        $scope.init(); // ostatnie dane
-    });
+	
+
 }
 
 function HeaderController($scope, $location) 

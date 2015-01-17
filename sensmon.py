@@ -1,8 +1,8 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-debug = False  # tryb developerski - wyświetlanie dodatkowch komunikatów dla biblioteki sensnode
-version = '0.3-dev'
+debug = True  # tryb developerski - wyświetlanie dodatkowch komunikatów dla biblioteki sensnode
+version = '0.4-dev'
 
 import os
 
@@ -19,6 +19,7 @@ import tornado.template
 import tornado.websocket
 import tornado.gen
 import tornado.httpserver
+import tornado.escape
 from tornado.options import define, options
 
 # sensnode
@@ -29,13 +30,14 @@ from sensnode.config import config
 ci = config(init=True)
 
 # ------------------------webapp settings--------------------#
-
 define("webapp_port",default=config().get("app", ['webapp', 'port']),
 		help="Run on the given port", type=int)
+"""
 define("leveldb_dbname",default=config().get("app", ['leveldb', 'dbname']),
 		help="LevelDB database name")
 define("leveldb_path",default=config().get("app", ['leveldb', 'path']),
 		help="LevelDB path do database")
+"""
 
 # dane dla tych punktów NIE SĄ umieszczane w bazie histori
 filterout = ['powernode']
@@ -46,11 +48,11 @@ filterout = ['powernode']
 
 c = tornadoredis.Client()
 c.connect()
-
+"""
 leveldb = sensnode.store.history(options.leveldb_path, 
 								options.leveldb_dbname,
 								True)
-
+"""
 clients = []
 
 # --------------------------webapp code-----------------------#
@@ -137,8 +139,7 @@ class DashHandler(BaseHandler):
     def get(self):
         c = tornadoredis.Client()
         res = yield tornado.gen.Task(c.hvals, 'initv')
-        self.render("dash.tpl",
-                    init=[json.loads(x) for x in res])
+        self.render("dash.tpl")
 
 
 class ControlHandler(BaseHandler):
@@ -186,6 +187,10 @@ class RESTHandler(BaseHandler):
         if node == 'list':
             """Wypisz liste dostępnch nodów"""
             self.write("%s" % (_nodes))
+        elif node == 'initv':
+           _initv = yield tornado.gen.Task(c.hvals, 'initv')
+           data_json = tornado.escape.json_encode(_initv)
+           self.write(data_json)
         elif node not in _nodes:
             """Brak punktu - poinformuj"""
             self.write(
@@ -301,7 +306,7 @@ def main():
                 print "RAW: %s" % (result)
                 print "JSON %s" % (decoded)
             # filtr - FIXME
-
+		"""
             if decoded['name'] not in filterout:
                 key = ('%s-%d' %  (decoded['name'], decoded['timestamp'])).encode('ascii')
                 value = ('%s' % decoded).encode('ascii')
@@ -309,7 +314,7 @@ def main():
                 if debug:
                     print "LevelDB: %s %s" % (key, decoded)
             # koniec
-
+		"""
             redisdb.pubsub(decoded)
             for c in clients:
                 c.write_message(result)

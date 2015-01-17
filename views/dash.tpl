@@ -7,8 +7,3 @@
         <h5>Aktualizacja: {{! lastupd|date:'dd/MM/yyyy, H:mm:ss' }} @ {{! updfrom }}</h5>
     </div>
 {% end %}
-{% block scripts %}
-<script>
-    var initv = {{ init }}
-</script>
-{% end %}

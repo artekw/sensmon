@@ -3,7 +3,7 @@
 
 import redis
 # https://plyvel.readthedocs.org
-import plyvel as leveldb
+# import plyvel as leveldb
 import time
 import simplejson as json
 import hashlib
@@ -48,10 +48,10 @@ class redisdb():
     def getStatus(self, nodename):
         return self.rdb.hget("status", nodename)
 
-
+"""
 class history():
 	
-	"""Dane historyczne"""
+	'''Dane historyczne'''
 	def __init__(self, path, dbname, create_db):
 		self.path = path
 		self.dbname = dbname
@@ -100,5 +100,4 @@ class history():
 		for i in data:
 			line = i
 			print line['temp']
-
-		
+"""

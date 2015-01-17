@@ -42,7 +42,7 @@ class Config(object):
     """Zarzadzanie konfiguracją w json
     Konfigi:
     - programu - settings.json
-    - nodów - nodes.json
+    - nodów - nodemap.json
     """
     def __init__(self,
                 debug=False,
@@ -74,7 +74,7 @@ class Config(object):
         if nodes_configfile is not None:
             self._nodes_configfile = nodes_configfile
         else:
-            self._nodes_configfile = os.path.join(self.settings_dir, "nodemap2.json")
+            self._nodes_configfile = os.path.join(self.settings_dir, "nodemap.json")
 
         self.load()
 
