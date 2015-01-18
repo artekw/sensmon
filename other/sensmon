@@ -1,3 +1,0 @@
-#!/bin/sh
-
-python2 /home/artek/sensmon-dev/sensmon.py
