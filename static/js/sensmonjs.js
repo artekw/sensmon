@@ -142,7 +142,7 @@ sensmon.filter('isdate', function(dateFilter) {
         // FIXME!
         var patern = new RegExp("[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]");
         if (patern.test(date)) {
-            return dateFilter(date * 1000, 'HH:mm:ss')
+            return dateFilter(date * 1000, 'HH:mm:ss / dd/MM/yy')
         }
         else {
             return date
@@ -258,7 +258,7 @@ function graphsCtrl($scope){
     }
 }
 
-// format daty na etykiecie
+// format daty na etykiecie w wykresie
 myFormatter = function(obj) {
     var d, t;
     d = new Date(Math.floor(obj.x));

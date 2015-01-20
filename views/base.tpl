@@ -3,12 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="sensmon">
+    <meta name="description" content="sensmon - home automation">
     <meta name="author" content="Artur Wronowski">
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/css/styl.css">
-    <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">-->
     <link rel="stylesheet" href="http://getbootstrap.com/examples/signin/signin.css">
 
     <title>{% block title %}{% end %} - sensmon v0.4</title>
@@ -21,9 +20,7 @@
     <script src="static/js/flotr2.min.js" type="text/javascript"></script>
     <script src="static/js/underscore-min.js" type="text/javascript"></script>
 	<script src="https://code.angularjs.org/1.3.9/angular.min.js" type="text/javascript"></script>
-
     <script src="https://code.angularjs.org/1.3.9/angular-touch.min.js" type="text/javascript"></script>
-
     <script src="static/js/require.js" type="text/javascript"></script>
     <script src="static/js/sensmonjs.js" type="text/javascript"></script>
 
