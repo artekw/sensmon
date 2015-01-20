@@ -266,7 +266,7 @@ myFormatter = function(obj) {
     return " " + t + ": " + obj.y + " ";
 };
 
-function logsCtrl($scope) {
+sensmon.controller('logsCtrl', function ($scope) {
     var ws = new WebSocket("ws://"+document.location.hostname+":8081/websocket");
     msg = []
     ws.onmessage = function (evt) {
@@ -279,9 +279,9 @@ function logsCtrl($scope) {
             $scope.msg = msg
         });
     }
-}
+});
 
-function controlCtrl($scope) {
+sensmon.controller('controlCtrl', function ($scope) {
     var ws = new WebSocket("ws://"+document.location.hostname+":8081/websocket");
 
     // załadowanie listy przekaźników
@@ -314,9 +314,9 @@ function controlCtrl($scope) {
 
     }
     $scope.init();
-}
+});
 
-function dashCtrl($scope, $http) {
+sensmon.controller('dashCtrl', function ($scope, $http) {
     var ws = new WebSocket("ws://"+document.location.hostname+":8081/websocket");
 
     var data = []; // dane finalne jako tablica
@@ -375,7 +375,6 @@ function dashCtrl($scope, $http) {
 
     // z redis dane chwilowe
     $scope.init = function() {
-		console.log($scope.initv);
         angular.forEach($scope.initv, function(v) {
             $scope.parseObj(v)
         })
@@ -412,12 +411,12 @@ function dashCtrl($scope, $http) {
 
 	
 
-}
+});
 
-function HeaderController($scope, $location) 
+sensmon.controller('HeaderController', function ($scope, $location) 
 { 
     $scope.navClass = function (page) {
         var currentRoute = $location.path().substring(1) || '/';
         return page === currentRoute ? 'active' : '';
     };    
-}
+});

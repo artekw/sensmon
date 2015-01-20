@@ -20,10 +20,10 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="static/js/flotr2.min.js" type="text/javascript"></script>
     <script src="static/js/underscore-min.js" type="text/javascript"></script>
-	<script src="https://code.angularjs.org/1.2.22/angular.min.js" type="text/javascript"></script>
-    <script src="https://code.angularjs.org/1.2.22/angular.min.js.map" type="text/javascript"></script>
-    <script src="https://code.angularjs.org/1.2.22/angular-touch.min.js" type="text/javascript"></script>
-    <script src="https://code.angularjs.org/1.2.22/angular-touch.min.js.map" type="text/javascript"></script>
+	<script src="https://code.angularjs.org/1.3.9/angular.min.js" type="text/javascript"></script>
+
+    <script src="https://code.angularjs.org/1.3.9/angular-touch.min.js" type="text/javascript"></script>
+
     <script src="static/js/require.js" type="text/javascript"></script>
     <script src="static/js/sensmonjs.js" type="text/javascript"></script>
 
