@@ -26,7 +26,7 @@ sensmon.directive('tabKafelki', function($compile) {
             '<table class="table table-striped">' +
             '<tbody>' +
             '<tr ng-repeat="n in nodescfg" class={{nodescfg|showkeys:$index}}-row>' +
-            '<td> <h5>Nazwa</h5><h4>{{nodescfg|showkeys:$index}}</h4></td>' +
+            '<td> <h5>Nazwa</h5><h4>{{n.title}}</h4></td>' +
             '<td ng-repeat="a in n.sensors"><h5>{{a.desc}}</h5><h4>{{array[$parent.$index][$index]|isdate}} {{a.unit}}</h4></td>' +
             '</tr>' +
             '</tbody>' +
@@ -142,7 +142,7 @@ sensmon.filter('isdate', function(dateFilter) {
         // FIXME!
         var patern = new RegExp("[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]");
         if (patern.test(date)) {
-            return dateFilter(date * 1000, 'HH:mm:ss / dd/MM/yy')
+            return dateFilter(date * 1000, 'HH:mm:ss / dd/MM')
         }
         else {
             return date
