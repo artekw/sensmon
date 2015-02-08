@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 __author__ = 'Artur Wronowski'
-__version__ = '0.3-dev'
+__version__ = '0.4-dev'
 __appname__ = 'sensnode-core'
 __license__ = 'MIT'
 __email__ = 'arteqw@gmail.com'
@@ -15,7 +15,7 @@ import subprocess
 import simplejson as json
 import hashlib
 from config import config
-from qrcode import *
+# from qrcode import *
 
 '''
 logging.basicConfig(
@@ -79,12 +79,29 @@ def process():
     return out
 
 
-# only for raspberrypi
-# dodać detekcje maszyny
+def machine_detect():
+	if os.path.exists('/sys/class/hwmon/hwmon0/device/temp1_input'):
+		machine = "Beaglebone Black"
+		temp_path = "/sys/class/hwmon/hwmon0/device/temp1_input"
+		scale = 1000
+	elif os.path.exists('/sys/class/thermal/thermal_zone0/temp'):
+		machine = "Raspberry Pi"
+		temp_path = "/sys/class/thermal/thermal_zone0/temp"
+		scale = 1000
+	else:
+		machine = "Unknown"
+		temp_path = None
+		scale = None
+	return [machine, temp_path, scale]
+	
+
 def cpu_temp():
-    with open('/sys/class/thermal/thermal_zone0/temp', 'r') as f:
-        temp = float(f.readline()) / 1000
-    return round(temp, 1)
+	machine_info = machine_detect()
+	with open(machine_info[1], 'r') as f:
+		if machine_info[1] == None:
+			temp = 0
+		temp = float(f.readline()) / int(machine_info[2])
+	return int(temp)
 
 #
 

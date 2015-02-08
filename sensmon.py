@@ -1,7 +1,7 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-debug = True  # tryb developerski - wyświetlanie dodatkowch komunikatów dla biblioteki sensnode
+debug = False  # tryb developerski - wyświetlanie dodatkowch komunikatów dla biblioteki sensnode
 version = '0.4-dev'
 
 import os
@@ -170,7 +170,10 @@ class InfoHandler(BaseHandler):
                     uptime=sensnode.common.uptime(),
                     cpu_temp=sensnode.common.cpu_temp(),
                     process=sensnode.common.process(),
-                    disksize=sensnode.common.disksize())
+                    disksize=sensnode.common.disksize(),
+                    machine=sensnode.common.machine_detect()[0]
+                    )
+
 
 
 class RESTHandler(BaseHandler):

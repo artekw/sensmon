@@ -5,19 +5,7 @@ import time
 import simplejson as json
 
 def outnode(data, name):
-    """Pomiar:
-    - swiatła,
-    - wlgotności
-    - temperatury
-    - ciśnienia
-    - stanu baterii
-    - napięcia beterii
-
-    >> a = "OK 2 0 0 70 1 242 0 201 38 0 15 17"
-    >> raw = a.split(" ")
-    >> weathernode(raw, "weathernode")
-    '{"name": "weathernode", "temp": "242", "lobat": "0", "humi": "326", "timestamp": 1364553092, "light": "0", "press": "9929", "batvol": "4367"}'
-    """
+    """Outnode"""
 
     a = int(data[2])
     b = int(data[3])
@@ -36,7 +24,6 @@ def outnode(data, name):
 
     template = ({
         'name':name,
-        'humi': str((256 * d) + c),
         'temp': str(((256 * (f&3) + e) ^ 512) - 512),
         'batvol':str((256 * k) + j),
         'timestamp':timestamp

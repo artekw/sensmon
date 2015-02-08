@@ -5,6 +5,7 @@
     <ul>
         <li><b>System:</b> {{ system }}</li>
         <li><b>Architektura:</b> {{ arch }}</li>
+        <li><b>Urządzenie:</b> {{ machine }}</li>
         {% if system == 'Linux' %}
             <li><b>Obciążenie:</b> {{ lavg }}</li>
             <li><b>Czas pracy:</b> {{ uptime }}</li>

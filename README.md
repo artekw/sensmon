@@ -4,10 +4,11 @@ sensmon jest aplikacja webową do monitorowania czujników z projektu sensnode. 
 
 ## Wymagania
 
-sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona 2.7 oraz kilka innych zewnętrznych aplikacji, m.in.
+sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona 2.x oraz kilka innych zewnętrznych aplikacji, m.in.
 
-- python2
-- python2-simplejson
+- python
+- python-simplejson
+- python-pip
 - redis
 - ser2net
 - tornado (3.0)
@@ -17,6 +18,12 @@ sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona 2.7 o
 - pil
 - qrcode
 - leveldb
+
+Debian wymaga jeszcze:
+
+- python-dev
+- build-essential
+
 
 ### Transmisja szeregowa (UART)
 
