@@ -16,13 +16,19 @@ sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona 2.x o
 - screen
 - git
 - pil
-- qrcode
-- leveldb
+- plyvel
 
 Debian wymaga jeszcze:
 
 - python-dev
 - build-essential
+- libleveldb-dev
+
+
+Debian:
+
+  $ sudo apt-get install python redis-server screen git ser2net python-pip python-dev build-essential libleveldb-dev
+  $ sudo pip-2.7 install simplejson tornado tornado-redis plyvel
 
 
 ### Transmisja szeregowa (UART)
