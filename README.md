@@ -15,7 +15,6 @@ sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona 2.x o
 - tornado-redis
 - screen
 - git
-- pil
 - plyvel
 
 Debian wymaga jeszcze:
@@ -55,7 +54,7 @@ Pliki konfiguracyjne aplikacji znajduja sie w *static/conf*.
      $ cd sensmon
      $ screen -d -m python2 sensmon.py
 
-Przeglądarka - http://IP-RPI:8081
+Przeglądarka - http://adres-ip:8081
 
 ### Co działa?
 
@@ -74,7 +73,7 @@ Przeglądarka - http://IP-RPI:8081
 ![sensmon logs](https://dl.dropbox.com/u/677573/Photos/sensmon_i.png)
 
 # Uwaga
-Aplikacja jest we wstępnym stanie rozwoju autor nie ponosi odpowiedzialności na niewłaściwe działanie programu.
+Aplikacja jest we wstępnym stanie rozwoju autor nie ponosi odpowiedzialności na niewłaściwe działanie programu i uszkodzenia powstałe na skutek jego działania.
 
 ## Licencja
 
