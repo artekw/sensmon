@@ -4,13 +4,14 @@
 import os
 import simplejson as json
 import logging
+import logs
 
 # na podstawie
 # https://github.com/foosel/OctoPrint/blob/master/octoprint/settings.py
 
-instance = None
+APPNAME = os.path.abspath(".")
 
-APPNAME = 'sensmon'
+instance = None
 
 def config(init=False,
             debug=False,
@@ -28,13 +29,14 @@ def config(init=False,
 
 # TODO - wykorzystać domyślne ustawienia
 default_app_config = {
-            "webapp": {"host": "0.0.0.0", "port": "8080", "password": "password"},
-            "remserial": {"port": 2000, "host": "localhost"},
+            "webapp": {"host": "localhost", "port": "8080", "password": "sensmon", "reset": 0},
+            "serial": {"port": 2000, "host": "localhost"},
             "redis": {"host": "localhost"},
-            "leveldb": {"dbname" : "sensmon_db", "path": "/tmp/"}
+            "leveldb": {"dbname" : "sensmon_db", "path": "/tmp/", "forgot": ""},
+            "mqtt": {"broker": "localhost", "enable": 0, "port": "1883"}
             }
 
-default_nodes_config ={}
+default_nodes_config = {}
 
 
 class Config(object):
@@ -87,6 +89,7 @@ class Config(object):
         if not self._appconfig:
             self._appconfig = {}
 
+
         # nodes
         if os.path.exists(self._nodes_configfile) and os.path.isfile(self._nodes_configfile):
             with open(self._nodes_configfile, "r") as f:
@@ -94,7 +97,8 @@ class Config(object):
         if not self._nodeconfig:
             self._nodeconfig = {}
 
-        self._logger.info(" config loaded")
+        self._logger.info("Application config loaded %s" % self._app_configfile)
+        self._logger.info("Nodes config loaded %s" % self._nodes_configfile)
 
 
     def save(self):

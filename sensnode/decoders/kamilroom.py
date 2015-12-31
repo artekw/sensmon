@@ -30,6 +30,8 @@ def kamilroom(data, name):
     i = int(data[10])
     j = int(data[11])
     k = int(data[12])
+    l = int(data[13])
+    m = int(data[14])
 
     #nodeid = str(data[1])
     timestamp = int(time.time()) #unix time
@@ -39,6 +41,7 @@ def kamilroom(data, name):
         'temp': str(((256 * (f&3) + e) ^ 512) - 512),
         'press': str((256 * h) + g),
         'batvol':str((256 * k) + j),
+        'air':str((256 * m) + l),
         'timestamp':timestamp
          })
 

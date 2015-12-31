@@ -12,19 +12,15 @@ import logging
 import platform
 import os
 import subprocess
+import socket
+import fcntl
+import struct
 import simplejson as json
 import hashlib
-from config import config
+#from config import config
+import logs
 # from qrcode import *
 
-'''
-logging.basicConfig(
-    format='%(asctime)-25s %(threadName)-15s %(levelname)-10s %(message)s',
-    level=logging.DEBUG,
-    datefmt='%d/%m/%Y %H:%M:%S')
-'''
-
-#
 
 
 def get_version():
@@ -79,6 +75,15 @@ def process():
     return out
 
 
+def get_ip_address(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(
+        s.fileno(),
+        0x8915,  # SIOCGIFADDR
+        struct.pack('256s', ifname[:15])
+    )[20:24])
+
+
 def machine_detect():
 	if os.path.exists('/sys/class/hwmon/hwmon0/device/temp1_input'):
 		machine = "Beaglebone Black"
@@ -90,18 +95,18 @@ def machine_detect():
 		scale = 1000
 	else:
 		machine = "Unknown"
-		temp_path = None
-		scale = None
+		temp_path = ""
+		scale = 0
 	return [machine, temp_path, scale]
 	
 
 def cpu_temp():
-	machine_info = machine_detect()
-	with open(machine_info[1], 'r') as f:
-		if machine_info[1] == None:
-			temp = 0
-		temp = float(f.readline()) / int(machine_info[2])
-	return int(temp)
+    machine_info = machine_detect()
+    if machine_info[0] == "Unknown":
+        return 0
+    with open(machine_info[1], 'r') as f:
+        temp = float(f.readline()) / int(machine_info[2])
+    return int(temp)
 
 #
 

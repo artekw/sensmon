@@ -12,7 +12,7 @@ from config import config
 
 class Connect(multiprocessing.Process):
 
-    """Odczyt danych z punktow"""
+    """Read data from wireless nodes"""
     def __init__(self, taskQ, resultQ, debug=False):
         self._logger = logging.getLogger(__name__)
         multiprocessing.Process.__init__(self)
@@ -22,13 +22,13 @@ class Connect(multiprocessing.Process):
         self.connected = False
 
         try:
-            host = config().get("app", ['remserial', 'host'])
-            port = config().get("app", ['remserial', 'port'])
+            host = config().get("app", ['serial', 'host'])
+            port = config().get("app", ['serial', 'port'])
 
             if self.debug:
                 self._logger.debug('Trying connect to %s:%s' % (host, str(port)))
         except:
-            print "Can't read from config."
+            self._logger.warning("Can't read from config.")
             sys.exit(3)
 
         try:
@@ -79,10 +79,10 @@ class Connect(multiprocessing.Process):
             if self.debug:
                 self._logger.info("Put result in queue: %s" % line)
         else:
-            print "Not connected!"
+            self._logger.warning("Not connected!")
 
     def serialread(self):
-        """Czyta z konsoli szeregowej"""
+        """Read from serial console"""
         line = ''
         while True:
             c = self.soc.recv(1)

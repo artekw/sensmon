@@ -1,13 +1,16 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-debug = False  # tryb developerski - wyświetlanie dodatkowch komunikatów dla biblioteki sensnode
+debug = True  # tryb developerski
 version = '0.4-dev'
 
 import os
+import logging
+from datetime import date
 
 # https://github.com/leporo/tornado-redis
 import tornadoredis
+import paho.mqtt.publish as mqtt
 
 import simplejson as json
 # http://pymotw.com/2/multiprocessing
@@ -20,40 +23,51 @@ import tornado.websocket
 import tornado.gen
 import tornado.httpserver
 import tornado.escape
+import tornado.autoreload
 from tornado.options import define, options
 
-# sensnode
-import sensnode.store, sensnode.decoder, sensnode.connect, sensnode.common
+# sesnode engine
+import sensnode.store
+import sensnode.decoder
+import sensnode.connect
+import sensnode.common
+import sensnode.logs as logs
 from sensnode.config import config
 
-
+# inicjalizacja menadżera konfiguracji
 ci = config(init=True)
 
 # ------------------------webapp settings--------------------#
 define("webapp_port",default=config().get("app", ['webapp', 'port']),
 		help="Run on the given port", type=int)
-"""
+define("webapp_host",default=sensnode.common.get_ip_address(config().get("app", ['webapp', 'iface'])),
+        help="Run on the given hostname")
+# leveldb
+define("leveldb_enable",default=config().get("app", ['leveldb', 'enable']),
+		help="LevelDB enabled")
 define("leveldb_dbname",default=config().get("app", ['leveldb', 'dbname']),
 		help="LevelDB database name")
 define("leveldb_path",default=config().get("app", ['leveldb', 'path']),
 		help="LevelDB path do database")
-"""
-
-# dane dla tych punktów NIE SĄ umieszczane w bazie histori
-filterout = ['powernode']
-
+define("leveldb_forgot",default=config().get("app", ['leveldb', 'forgot']),
+        help="Forgot nodes data")
+# MQTT
+define("mqtt_enable",default=config().get("app", ['mqtt', 'enable']),
+		help="MQTT enabled")
+define("mqtt_broker",default=config().get("app", ['mqtt', 'broker']),
+		help="MQTT broker IP")
+define("mqtt_port",default=config().get("app", ['mqtt', 'port']),
+		help="MQTT broker port")
 # ----------------------end webapp settings------------------#
 
-
-
+# klient Redis
 c = tornadoredis.Client()
 c.connect()
-"""
-leveldb = sensnode.store.history(options.leveldb_path, 
-								options.leveldb_dbname,
-								True)
-"""
 clients = []
+
+history = sensnode.store.history(options.leveldb_path, options.leveldb_dbname)
+
+
 
 # --------------------------webapp code-----------------------#
 
@@ -64,6 +78,7 @@ class BaseHandler(tornado.web.RequestHandler):
         return self.get_secure_cookie("user")
 
 
+# wylogowywanie
 class LogoutHandler(BaseHandler):
 
     def get(self):
@@ -72,6 +87,7 @@ class LogoutHandler(BaseHandler):
         self.redirect(self.get_argument("next", "/"))
 
 
+# logowanie
 class LoginHandler(BaseHandler):
 
     def get(self):
@@ -105,18 +121,20 @@ class LoginHandler(BaseHandler):
             self.render("login.tpl", resp=login_response)
 
 
+# zakładka Home
 class HomeHandler(BaseHandler):
 
     def get(self):
         self.render("home.tpl")
 
-
+# strona mobila
 class MobileHomeHandler(BaseHandler):
 
     def get(self):
         self.render("mbase.tpl")
 
 
+# panel administatora
 class AdminHandler(BaseHandler):
 
     @tornado.web.authenticated
@@ -124,6 +142,7 @@ class AdminHandler(BaseHandler):
         self.render("admin.tpl")
 
 
+# zakładka wykresy
 class GraphsHandler(BaseHandler):
 
     @tornado.web.authenticated
@@ -132,6 +151,7 @@ class GraphsHandler(BaseHandler):
         self.render("graphs.tpl")
 
 
+# zakładka Dashboard
 class DashHandler(BaseHandler):
 
     @tornado.web.asynchronous
@@ -142,6 +162,7 @@ class DashHandler(BaseHandler):
         self.render("dash.tpl")
 
 
+# zakładka Sterowanie
 class ControlHandler(BaseHandler):
 
     @tornado.web.asynchronous
@@ -154,12 +175,14 @@ class ControlHandler(BaseHandler):
                     init=[json.loads(x) for x in res])
 
 
+# zakłatka Logi
 class LogsHandler(BaseHandler):
 
     def get(self):
         self.render("logs.tpl")
 
 
+# zakładka System
 class InfoHandler(BaseHandler):
 
     def get(self):
@@ -175,45 +198,38 @@ class InfoHandler(BaseHandler):
                     )
 
 
+# RESTful
+# history/node/sensor/timerange
+# rest/initv
+class GetHistoryData(BaseHandler):
 
-class RESTHandler(BaseHandler):
+    def get(self, node, sensor, timerange):
+        self.set_header("Content-Type", "application/json")
+        response = []
+
+        try:
+            response = { 'data' :  history.select(node, sensor, timerange) }
+            self.write(response)
+            self.finish()
+        except KeyError, e:
+            self.set_status(404)
+            self.finish("%s nie znaleziono" % e)
+
+
+class GetInitData(BaseHandler):
 
     @tornado.web.asynchronous
     @tornado.gen.engine
-    def get(self, node, sensor):
-        if not sensor:
-            sensor = None
+    def get(self):
         self.set_header("Content-Type", "application/json")
         _cl = tornadoredis.Client()
-        """Pobieram wszystkie nazwy punktów"""
-        _nodes = yield tornado.gen.Task(_cl.hkeys, 'initv')
-        if node == 'list':
-            """Wypisz liste dostępnch nodów"""
-            self.write("%s" % (_nodes))
-        elif node == 'initv':
-           _initv = yield tornado.gen.Task(c.hvals, 'initv')
-           data_json = tornado.escape.json_encode(_initv)
-           self.write(data_json)
-        elif node not in _nodes:
-            """Brak punktu - poinformuj"""
-            self.write(
-                "Brak danych, wybierz inny punkt. Dostępne: %s" % (_nodes))
-        elif node in _nodes and sensor:
-            nodevals = yield tornado.gen.Task(_cl.hget, 'initv', node)
-            _key = sensor
-            if sensor in json.loads(nodevals):
-                _value = json.loads(nodevals)[sensor]
-                self.write({_key:_value})
-            else:
-                self.write("Brak czujnika")
-
-        else:
-            """Jak istnieje - pobierz"""
-            nodevals = yield tornado.gen.Task(_cl.hget, 'initv', node)
-            self.write(nodevals)
+        _initv = yield tornado.gen.Task(_cl.hvals, 'initv')
+        data_json = tornado.escape.json_encode(_initv)
+        self.write(data_json)
         self.finish()
 
 
+# Websocket
 class Websocket(tornado.websocket.WebSocketHandler):
 
     def __init__(self, *args, **kwargs):
@@ -263,6 +279,20 @@ class MiniDashHandler(BaseHandler):
         self.write(".")
 
 
+def publish(jsondata):
+	"""
+	>> data = {'vrms': 220.39, 'timestamp': 1428338500, 'name': 'powernode', 'power': 246}
+	>> publish(data, hostname="localhost" port="1883")
+	/powernode/vrms 220.39
+	/powernode/power 246
+	/powernode/timestamp 1428338500
+	"""
+	name = jsondata['name']
+	for k, v in jsondata.iteritems():
+		mqtt.single("/sensmon/%s/%s" % (name, k), v, hostname=options.mqtt_broker, port=options.mqtt_port)
+
+
+# funkcja główna
 def main():
     taskQ = multiprocessing.Queue()
     resultQ = multiprocessing.Queue()
@@ -274,19 +304,21 @@ def main():
     redisdb = sensnode.store.redisdb(debug=debug)
     decoder = sensnode.decoder.Decoder(debug=debug)
 
+    logger = logging.getLogger()
+
     tornado.options.parse_command_line()
     application = tornado.web.Application([
         (r"/admin", AdminHandler),
         (r"/control", ControlHandler),
         (r"/", DashHandler),
         (r"/graphs", GraphsHandler),
-        (r"/m", MobileHomeHandler),
         (r"/minidash", MiniDashHandler),
         (r"/info", InfoHandler),
         (r"/logs", LogsHandler),
         (r"/login", LoginHandler),
         (r"/logout", LogoutHandler),
-        (r"/rest/(?P<node>[^\/]+)/?(?P<sensor>[^\/]+)?", RESTHandler),
+        (r"/initv", GetInitData),
+        (r"/history/(?P<node>[^\/]+)/?(?P<sensor>[^\/]+)?/?(?P<timerange>[^\/]+)?", GetHistoryData),
         (r"/websocket", Websocket),
         (r'/favicon.ico', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")})],
         queue=taskQ,
@@ -299,33 +331,39 @@ def main():
     httpServer = tornado.httpserver.HTTPServer(application)
     httpServer.listen(options.webapp_port)
     print "sensmon %s started at %s port" % (version, options.webapp_port)
+    print "Point Your browser to http://%s:%s" % (options.webapp_host, options.webapp_port)
 
     @tornado.gen.engine
     def checkResults():
         if not resultQ.empty():
             result = resultQ.get()
             decoded = decoder.decode(result)
-            if debug:
-                print "RAW: %s" % (result)
-                print "JSON %s" % (decoded)
-            # filtr - FIXME
-		"""
-            if decoded['name'] not in filterout:
-                key = ('%s-%d' %  (decoded['name'], decoded['timestamp'])).encode('ascii')
-                value = ('%s' % decoded).encode('ascii')
-                leveldb.put(key, value)
-                if debug:
-                    print "LevelDB: %s %s" % (key, decoded)
-            # koniec
-		"""
+            # print ("RAW: %s" % (result))
+            # print ("JSON %s" % (decoded))
+
+			# leveldb enabled?
+            if options.leveldb_enable:
+				if decoded['name'] not in options.leveldb_forgot:
+					key = ('%s-%d' %  (decoded['name'], decoded['timestamp'])).encode('ascii')
+					value = ('%s' % decoded).encode('ascii')
+					history.put(key, value)
+					if debug:
+						logger.debug("LevelDB: %s %s" % (key, decoded))
+
+			# MQTT enabled?
+            if options.mqtt_enable:
+                publish(decoded)
+
             redisdb.pubsub(decoded)
             for c in clients:
                 c.write_message(result)
 
 
     mainLoop = tornado.ioloop.IOLoop.instance()
+    tornado.autoreload.start(mainLoop)
     scheduler = tornado.ioloop.PeriodicCallback(
         checkResults, 500, io_loop=mainLoop)
+    
     scheduler.start()
     mainLoop.start()
 

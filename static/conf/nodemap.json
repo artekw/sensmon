@@ -2,7 +2,7 @@
     "lab":
     {
         "id": 19,
-        "title": "digi-lab",
+        "title": "Garaż",
         "type": "output",
         "sensors":
         {
@@ -56,6 +56,33 @@
             }
         }
     },
+
+    "car":
+    {   
+        "id": 24,
+        "title": "Samochod",
+        "type": "output", 
+        "sensors":
+        {   
+            "batvol":
+            {
+                "unit": "V",
+                "desc": "Nap. baterii",
+                "scale": 3
+            },
+            "temp":
+            {   
+                "unit": "  C",
+                "desc": "Temperatura",
+                "scale": 1
+            },
+            "timestamp":
+            {
+                "desc": "Aktualizacja"
+            }
+        }
+    },
+
     "artekroom":
     {
         "id": 2,
@@ -69,38 +96,6 @@
                 "desc": "Ciśnienie",
                 "scale": 1
             },
-            "humi":
-            {
-                "unit": "%",
-                "desc": "Wilgotność",
-                "scale": 1
-            },
-            "temp":
-            {
-                "unit": "°C",
-                "desc": "Temperatura",
-                "scale": 1
-            },
-            "batvol":
-            {
-                "unit": "V",
-                "desc": "Nap. baterii",
-                "scale": 3
-            },
-            "timestamp":
-            {
-                "unit": "",
-                "desc": "Aktualizacja"
-            }
-        }
-    },
-    "kamilroom":
-    {
-        "id": 12,
-        "title": "Pokoj Kamila",
-        "type": "output",
-        "sensors":
-        {
             "humi":
             {
                 "unit": "%",
@@ -142,6 +137,37 @@
             {
                 "unit": "W",
                 "desc": "Moc bierna"
+            },
+            "timestamp":
+            {
+                "unit": "",
+                "desc": "Aktualizacja"
+            }
+        }
+    },
+    "testnode": {
+        "id": 15,
+        "title": "Pokoj Kamila",
+        "type": "output",
+        "sensors":
+        {
+            "batvol":
+            {
+                "unit": "V",
+                "desc": "Nap. baterii",
+                "scale": 3
+            },
+            "temp":
+            {
+                "unit": "°C",
+                "desc": "Temperatura",
+                "scale": 1
+            },
+            "air":
+            {
+                "unit": "ppm",
+                "desc": "Powietrze",
+                "scale": 1
             },
             "timestamp":
             {

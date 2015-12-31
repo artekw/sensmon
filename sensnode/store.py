@@ -3,7 +3,9 @@
 
 import redis
 # https://plyvel.readthedocs.org
-# import plyvel as leveldb
+import plyvel as leveldb
+import os
+import ast
 import time
 import simplejson as json
 import hashlib
@@ -23,7 +25,7 @@ Redis DB szablon:
 
 class redisdb():
 
-    """Dane chwilowe"""
+    """Temporary data"""
     def __init__(self, debug=True):
         self.initdb()
         self.debug = debug
@@ -48,17 +50,23 @@ class redisdb():
     def getStatus(self, nodename):
         return self.rdb.hget("status", nodename)
 
-"""
+
 class history():
 	
-	'''Dane historyczne'''
-	def __init__(self, path, dbname, create_db):
+	'''Store data in base for future use ie. graphs'''
+	def __init__(self, path, dbname):
 		self.path = path
 		self.dbname = dbname
-		self.create_db = create_db
+		#self.create_db = create_db
+		
+		dirname = self.path + "/" + self.dbname
+
+		if not os.path.exists(dirname):
+			os.makedirs(dirname)
+			
 		self.lvldb = leveldb.DB("%s/%s" % (self.path, 
 										self.dbname), 
-										create_if_missing=self.create_db)
+										create_if_missing=True)
 		self.dbconnected = True
 		
 	def is_connected(self):
@@ -71,10 +79,10 @@ class history():
 		'''
 		
 		ranges = {'1h' : 3600,
-				'2h' : 7200,
 				'day' : 86400,
+				'2days': 172800,
 				'week' : 604800,
-				'month' : 2419200} 
+				'month' : 2592000} 
 
 		if self.dbconnected:
 			data = []
@@ -95,9 +103,12 @@ class history():
 		if self.dbconnected:
 			self.lvldb.put(key, value)
 			
-	def select(self, sensor, nodename, timerange='1h'):
-		data = self.get(nodename, timerange)
-		for i in data:
-			line = i
-			print line['temp']
-"""
+	def select(self, nodename, sensor, timerange='1h'):
+		data = []
+		if self.dbconnected:
+			values = self.get(nodename, timerange)
+			data = [[ast.literal_eval(v)['timestamp'], ast.literal_eval(v)[sensor]] for v in values]
+			return data
+
+				
+

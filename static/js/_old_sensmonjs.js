@@ -323,7 +323,7 @@ sensmon.controller('dashCtrl', function ($scope, $http) {
 
     var data = []; // dane finalne jako tablica
     var nodes = []; // lista punktów z konfiguracji
-/*
+    
     function sortObject(o) {
         var sorted = {},
         key, a = [];
@@ -341,15 +341,14 @@ sensmon.controller('dashCtrl', function ($scope, $http) {
         }
         return sorted;
     }
-*/
+
     $scope.parseObj = function (jsonObj) {
 		jsonObj = JSON.parse(jsonObj);
         if (_.isEmpty(jsonObj)) {
             return // pustym "obiektom" dziekujemy :)
         }
         
-        sortedJSONObj = jsonObj; // sortowanie po kluczu
-
+        sortedJSONObj = sortObject(jsonObj); // sortowanie po kluczu
         $scope.lastupd = sortedJSONObj['timestamp']*1000
         $scope.updfrom = sortedJSONObj['name']
 
@@ -361,7 +360,6 @@ sensmon.controller('dashCtrl', function ($scope, $http) {
                 }, data);
 
             $scope.array = data;
-            console.log(data);
         });
     }
 
@@ -387,6 +385,7 @@ sensmon.controller('dashCtrl', function ($scope, $http) {
     }
 
     ws.onmessage = function (evt) {
+        //jsonObj = JSON.parse(evt.data);
         jsonObj = evt.data;
         $scope.parseObj(jsonObj);
     }
@@ -402,10 +401,8 @@ sensmon.controller('dashCtrl', function ($scope, $http) {
 
     $http.get('/static/conf/nodemap.json').success(function(data) {	
 		console.log('Generuje tabele');
+		$scope.nodescfg = data;
 		nodes = _.keys(data).sort();
-        $scope.nodescfg = data;
-        console.log(data);
-        console.log(nodes);
 	});
 		
 	$http.get('/initv').success(function(data) {

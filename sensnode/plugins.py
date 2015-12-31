@@ -4,8 +4,9 @@
 import imp
 import os
 import logging
+import logs
 
-APPNAME = 'sensmon'
+APPNAME = os.path.abspath(".")
 
 instance = None
 
@@ -28,8 +29,6 @@ class Plugins(object):
         if basedir is not None:
             self.plugins_dir = basedir
         else:
-            # FIXME = docelowo plugins
-            # FIXME = coś to nie działa ??!!??
             appdir = os.path.expanduser(os.path.join('~', APPNAME.lower()))
             self.plugins_dir = os.path.join(appdir, 'sensnode/decoders')
 
@@ -45,7 +44,7 @@ class Plugins(object):
             if ext == ".py" and plugin_name != "__init__":
                 self.plugins_names.append(plugin_name)
 
-            self._logger.info("%s plugins was found" % len(self.plugins_names))
+        self._logger.info("%s plugins was found" % len(self.plugins_names))
 
 
     def _load_plugins(self):
@@ -57,7 +56,7 @@ class Plugins(object):
             self.plugins[p] = imp.load_module(p, f, filename, description)
 
         self._logger.info("%s plugins was loaded" % len(self.plugins))
-        print ("%s plugins was loaded" % len(self.plugins))
+        self._logger.debug("Loaded plugins %s:" % self.plugins_names)
 
 
     def plugin(self, plugin):

@@ -1,11 +1,12 @@
 {
     "webapp": {
       "host": "0.0.0.0",
-      "port": "8081",
+      "port": 8081,
       "password": "admin",
-      "reset": 0
+      "iface": "eth0",
+      "verbose": 1
     },
-    "remserial": {
+    "serial": {
       "port": 2000,
       "host": "localhost"
     },
@@ -13,7 +14,22 @@
       "host": "localhost"
     },
     "leveldb": {
-      "dbname" : "_db",
-      "path": "."
+      "enable": 1,
+      "dbname": "_db",
+      "path": ".",
+      "forgot": "powernode"
+    },
+    "mqtt": {
+      "enable": 1,
+      "broker": "localhost",
+      "port": 1883
+    },
+    "mail": {
+      "smtp" : "smtp.mail.com",
+      "port": 587,
+      "username": "user@mail.com",
+      "password": "pass",
+      "from": "sensmon",
+      "tls": true
     }
 }

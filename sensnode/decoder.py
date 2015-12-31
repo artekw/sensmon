@@ -14,9 +14,9 @@ from plugins import plugins
 
 class Decoder(object):
 
-    """Dekodowanie pakietów"""
+    """Decoders of binary package"""
     def __init__(self, debug=False):
-        #self._logger = logging.getLogger(__name__)
+        self._logger = logging.getLogger(__name__)
         self.debug = debug
 
         # inicjalizacja systemu pluginów - dekoderów nodów
@@ -42,29 +42,9 @@ class Decoder(object):
                 plug = plugins().plugin(nodemap[nid])
                 # zwracamy zdekodowane dane wg szablonu
                 decoded_data = plug(data, nodemap[nid])
+                # dodanie odczytu
+                """TODO: dodanie odczytu do json - values: """
                 return self.scale(decoded_data)
-
-                '''
-                # TODO
-                # lista modułów z katalogu 'decoders'
-                for f in os.listdir(os.path.abspath("./sensnode/decoders")):
-                    module_name, ext = os.path.splitext(f)
-                    if ext == ".py" and module_name != "__init__":
-                        decoders.append(module_name)
-
-                if decoder in ['artekroom', 'outnode']:
-                    tmp = self.filter(weathernode(data, decoder), fields)
-                    return self.scale(tmp)
-                if decoder == 'powernode':
-                    tmp = self.filter(powernode(data, decoder), fields)
-                    return self.scale(tmp)
-                if decoder == 'pirnode':
-                    tmp = self.filter(pirnode(data, decoder), fields)
-                    return self.scale(tmp)
-                if decoder == 'testnode':
-                    tmp = self.filter(testnode(data, decoder), fields)
-                    return self.scale(tmp)
-                '''
         else:
             return
 
