@@ -21,7 +21,6 @@
     <script src="static/js/flotr2.min.js" type="text/javascript"></script>
     <script src="static/js/underscore-min.js" type="text/javascript"></script>
     <script src="https://code.angularjs.org/1.4.8/angular.min.js" type="text/javascript"></script>
-    <script src="https://code.angularjs.org/1.4.8/angular-animate.min.js" type="text/javascript"></script>
     <script src="static/js/require.js" type="text/javascript"></script>
     <script src="static/js/sensmonjs.js" type="text/javascript"></script>
 

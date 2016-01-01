@@ -8,36 +8,12 @@ table td h5 {
 	color: grey;
 }
 
-.custom-enter,
-.custom-move {
-  transition: 1s;
-  position:relative;
-  background-color: #915608;
+[animate-on-change] {
+  transition: all 1s;
+  -webkit-transition: all 1s;
 }
-
-.custom-enter {
-  left:-10px;
-  opacity:0;
-}
-.custom-enter.custom-enter-active {
-  left:0;
-  opacity:1;
-}
-
-.custom-leave {
-  left:0;
-  opacity:1;
-}
-.custom-leave.custom-leave-active {
-  left:-10px;
-  opacity:0;
-}
-
-.custom-move {
-  opacity:0.5;
-  background-color: #915608;
-}
-.custom-move.custom-move-active {
-  opacity:1;
-  background-color: #915608;
+[animate-on-change].changed {
+    background-color: #FFEF00;
+    transition: none;
+    -webkit-transition: none;
 }

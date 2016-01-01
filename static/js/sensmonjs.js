@@ -13,10 +13,23 @@ https://github.com/ankane/chartkick.js
 */
 
 
-var sensmon = angular.module('sensmon', ["ngAnimate"]);
+var sensmon = angular.module('sensmon', []);
 
 /* directives */
 // http://doc.owncloud.org/server/5.0/developer_manual/angular.html#using-angularjs-in-your-project
+
+sensmon.directive('animateOnChange', function($timeout) {
+  return function(scope, element, attr) {
+    scope.$watch(attr.animateOnChange, function(nv,ov) {
+      if (nv!=ov) {
+        element.addClass('changed');
+        $timeout(function() {
+          element.removeClass('changed');
+        }, 1000); // Could be enhanced to take duration as a parameter
+      }
+    });
+  };
+});
 
 
 sensmon.directive('showonhoverparent',
