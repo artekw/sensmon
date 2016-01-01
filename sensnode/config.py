@@ -176,3 +176,12 @@ class Config(object):
         ids = [self.get("nodes", [k,'id']) for k in self.get("nodes", ['fkeys']) if self.get("nodes", [k,'type']) in type]
         names = [k for k in self.get("nodes", ['fkeys']) if self.get("nodes", [k,'id' ]) in ids]
         return dict(zip(ids, names))
+
+
+    def getConfig(self, type):
+        if type == "app":
+            return self._appconfig
+        elif type == "nodes":
+            return self._nodeconfig
+        else:
+            return None

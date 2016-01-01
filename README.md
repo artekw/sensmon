@@ -27,7 +27,7 @@ Debian wymaga jeszcze:
 Debian:
 
   $ sudo apt-get install python redis-server screen git ser2net python-pip python-dev build-essential libleveldb-dev
-  $ sudo pip-2.7 install simplejson tornado tornado-redis plyvel
+  $ sudo pip-2.7 install simplejson tornado tornado-redis plyvel jsontree
 
 
 ### Transmisja szeregowa (UART)

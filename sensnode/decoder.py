@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-import imp
+import jsontree 
 import simplejson as json
 from collections import OrderedDict
 
@@ -14,15 +14,18 @@ from plugins import plugins
 
 class Decoder(object):
 
-    """Decoders of binary package"""
+    """Decoders of binary packets from wireless node"""
     def __init__(self, debug=False):
         self._logger = logging.getLogger(__name__)
         self.debug = debug
+        self.nodescfg = jsontree.clone(config().getConfig('nodes'))
 
         # inicjalizacja systemu pluginów - dekoderów nodów
         p = plugins(init=True)
 
+
     def decode(self, line):
+        """Decoder impelentation"""
         decoders = []
 
         if line.startswith("OK"):
@@ -42,12 +45,23 @@ class Decoder(object):
                 plug = plugins().plugin(nodemap[nid])
                 # zwracamy zdekodowane dane wg szablonu
                 decoded_data = plug(data, nodemap[nid])
-                # dodanie odczytu
-                """TODO: dodanie odczytu do json - values: """
+
                 return self.scale(decoded_data)
         else:
             return
 
+    def update(self, _new_value):
+        """Add to node config "raw" value with data from wireless nodes"""
+
+        new_value = jsontree.clone(_new_value)
+
+        if self.nodescfg.has_key(new_value.name):
+            for k,v in self.nodescfg[new_value.name].sensors.iteritems():
+                self.nodescfg[new_value.name].sensors[k].raw = new_value[k]
+        else:
+            return
+
+        return jsontree.dumps(self.nodescfg)
 
     def scale(self, data):
         """TODO: napisać to lepiej"""

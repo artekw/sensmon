@@ -158,7 +158,7 @@ class DashHandler(BaseHandler):
     @tornado.gen.engine
     def get(self):
         c = tornadoredis.Client()
-        res = yield tornado.gen.Task(c.hvals, 'initv')
+        res = yield tornado.gen.Task(c.get, 'initv')
         self.render("dash.tpl")
 
 
@@ -223,7 +223,7 @@ class GetInitData(BaseHandler):
     def get(self):
         self.set_header("Content-Type", "application/json")
         _cl = tornadoredis.Client()
-        _initv = yield tornado.gen.Task(_cl.hvals, 'initv')
+        _initv = yield tornado.gen.Task(_cl.get, 'initv')
         data_json = tornado.escape.json_encode(_initv)
         self.write(data_json)
         self.finish()
@@ -338,8 +338,10 @@ def main():
         if not resultQ.empty():
             result = resultQ.get()
             decoded = decoder.decode(result)
+            update = decoder.update(decoded)
             # print ("RAW: %s" % (result))
             # print ("JSON %s" % (decoded))
+            # print ("UPD %s" % (update))
 
 			# leveldb enabled?
             if options.leveldb_enable:
@@ -354,7 +356,8 @@ def main():
             if options.mqtt_enable:
                 publish(decoded)
 
-            redisdb.pubsub(decoded)
+            # dane tymczasowe - initv
+            redisdb.pubsub(update)
             for c in clients:
                 c.write_message(result)
 

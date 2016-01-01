@@ -36,8 +36,8 @@ class redisdb():
     def pubsub(self, data, channel='nodes'):
         if data:
             data_str = json.dumps(data)
-            self.rdb.hset("initv", data['name'], data_str)  # hash, field, data
-            self.rdb.publish(channel, data_str)
+            self.rdb.set("initv", data)  # name, value
+            self.rdb.publish(channel, data)  # channel, value
             if self.debug:
                 logging.debug('Data publish on channel')
                 logging.debug('Submit init values')

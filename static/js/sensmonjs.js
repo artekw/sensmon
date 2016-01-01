@@ -1,7 +1,6 @@
 /*
 TODO:
 - port websocket z konfiguracji
-- dostosowac do nowego angularjs
 - aktualizacja poprzez podswietlenie wiersza tabeli (jeelabs)
 */
 
@@ -18,25 +17,6 @@ var sensmon = angular.module('sensmon', ["ngAnimate"]);
 
 /* directives */
 // http://doc.owncloud.org/server/5.0/developer_manual/angular.html#using-angularjs-in-your-project
-
-
-sensmon.directive('dynamicTable', function($compile) {
-    return {
-        restrict: 'E',
-        template:
-            '<table class="table table-striped">' +
-            '<tbody>' +
-            '<tr ng-repeat="n in nodescfg" class={{nodescfg|showkeys:$index}}-row>' +
-            '<td><h5>Nazwa</h5><h4>{{n.title}}</h4></td>' +
-            '<td ng-repeat="a in n.sensors"><h5>{{a.desc}}</h5><h4>{{array[$parent.$index][$index]|isdate}} {{a.unit}}</h4></td>' +
-            '</tr>' +
-            '</tbody>' +
-            '</table>',
-
-        replace: true,
-        //link: function (scope, element, attrs) {}
-    };
-});
 
 
 sensmon.directive('showonhoverparent',
@@ -123,24 +103,13 @@ sensmon.directive("chart", function() {
 
 /* filters */
 
-sensmon.filter('showkeys', function() {
-    return function(input, index) {
-        var out = [];
-        out = Object.keys(input);
-        out = out.sort()
-        index = index || 0;
-        out = out[index];
-        return out;
-    }
-});
-
 sensmon.filter('onlysensors', function() {
     return function(input) {
         return _.omit(input, 'name', 'timestamp');
     }
 });
 
-sensmon.filter('isdate', function(dateFilter) {
+sensmon.filter('parsedate', function(dateFilter) {
     return function(date) {
         // FIXME!
         var patern = new RegExp("[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]");
@@ -318,54 +287,25 @@ sensmon.controller('controlCtrl', function ($scope) {
 });
 
 
+/* 
+dashboard page - data in table 
+$scope.array - array with data
+*/
 sensmon.controller('dashCtrl', function ($scope, $http) {
     var ws = new WebSocket("ws://"+document.location.hostname+":8081/websocket");
 
-    var data = []; // dane finalne jako tablica
-    var nodes = []; // lista punktów z konfiguracji
-/*
-    function sortObject(o) {
-        var sorted = {},
-        key, a = [];
-
-        for (key in o) {
-            if (o.hasOwnProperty(key)) {
-                a.push(key);
-            }
-        }
-
-        a.sort();
-
-        for (key = 0; key < a.length; key++) {
-            sorted[a[key]] = o[a[key]];
-        }
-        return sorted;
-    }
-*/
-    $scope.parseObj = function (jsonObj) {
-		jsonObj = JSON.parse(jsonObj);
-        if (_.isEmpty(jsonObj)) {
+    function parseJSON(jsonObj) {
+		jsonParsed = JSON.parse(jsonObj);
+        if (_.isEmpty(jsonParsed)) {
             return // pustym "obiektom" dziekujemy :)
         }
-        
-        sortedJSONObj = jsonObj; // sortowanie po kluczu
-
-        $scope.lastupd = sortedJSONObj['timestamp']*1000
-        $scope.updfrom = sortedJSONObj['name']
 
         $scope.safeApply(function() {
-            angular.forEach(nodes, function(v) {
-                if (v = sortedJSONObj.name) {
-                    this[_.indexOf(nodes, v)] = _.values(_.omit(sortedJSONObj, 'name'));
-                }
-                }, data);
-
-            $scope.array = data;
-            console.log(data);
+            $scope.array = jsonParsed;
         });
     }
 
-    // safeApply: https://coderwall.com/p/ngisma
+
     $scope.safeApply = function(fn) {
         var phase = this.$root.$$phase;
         if(phase == '$apply' || phase == '$digest') {
@@ -377,18 +317,10 @@ sensmon.controller('dashCtrl', function ($scope, $http) {
         }
     };
 
-    // z redis dane chwilowe
-    $scope.init = function() {
-        angular.forEach($scope.initv, function(v) {
-            $scope.parseObj(v)
-        })
-        console.log('Wczytuję wartosci wstępne z Redis')
-
-    }
-
     ws.onmessage = function (evt) {
         jsonObj = evt.data;
-        $scope.parseObj(jsonObj);
+        parseJSON(jsonObj);
+        console.log('Otrzymano nowe dane')
     }
 
     ws.onopen = function() {
@@ -399,19 +331,9 @@ sensmon.controller('dashCtrl', function ($scope, $http) {
         console.log('Narazie :)')
     }
 
-
-    $http.get('/static/conf/nodemap.json').success(function(data) {	
-		console.log('Generuje tabele');
-		nodes = _.keys(data).sort();
-        $scope.nodescfg = data;
-        console.log(data);
-        console.log(nodes);
-	});
-		
 	$http.get('/initv').success(function(data) {
 		console.log('Pobrano ostatnie wartości');
-		$scope.initv = data;
-		$scope.init(); // ostatnie dane
+        parseJSON(data);
 	});
 
 });
