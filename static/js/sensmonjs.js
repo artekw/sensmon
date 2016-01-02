@@ -1,7 +1,6 @@
 /*
 TODO:
 - port websocket z konfiguracji
-- aktualizacja poprzez podswietlenie wiersza tabeli (jeelabs)
 */
 
 /*
@@ -115,12 +114,6 @@ sensmon.directive("chart", function() {
 
 
 /* filters */
-
-sensmon.filter('onlysensors', function() {
-    return function(input) {
-        return _.omit(input, 'name', 'timestamp');
-    }
-});
 
 sensmon.filter('parsedate', function(dateFilter) {
     return function(date) {
@@ -306,6 +299,11 @@ $scope.array - array with data
 */
 sensmon.controller('dashCtrl', function ($scope, $http) {
     var ws = new WebSocket("ws://"+document.location.hostname+":8081/websocket");
+
+
+    $scope.scoreClass = function(scores) {
+        return scores.Indicator == 'Negative' ? 'warning': 'ok';
+    }
 
     function parseJSON(jsonObj) {
 		jsonParsed = JSON.parse(jsonObj);

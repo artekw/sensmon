@@ -1,4 +1,3 @@
-
 table td h4 {
 	font-weight: bold;
 	color: navy;
@@ -12,8 +11,9 @@ table td h5 {
   transition: all 1s;
   -webkit-transition: all 1s;
 }
+
 [animate-on-change].changed {
-    background-color: #FFEF00;
+    color: #FFEF00;
     transition: none;
     -webkit-transition: none;
 }
