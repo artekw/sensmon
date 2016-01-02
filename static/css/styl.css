@@ -1,6 +1,7 @@
 table td h4 {
 	font-weight: bold;
 	color: navy;
+  font-size: 1.5em
 }
 
 table td h5 {
@@ -16,4 +17,11 @@ table td h5 {
     color: #FFEF00;
     transition: none;
     -webkit-transition: none;
+}
+
+.inverse {
+  background: rgb(51, 51, 51);
+}
+.inverse h4, h5 {
+  color: white;
 }

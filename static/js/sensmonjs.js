@@ -120,7 +120,7 @@ sensmon.filter('parsedate', function(dateFilter) {
         // FIXME!
         var patern = new RegExp("[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]");
         if (patern.test(date)) {
-            return dateFilter(date * 1000, 'HH:mm:ss / dd/MM')
+            return dateFilter(date * 1000, 'HH:mm:ss | dd/MM')
         }
         else {
             return date
@@ -128,6 +128,12 @@ sensmon.filter('parsedate', function(dateFilter) {
     }
 });
 
+
+sensmon.filter('nodate', function() {
+    return function(input) {
+        return _.omit(input, 'timestamp');
+            }
+});
 
 
 
@@ -299,11 +305,6 @@ $scope.array - array with data
 */
 sensmon.controller('dashCtrl', function ($scope, $http) {
     var ws = new WebSocket("ws://"+document.location.hostname+":8081/websocket");
-
-
-    $scope.scoreClass = function(scores) {
-        return scores.Indicator == 'Negative' ? 'warning': 'ok';
-    }
 
     function parseJSON(jsonObj) {
 		jsonParsed = JSON.parse(jsonObj);
