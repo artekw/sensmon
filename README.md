@@ -1,6 +1,6 @@
-# sensmon - home automiation
+# sensmon - home automation
 
-sensmon jest aplikacja przeglądarkową do monitorowania czujników z projektu sensnode. Aplikacja działa w oparciu o techologię [Websocket](http://pl.wikipedia.org/wiki/WebSocket). Została napisana w frameworku [Tornado](http://www.tornadoweb.org/en/stable/) oraz [AngularJS](https://angularjs.org/). 
+sensmon jest aplikacją przeglądarkową do monitorowania czujników z projektu sensnode. Aplikacja działa w oparciu o techologię [Websocket](http://pl.wikipedia.org/wiki/WebSocket). Została napisana w frameworku [Tornado](http://www.tornadoweb.org/en/stable/) oraz [AngularJS](https://angularjs.org/). 
 
 ## Wymagania
 
@@ -17,6 +17,7 @@ sensmon działa tylko na systemie Linuks. Do uruchomienia potrzebny jest Python 
 - git
 - plyvel
 - jsontree
+- pacho-mqtt
 
 Debian potrzebuje jeszcze:
 
@@ -27,7 +28,7 @@ Debian potrzebuje jeszcze:
 Instalacja w dystrybucji Debiana/Ubuntu:
 
     $ sudo apt-get install python redis-server screen git ser2net python-pip python-dev build-essential libleveldb-dev
-    $ sudo pip-2.7 install simplejson tornado tornado-redis plyvel jsontree
+    $ sudo pip-2.7 install simplejson tornado tornado-redis plyvel jsontree pacho-mqtt
 
 
 ### Ustawienie komunikacji między sensbase a aplikacją
@@ -51,10 +52,11 @@ Pliki konfiguracyjne aplikacji znajdują się w *static/conf*.
 
 ### Uruchomienie
 
+     $ git clone https://github.com/artekw/sensmon
      $ cd sensmon
      $ screen -d -m python2 sensmon.py
 
-Przeglądarka - http://adres-ip:8081
+Wejdz przez przeglądarkę na adres http://adres-ip-hosta:8081
 
 ### Co działa?
 

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="http://getbootstrap.com/examples/signin/signin.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
-    <title>{% block title %}{% end %} - sensmon v0.4</title>
+    <title>{% block title %}{% end %} - sensmon</title>
     <link href='http://fonts.googleapis.com/css?family=Dosis:400,500,600,700|Lato:400,700,900,400italic|Monda:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <!--[if lte IE 8]>
       <script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.2.4/json3.min.js"></script>
@@ -36,7 +36,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand">sensmon v0.4</a>
+					<a class="navbar-brand">sensmon</a>
 				</div>
 				<div class="navbar-collapse collapse" ng-controller="HeaderController">
 					<ul class="nav navbar-nav">
@@ -65,5 +65,12 @@
 	</div>
     {% block scripts %}
     {% end %}
+     <div class="footer">
+   		  <div class="container text-center">
+    		<p class="text-muted credit">
+    			<a title="Source on Github" href="https://github.com/artekw/sensmon" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+    		</p>
+  		</div>
+ 	</div>
 </body>
 </html>

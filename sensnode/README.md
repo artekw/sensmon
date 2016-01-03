@@ -1,5 +1,5 @@
-# sensnode
+#sensnode
 
 ##Dekodery
 
-##Jak utworzyć wasny dekoder(plugin)
+##Jak napisać własny dekoder(plugin)

@@ -1,5 +1,5 @@
 {% extends "base.tpl" %}
-{% block title %}Info{% end %}
+{% block title %}System{% end %}
 {% block content %}
     <h1 class="page-header">System <small>Informacje o systemie</small></h1>
     <ul>
