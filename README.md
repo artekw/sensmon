@@ -1,10 +1,10 @@
-# sensmon
+# sensmon - home automiation
 
-sensmon jest aplikacja webową do monitorowania czujników z projektu sensnode. Aplikacja działa w oparciu o [Websocket](http://pl.wikipedia.org/wiki/WebSocket).
+sensmon jest aplikacja przeglądarkową do monitorowania czujników z projektu sensnode. Aplikacja działa w oparciu o techologię [Websocket](http://pl.wikipedia.org/wiki/WebSocket). Została napisana w frameworku [Tornado](http://www.tornadoweb.org/en/stable/) oraz [AngularJS](https://angularjs.org/). 
 
 ## Wymagania
 
-sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona 2.x oraz kilka innych zewnętrznych aplikacji, m.in.
+sensmon działa tylko na systemie Linuks. Do uruchomienia potrzebny jest Python 2.x oraz kilka innych zewnętrznych aplikacji/modułów m.in.
 
 - python
 - python-simplejson
@@ -16,23 +16,23 @@ sensmon działa tylko na systemie Linuks. Do działania potrzebuje Pythona 2.x o
 - screen
 - git
 - plyvel
+- jsontree
 
-Debian wymaga jeszcze:
+Debian potrzebuje jeszcze:
 
 - python-dev
 - build-essential
 - libleveldb-dev
 
+Instalacja w dystrybucji Debiana/Ubuntu:
 
-Debian:
-
-  $ sudo apt-get install python redis-server screen git ser2net python-pip python-dev build-essential libleveldb-dev
-  $ sudo pip-2.7 install simplejson tornado tornado-redis plyvel jsontree
+    $ sudo apt-get install python redis-server screen git ser2net python-pip python-dev build-essential libleveldb-dev
+    $ sudo pip-2.7 install simplejson tornado tornado-redis plyvel jsontree
 
 
-### Transmisja szeregowa (UART)
+### Ustawienie komunikacji między sensbase a aplikacją
 
-Łącznikiem pomiędzy stroną WWW, a modułem jest ser2net. Aplikacja ta przekierowuje dane z UART na TCP. 
+Łącznikiem pomiędzy stroną WWW, a sesbase jest ser2net. Aplikacja ta przekierowuje dane z sensbase do przeglądarki. 
 
 Zalecane ustawienie w pliku /etc/ser2net.conf:
 
@@ -43,10 +43,10 @@ Należy pamiętać, aby ustawić ten sam port w pliku settings.conf aplikacji se
 ## Aplikacja Web
 ### Konfiguracja
 
-Pliki konfiguracyjne aplikacji znajduja sie w *static/conf*.
+Pliki konfiguracyjne aplikacji znajdują się w *static/conf*.
 
-- settings.json - ustawienia aplikacji
-- nodemap.json - mapowanie nazwy z id punktu
+- settings.json - ustawienia aplikacji (tu ustaw poprawny port dla ser2net)
+- nodemap.json - mapa nodów oraz powiązanych z nim czujników
 - control.json - konfiguracja przekaźników
 
 ### Uruchomienie
@@ -59,18 +59,16 @@ Przeglądarka - http://adres-ip:8081
 ### Co działa?
 
 - dashboard
-- logi z czujników
-- sterowanie przekaźnikami
 
 ### Plany
 
 - wykresy
 - panel administatora
+- sterowanie przekaźnikami
 
 ## Zrzuty ekranu
 
-![sensmon dash](https://dl.dropbox.com/u/677573/Photos/sensmon.png)
-![sensmon logs](https://dl.dropbox.com/u/677573/Photos/sensmon_i.png)
+![sensmon dashboard](https://dl.dropboxusercontent.com/u/677573/Photos/sensmon/dashboard.png)
 
 # Uwaga
 Aplikacja jest we wstępnym stanie rozwoju autor nie ponosi odpowiedzialności na niewłaściwe działanie programu i uszkodzenia powstałe na skutek jego działania.
@@ -79,7 +77,7 @@ Aplikacja jest we wstępnym stanie rozwoju autor nie ponosi odpowiedzialności n
 
 The MIT License (MIT)
 
-Copyright (c) 2015 Artur Wronowski
+Copyright (c) 2015-2016 Artur Wronowski
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

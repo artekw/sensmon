@@ -144,36 +144,5 @@
                 "desc": "Aktualizacja"
             }
         }
-    },
-    "testnode": {
-        "id": 15,
-        "title": "Pokoj Kamila",
-        "type": "output",
-        "sensors":
-        {
-            "batvol":
-            {
-                "unit": "V",
-                "desc": "Nap. baterii",
-                "scale": 3
-            },
-            "temp":
-            {
-                "unit": "°C",
-                "desc": "Temperatura",
-                "scale": 1
-            },
-            "air":
-            {
-                "unit": "ppm",
-                "desc": "Powietrze",
-                "scale": 1
-            },
-            "timestamp":
-            {
-                "unit": "",
-                "desc": "Aktualizacja"
-            }
-        }
     }
 }
