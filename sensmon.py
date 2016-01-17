@@ -31,6 +31,7 @@ import sensnode.store
 import sensnode.decoder
 import sensnode.connect
 import sensnode.common
+import sensnode.graphs
 import sensnode.logs as logs
 from sensnode.config import config
 
@@ -66,7 +67,7 @@ c.connect()
 clients = []
 
 history = sensnode.store.history(options.leveldb_path, options.leveldb_dbname)
-
+graphs = sensnode.graphs.Graphs(history, debug=debug)
 
 
 # --------------------------webapp code-----------------------#
@@ -145,11 +146,19 @@ class AdminHandler(BaseHandler):
 # zakładka wykresy
 class GraphsHandler(BaseHandler):
 
+    def get(self, node, sensor, timerange):
+        content = ()
+        self.render("graphs.tpl",
+                    content=graphs.generate_graph(node, sensor, timerange))
+"""
+class GraphsHandler(BaseHandler):
+
     @tornado.web.authenticated
     def get(self):
         self.set_header('Access-Control-Allow-Origin', '*')
         self.render("graphs.tpl")
 
+"""
 
 # zakładka Dashboard
 class DashHandler(BaseHandler):
@@ -236,6 +245,7 @@ class Websocket(tornado.websocket.WebSocketHandler):
         super(Websocket, self).__init__(*args, **kwargs)
         self.listen()
 
+    @tornado.web.asynchronous
     @tornado.gen.engine
     def listen(self):
         self.client = tornadoredis.Client()
@@ -311,7 +321,7 @@ def main():
         (r"/admin", AdminHandler),
         (r"/control", ControlHandler),
         (r"/", DashHandler),
-        (r"/graphs", GraphsHandler),
+        (r"/graphs/(?P<node>[^\/]+)/?(?P<sensor>[^\/]+)?/?(?P<timerange>[^\/]+)?", GraphsHandler),
         (r"/minidash", MiniDashHandler),
         (r"/info", InfoHandler),
         (r"/logs", LogsHandler),

@@ -7,23 +7,25 @@
     <meta name="author" content="Artur Wronowski">
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="static/css/styl.css">
+    <link rel="stylesheet" href="/static/css/styl.css">
     <link rel="stylesheet" href="http://getbootstrap.com/examples/signin/signin.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.css" type="text/css">
 
     <title>{% block title %}{% end %} - sensmon</title>
     <link href='http://fonts.googleapis.com/css?family=Dosis:400,500,600,700|Lato:400,700,900,400italic|Monda:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <!--[if lte IE 8]>
       <script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.2.4/json3.min.js"></script>
     <![endif]-->
-    <script src="static/js/jquery.min.js" type="text/javascript"></script>
+    <script src="/static/js/jquery.min.js" type="text/javascript"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="static/js/flotr2.min.js" type="text/javascript"></script>
-    <script src="static/js/underscore-min.js" type="text/javascript"></script>
+    <!--<script src="static/js/flotr2.min.js" type="text/javascript"></script>-->
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.js"></script>
+    <script src="/static/js/underscore-min.js" type="text/javascript"></script>
     <script src="https://code.angularjs.org/1.4.8/angular.min.js" type="text/javascript"></script>
     <script src="https://code.angularjs.org/1.4.8/angular-animate.min.js" type="text/javascript"></script>
-    <script src="static/js/require.js" type="text/javascript"></script>
-    <script src="static/js/sensmonjs.js" type="text/javascript"></script>
+    <script src="/static/js/require.js" type="text/javascript"></script>
+    <script src="/static/js/sensmonjs.js" type="text/javascript"></script>
 
 </head>
 <body>
@@ -57,7 +59,7 @@
 				</div>
 			</div>
         </div>
-        
+
         <div id="content">
 			<div class="container-fluid">
 				{% block content %}{% end %}

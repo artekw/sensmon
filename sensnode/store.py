@@ -8,8 +8,6 @@ import os
 import ast
 import time
 import simplejson as json
-import hashlib
-import random
 
 import common
 import logging
@@ -73,10 +71,6 @@ class history():
         return self.dbconnected
 
     def get(self, nodename, timerange):
-        '''
-        pewnie to trafi do pliku json, aby
-        zakresy były wspolne dla Js i Pythona
-        '''
 
         ranges = {'1h' : 3600,
                 'day' : 86400,
