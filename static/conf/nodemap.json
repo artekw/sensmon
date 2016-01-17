@@ -56,12 +56,36 @@
             }
         }
     },
-
-    "car":
+    "salon":   
     {   
-        "id": 24,
-        "title": "Samochod",
-        "type": "output", 
+        "id": 4,
+        "title": "Salon",
+        "type": "output",
+        "sensors":
+        {
+            "batvol":
+            {
+                "unit": "V",
+                "desc": "Nap. baterii",
+                "scale": 3
+            },
+            "temp":
+            { 
+                "unit": "  C",
+                "desc": "Temperatura",
+                "scale": 1 
+            },
+            "timestamp":
+            {
+                "desc": "Aktualizacja"
+            } 
+        }
+    },
+    "babcia":
+    {   
+        "id": 6,
+        "title": "U Babci",
+        "type": "output",
         "sensors":
         {   
             "batvol":
@@ -71,18 +95,17 @@
                 "scale": 3
             },
             "temp":
-            {   
+            {
                 "unit": "  C",
                 "desc": "Temperatura",
                 "scale": 1
             },
             "timestamp":
-            {
+            {   
                 "desc": "Aktualizacja"
             }
         }
-    },
-
+    },   
     "artekroom":
     {
         "id": 2,

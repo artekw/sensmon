@@ -12,10 +12,9 @@ https://github.com/ankane/chartkick.js
 */
 
 
-var sensmon = angular.module('sensmon', []);
+var sensmon = angular.module('sensmon', ['ngAnimate']);
 
 /* directives */
-// http://doc.owncloud.org/server/5.0/developer_manual/angular.html#using-angularjs-in-your-project
 
 sensmon.directive('animateOnChange', function($timeout) {
   return function(scope, element, attr) {
@@ -28,21 +27,6 @@ sensmon.directive('animateOnChange', function($timeout) {
       }
     });
   };
-});
-
-
-sensmon.directive('showonhoverparent',
-   function() {
-      return {
-         link : function(scope, element, attrs) {
-            element.parent().bind('mouseenter', function() {
-                element.show();
-            });
-            element.parent().bind('mouseleave', function() {
-                 element.hide();
-            });
-       }
-   };
 });
 
 
@@ -139,51 +123,22 @@ sensmon.filter('nodate', function() {
 
 /* controllers */
 
-// https://github.com/jcw/housemon/blob/master/client/code/modules/graphs.coffee
-// http://www.humblesoftware.com/flotr2/documentation
-// http://stackoverflow.com/questions/6064987/using-map-reduce-in-couchdb-to-output-fewer-rows/6066433#6066433
-// http://dygraphs.com/#usage
-// https://github.com/jcw/housemon/blob/develop/client/code/modules/graphs.coffee
-// http://jsfiddle.net/KmXTy/14/ - loading
-
+// graphs page
 sensmon.controller('graphsCtrl', function ($scope, $http) {
     // ustawienia
     var timezone_offset = 7200; // +2h - Europe/Warsaw
+    var offset = 86400;
+
     var response = [];
 
-    $scope.limits = [
-        {'title': 'Godzina','offset': 3600},
-        {'title': 'Dzień', 'offset': 86400},
-        {'title': 'Dwa dni', 'offset': 172800},
-        {'title': 'Tydzień', 'offset': 604800},
-        {'title': 'Miesiąc', 'offset': 2592000}
-    ]
-    $scope.limit = $scope.limits[0] // domyślnie pierwsza pozycja
-
-    // FIXME! - pobieranie z pliku json nodes.json
-    $scope.nodes = [
-        {'name': 'artekroom'},
-        {'name': 'outnode'},
-        {'name': 'powernode'},
-        {'name': 'testnode'}
-    ]
-    $scope.node = $scope.nodes[0]
-
-    $scope.sensors = [
-        {'title': 'Temperatura', 'name': 'temp'},
-        {'title': 'Ciśnienie', 'name': 'press'},
-        {'title': 'Wilgotność', 'name': 'humi'},
-        {'title': 'Napięcie baterii', 'name': 'batvol'},
-        {'title': 'Moc bierna', 'name': 'power'},
-        {'title': 'Nasłonecznienie', 'name': 'light'}
-    ]
-    $scope.sensor = $scope.sensors[0];
+    $scope.limit = {'title': 'Godzina','offset': 3600};
+    $scope.sensor = {'title': 'Temperatura', 'name': 'temp'};
+    $scope.node = "test";
 
     $scope.minimum = 0
     $scope.maximum = 0
     $scope.average = 0
     $scope.points = 0
-
 
 
     $scope.drawPlot = function() {
@@ -192,7 +147,7 @@ sensmon.controller('graphsCtrl', function ($scope, $http) {
         var flotr_data = [];
         var data_values = [];
         var unix_now = Math.round((new Date()).getTime() / 1000) + timezone_offset;
-        var last_day = (unix_now - $scope.limit.offset ) - timezone_offset;
+        var last_day = (unix_now - offset ) - timezone_offset;
 
 
         angular.forEach(response.data, function(v) {
@@ -204,7 +159,7 @@ sensmon.controller('graphsCtrl', function ($scope, $http) {
         $scope.maximum = _.max(data_values)
         $scope.average = Math.round(_.reduce(data_values, function(memo, num){ return memo + num; }, 0) / data_values.length*100)/100;
         $scope.points = data_values.length
-        $scope.$apply();
+        //$scope.$apply();
         
         // opcje wykresu
         $scope.flotr = {
@@ -231,8 +186,15 @@ sensmon.controller('graphsCtrl', function ($scope, $http) {
             }
             Flotr.draw(document.getElementById("graph-chart"), [$scope.flotr.data], $scope.flotr.options);
     }
+
+    $http.get('/static/conf/nodemap.json').success(function(data) { 
+        console.log('Pobrano mapę punktów(nodów)');
+        $scope.nodemap = data;
+    });
+
+
     $http.get('/history/lab/humi/day').success(function(data) { 
-        console.log('Pobrano dane z testnode');
+        console.log('Pobrano dane do wykresu');
         $scope.response = data;
         console.log(data);
     });
@@ -342,6 +304,15 @@ sensmon.controller('dashCtrl', function ($scope, $http) {
     ws.onclose = function() {
         console.log('Narazie :)')
     }
+
+    // hover
+    $scope.hoverIn = function(){
+        this.hoverEdit = true;
+    };
+
+    $scope.hoverOut = function(){
+        this.hoverEdit = false;
+    };
 
 	$http.get('/initv').success(function(data) {
 		console.log('Pobrano ostatnie wartości');

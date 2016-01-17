@@ -26,6 +26,31 @@ table td h5 {
 .name-node {
   background: rgb(51, 51, 51);
 }
-.name-node h4, h5 {
+.name-node h4, .name-node h5 {
   color: white;
+}
+
+.animate-show {
+    -webkit-transition: all linear 0.5s;
+    transition: all linear 0.5s;
+}
+
+.animate-show.ng-hide-add,
+.animate-show.ng-hide-remove {
+    display: inline-block !important;
+
+}
+.animate-show.ng-hide {
+    opacity: 0;
+}
+
+.info {
+  float:left;
+}
+
+.menu {
+  display: block;
+    float: right;
+    margin-top: 5px;
+    width: 18px;
 }

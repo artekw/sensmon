@@ -7,22 +7,7 @@
     <div class="row">
         <div class="col-md-2">
             <form>
-                <fieldset>
-                    <legend>Ustawienia wykresu</legend>
-                    <div class="form-group">
-                        <label class="bold">Zakres:</label>
-                        <select ng-model="limit" ng-options="l.title for l in limits"></select>
-                        </div>
-                        <div class="form-group">
-                        <label class="bold">Punkt:</label>
-                        <select ng-model="node" ng-options="n.name for n in nodes"></select>
-                        </div>
-                        <div class="form-group">
-                        <label class="bold">Czujnik:</label>
-                        <select ng-model="sensor" ng-options="s.title for s in sensors"></select>
-                        </div>
-                        <button type="submit" class="btn btn-default" ng-click="drawPlot()" />Rysuj wykres</button>
-                </fieldset>
+                <button type="submit" class="btn btn-default" ng-click="drawPlot()" />Rysuj wykres</button>
             </form>
             <br>
             <form>

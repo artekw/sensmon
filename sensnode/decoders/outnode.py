@@ -17,7 +17,6 @@ def outnode(data, name):
     h = int(data[9])
     i = int(data[10])
     j = int(data[11])
-    k = int(data[12])
 
     #nodeid = str(data[1])
     timestamp = int(time.time()) #unix time
@@ -25,7 +24,7 @@ def outnode(data, name):
     template = ({
         'name':name,
         'temp': str(((256 * (f&3) + e) ^ 512) - 512),
-        'batvol':str((256 * k) + j),
+        'batvol':str((256 * j) + i),
         'timestamp':timestamp
          })
 

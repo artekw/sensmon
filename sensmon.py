@@ -326,7 +326,7 @@ def main():
         static_path=os.path.join(os.path.dirname(__file__), "static"),
         cookie_secret="__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
         login_url="/login",
-        debug=True)
+        debug=False)
 
     httpServer = tornado.httpserver.HTTPServer(application)
     httpServer.listen(options.webapp_port)
@@ -366,7 +366,7 @@ def main():
     tornado.autoreload.start(mainLoop)
     scheduler = tornado.ioloop.PeriodicCallback(
         checkResults, 500, io_loop=mainLoop)
-    
+
     scheduler.start()
     mainLoop.start()
 

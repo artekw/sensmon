@@ -4,8 +4,8 @@
 import time
 import simplejson as json
 
-def salon(data, name):
-    """Salon"""
+def babcia(data, name):
+    """Babcia"""
 
     a = int(data[2])
     b = int(data[3])
