@@ -1,6 +1,6 @@
 # sensmon - home automation
 
-sensmon jest aplikacją przeglądarkową do monitorowania czujników z projektu sensnode. Aplikacja działa w oparciu o techologię [Websocket](http://pl.wikipedia.org/wiki/WebSocket). Została napisana w frameworku [Tornado](http://www.tornadoweb.org/en/stable/) oraz [AngularJS](https://angularjs.org/). 
+sensmon jest aplikacją przeglądarkową do monitorowania czujników z projektu sensnode. Aplikacja działa w oparciu o techologię [Websocket](http://pl.wikipedia.org/wiki/WebSocket). Została napisana w frameworku [Tornado](http://www.tornadoweb.org/en/stable/) oraz [AngularJS](https://angularjs.org/).
 
 ## Wymagania
 
@@ -11,13 +11,14 @@ sensmon działa tylko na systemie Linuks. Do uruchomienia potrzebny jest Python 
 - python-pip
 - redis
 - ser2net
-- tornado (3.0)
+- tornado
 - tornado-redis
 - screen
 - git
 - plyvel
 - jsontree
 - pacho-mqtt
+- bokeh
 
 Debian potrzebuje jeszcze:
 
@@ -28,17 +29,19 @@ Debian potrzebuje jeszcze:
 Instalacja w dystrybucji Debiana/Ubuntu:
 
     $ sudo apt-get install python redis-server screen git ser2net python-pip python-dev build-essential libleveldb-dev
-    $ sudo pip-2.7 install simplejson tornado tornado-redis plyvel jsontree pacho-mqtt
+    $ git clone https://github.com/artekw/sensmon
+    $ cd sensmon
+    $ sudo pip-2.7 install -r requirements.txt
 
 
 ### Ustawienie komunikacji między sensbase a aplikacją
 
-Łącznikiem pomiędzy stroną WWW, a sesbase jest ser2net. Aplikacja ta przekierowuje dane z sensbase do przeglądarki. 
+Łącznikiem pomiędzy stroną WWW, a sensbase jest ser2net. Aplikacja ta przekierowuje dane z sensbase do przeglądarki.
 
 Zalecane ustawienie w pliku /etc/ser2net.conf:
 
     2000:raw:0:/dev/ttyAMA0:9600
-    
+
 Należy pamiętać, aby ustawić ten sam port w pliku settings.conf aplikacji sensmon (patrz niżej)
 
 ## Aplikacja Web
@@ -52,8 +55,6 @@ Pliki konfiguracyjne aplikacji znajdują się w *static/conf*.
 
 ### Uruchomienie
 
-     $ git clone https://github.com/artekw/sensmon
-     $ cd sensmon
      $ screen -d -m python2 sensmon.py
 
 Wejdz przez przeglądarkę na adres http://adres-ip-hosta:8081
@@ -101,4 +102,3 @@ THE SOFTWARE.
 
 
 ![Valid XHTML](http://w3.org/Icons/valid-xhtml10)
-

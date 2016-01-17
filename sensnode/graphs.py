@@ -48,5 +48,5 @@ class Graphs(object):
         self.debug = False
 
 
-        def generate_graph(self):
+        def generate_graph(self, node):
             pass

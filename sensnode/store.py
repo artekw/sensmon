@@ -52,63 +52,58 @@ class redisdb():
 
 
 class history():
-	
-	'''Store data in base for future use ie. graphs'''
-	def __init__(self, path, dbname):
-		self.path = path
-		self.dbname = dbname
-		#self.create_db = create_db
-		
-		dirname = self.path + "/" + self.dbname
 
-		if not os.path.exists(dirname):
-			os.makedirs(dirname)
-			
-		self.lvldb = leveldb.DB("%s/%s" % (self.path, 
-										self.dbname), 
-										create_if_missing=True)
-		self.dbconnected = True
-		
-	def is_connected(self):
-		return self.dbconnected
+    '''Store data in base for future use ie. graphs'''
+    def __init__(self, path, dbname):
+        self.path = path
+        self.dbname = dbname
+        #self.create_db = create_db
 
-	def get(self, nodename, timerange):
-		''' 
-		pewnie to trafi do pliku json, aby 
-		zakresy były wspolne dla Js i Pythona
-		'''
-		
-		ranges = {'1h' : 3600,
-				'day' : 86400,
-				'2days': 172800,
-				'week' : 604800,
-				'month' : 2592000} 
+        dirname = self.path + "/" + self.dbname
 
-		if self.dbconnected:
-			data = []
-			ts = int(time.time())
-			start_key = '%s-%s' % (nodename, ts-ranges[timerange])
-			stop_key = '%s-%s' % (nodename, ts)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
 
-			#print ('Data for last %s') % (timerange)
-			for key, value in self.lvldb.iterator(
-								start=(start_key).encode('ascii'), 
-								stop=(stop_key).encode('ascii'),
-								include_start=True,
-								include_stop=True):
-				data.append(value) # lista ?
-			return data
+        self.lvldb = leveldb.DB("%s/%s" % (self.path,
+                                        self.dbname),
+                                        create_if_missing=True)
+        self.dbconnected = True
 
-	def put(self, key, value):
-		if self.dbconnected:
-			self.lvldb.put(key, value)
-			
-	def select(self, nodename, sensor, timerange='1h'):
-		data = []
-		if self.dbconnected:
-			values = self.get(nodename, timerange)
-			data = [[ast.literal_eval(v)['timestamp'], ast.literal_eval(v)[sensor]] for v in values]
-			return data
+    def is_connected(self):
+        return self.dbconnected
 
-				
+    def get(self, nodename, timerange):
+        '''
+        pewnie to trafi do pliku json, aby
+        zakresy były wspolne dla Js i Pythona
+        '''
 
+        ranges = {'1h' : 3600,
+                'day' : 86400,
+                '2days': 172800,
+                'week' : 604800,
+                'month' : 2592000}
+
+        if self.dbconnected:
+            data = []
+            ts = int(time.time())
+            start_key = '%s-%s' % (nodename, ts-ranges[timerange])
+            stop_key = '%s-%s' % (nodename, ts)
+
+            iterator = self.lvldb.iterator(start=(start_key).encode('ascii'),
+                                            stop=(stop_key).encode('ascii'),
+                                            include_start=True,
+                                            include_stop=True)
+            data = [value for key, value in iterator]
+            return data
+
+    def put(self, key, value):
+        if self.dbconnected:
+            self.lvldb.put(key, value)
+
+    def select(self, nodename, sensor, timerange='1h'):
+        data = []
+        if self.dbconnected:
+            values = self.get(nodename, timerange)
+            data = [[ast.literal_eval(v)['timestamp'], ast.literal_eval(v)[sensor]] for v in values]
+            return data
