@@ -72,6 +72,9 @@ Wejdz przez przeglądarkę na adres http://adres-ip-hosta:8081
 - panel administatora
 - sterowanie przekaźnikami
 
+### Znane problemy
+   - "ConnectionError: Tried to read from non-existent connection" przy generowaniu wykresów
+
 ## Zrzuty ekranu
 
 ![sensmon dashboard](https://dl.dropboxusercontent.com/u/677573/Photos/sensmon/dashboard.png)
