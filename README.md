@@ -33,7 +33,6 @@ Instalacja w dystrybucji Debiana/Ubuntu:
     $ cd sensmon
     $ sudo pip-2.7 install -r requirements.txt
 
-
 ### Ustawienie komunikacji między sensbase a aplikacją
 
 Łącznikiem pomiędzy stroną WWW, a sensbase jest ser2net. Aplikacja ta przekierowuje dane z sensbase do przeglądarki.
@@ -62,19 +61,24 @@ Wejdz przez przeglądarkę na adres http://adres-ip-hosta:8081
 ### Co działa?
 
 - dashboard
+- wykresy (tylko dzienne)
 
 ### Plany
 
 - wykresy
+    - tygodniowe
+    - miesięczne
+    - roczne
 - panel administatora
 - sterowanie przekaźnikami
 
 ## Zrzuty ekranu
 
 ![sensmon dashboard](https://dl.dropboxusercontent.com/u/677573/Photos/sensmon/dashboard.png)
+![sensmon wykresy](https://dl.dropboxusercontent.com/u/677573/Photos/sensmon/graphs.png)
 
 # Uwaga
-Aplikacja jest we wstępnym stanie rozwoju autor nie ponosi odpowiedzialności na niewłaściwe działanie programu i uszkodzenia powstałe na skutek jego działania.
+Aplikacja jest we wstępnym stanie rozwoju autor nie ponosi odpowiedzialności na niewłaściwe działanie programu i ewentualne uszkodzenia powstałe na skutek jego działania.
 
 ## Licencja
 
