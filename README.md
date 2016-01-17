@@ -69,6 +69,10 @@ Wejdz przez przeglądarkę na adres http://adres-ip-hosta:8081
     - tygodniowe
     - miesięczne
     - roczne
+- prognoza pogody wg [OpenWatherMap](http://openweathermap.org/city/7530941)
+- dashboard jak w (https://github.com/AiGreek/Touchscreen-Automation)
+- kalendarz Google
+- [PushBulllet](https://www.pushbullet.com/)
 - panel administatora
 - sterowanie przekaźnikami
 

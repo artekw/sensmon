@@ -68,12 +68,13 @@
 	</div>
     {% block scripts %}
     {% end %}
+    <!--
      <div class="footer">
    		  <div class="container text-center">
     		<p class="text-muted credit">
     			<a title="Source on Github" href="https://github.com/artekw/sensmon" target="_blank"><i class="fa fa-github fa-2x"></i></a>
     		</p>
   		</div>
- 	</div>
+ 	</div>-->
 </body>
 </html>
