@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 debug = True  # tryb developerski
-version = '0.4-dev'
+version = '0.41-dev'
 
 import os
 import logging
@@ -31,7 +31,7 @@ import sensnode.store
 import sensnode.decoder
 import sensnode.connect
 import sensnode.common
-import sensnode.graphs
+#import sensnode.graphs
 import sensnode.logs as logs
 from sensnode.config import config
 from sensnode.weather import getWeather
@@ -69,7 +69,7 @@ c.connect()
 clients = []
 
 history = sensnode.store.history(options.leveldb_path, options.leveldb_dbname)
-graphs = sensnode.graphs.Graphs(history, debug=debug)
+#graphs = sensnode.graphs.Graphs(history, debug=debug)
 
 
 # --------------------------webapp code-----------------------#
@@ -204,7 +204,6 @@ class InfoHandler(BaseHandler):
 
 # RESTful
 # history/<node>/<sensor>/<timerange>
-# rest/initv
 class GetHistoryData(BaseHandler):
 
     def get(self, node, sensor, timerange):
@@ -212,7 +211,7 @@ class GetHistoryData(BaseHandler):
         response = []
 
         try:
-            response = { 'data' :  history.select(node, sensor, timerange) }
+            response = { 'data' :  history.get_toJSON(node, sensor, timerange) }
             self.write(response)
             self.finish()
         except KeyError, e:
@@ -308,10 +307,9 @@ def main():
     tornado.options.parse_command_line()
     application = tornado.web.Application([
         (r"/admin", AdminHandler),
-        (r"/control", ControlHandler),
+        #(r"/control", ControlHandler),
         (r"/dash", DashHandler),
         (r"/graphs/(?P<node>[^\/]+)/?(?P<sensor>[^\/]+)?/?(?P<timerange>[^\/]+)?", GraphsHandler),
-		#(r"/graphs", GraphsHandler),
         (r"/info", InfoHandler),
 		(r"/", IntroHandler),
         (r"/logs", LogsHandler),
@@ -336,14 +334,17 @@ def main():
     @tornado.gen.engine
     def checkResults():
         if not resultQ.empty():
+			# suwówka
             result = resultQ.get()
+			# dane zdekodowane
             decoded = decoder.decode(result)
+			# dane zdekodowane + odczyty
             update = decoder.update(decoded)
             # print ("RAW: %s" % (result))
             # print ("JSON %s" % (decoded))
             # print ("UPD %s" % (update))
 
-			# leveldb enabled?
+			# leveldb włączone?
             if options.leveldb_enable:
 				if decoded['name'] not in options.leveldb_forgot:
 					key = ('%s-%d' %  (decoded['name'], decoded['timestamp'])).encode('ascii')
@@ -352,7 +353,7 @@ def main():
 					if debug:
 						logger.debug("LevelDB: %s %s" % (key, decoded))
 
-			# MQTT enabled?
+			# MQTT włączone?
             if options.mqtt_enable:
                 publish(decoded)
 

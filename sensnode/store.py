@@ -95,7 +95,7 @@ class history():
         if self.dbconnected:
             self.lvldb.put(key, value)
 
-    def select(self, nodename, sensor, timerange='1h'):
+    def get_toJSON(self, nodename, sensor, timerange='1h'):
         data = []
         if self.dbconnected:
             values = self.get(nodename, timerange)

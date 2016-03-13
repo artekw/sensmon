@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="/static/plugins/owfont/css/owfont-regular.min.css" type="text/css">
     <link rel="stylesheet" href="http://getbootstrap.com/examples/signin/signin.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.css" type="text/css">
 
     <title>{% block title %}{% end %} - sensmon</title>
     <link href='http://fonts.googleapis.com/css?family=Dosis:400,500,600,700|Lato:400,700,900,400italic|Monda:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
@@ -22,7 +21,6 @@
     <script src="/static/js/jquery.min.js" type="text/javascript"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="/static/js/highstock.src.js" type="text/javascript"></script>
-    <!--<script src="http://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.js"></script>-->
     <script src="/static/js/underscore-min.js" type="text/javascript"></script>
     <script src="https://code.angularjs.org/1.4.8/angular.min.js" type="text/javascript"></script>
     <script src="https://code.angularjs.org/1.4.8/angular-animate.min.js" type="text/javascript"></script>
@@ -32,7 +30,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/0.10.3/angular-moment.js" type="text/javascript"></script>
     <script src="/static/js/require.js" type="text/javascript"></script>
     <script src="/static/js/sensmonjs.js" type="text/javascript"></script>
-
 </head>
 <body>
     <div id="wrapper">
