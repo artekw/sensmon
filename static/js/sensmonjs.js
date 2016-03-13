@@ -285,10 +285,18 @@ sensmon.controller('graphsCtrl', function ($route, $routeParams, $scope, $http, 
               type: 'hour',
               count: 1,
               text: '1h'
-              },{
+            },{
               type: 'day',
               count: 1,
             	text: '1D'
+            }, {
+              type: 'day',
+              count: 2,
+            	text: '2D'
+            }, {
+            	type: 'day',
+            	count: 7,
+            	text: '1W'
             }, {
             	type: 'month',
             	count: 1,

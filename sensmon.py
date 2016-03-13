@@ -31,7 +31,6 @@ import sensnode.store
 import sensnode.decoder
 import sensnode.connect
 import sensnode.common
-#import sensnode.graphs
 import sensnode.logs as logs
 from sensnode.config import config
 from sensnode.weather import getWeather
@@ -69,7 +68,6 @@ c.connect()
 clients = []
 
 history = sensnode.store.history(options.leveldb_path, options.leveldb_dbname)
-#graphs = sensnode.graphs.Graphs(history, debug=debug)
 
 
 # --------------------------webapp code-----------------------#
