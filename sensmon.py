@@ -360,7 +360,7 @@ def main():
             # dane tymczasowe - initv
             redisdb.pubsub(update)
             for c in clients:
-                c.write_message(result)
+                c.write_message(update)
 
 
     mainLoop = tornado.ioloop.IOLoop.instance()

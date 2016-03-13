@@ -318,8 +318,7 @@ sensmon.controller('graphsCtrl', function ($route, $routeParams, $scope, $http, 
         yAxis: {
           title: {
             text: params.sensor,
-            margin: 25,
-            opposite:false
+            opposite: false
           }
         },
         useHighStocks: true

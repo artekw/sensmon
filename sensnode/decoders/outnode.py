@@ -3,9 +3,10 @@
 
 import time
 import datetime
+import inspect
 import simplejson as json
 
-def outnode(data, name):
+def outnode(data):
     """Outnode"""
 
     a = int(data[2])
@@ -19,7 +20,7 @@ def outnode(data, name):
     i = int(data[10])
     j = int(data[11])
 
-    #nodeid = str(data[1])
+    name = inspect.stack()[0][3] # z nazwy funcji
     timestamp = int(time.mktime(datetime.datetime.now().timetuple())) #unix time
 
     template = ({

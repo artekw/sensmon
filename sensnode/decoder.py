@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-import jsontree 
+import jsontree
 import simplejson as json
 from collections import OrderedDict
 
@@ -44,7 +44,7 @@ class Decoder(object):
                 # szukamy właściwej wtyczki - dekodera
                 plug = plugins().plugin(nodemap[nid])
                 # zwracamy zdekodowane dane wg szablonu
-                decoded_data = plug(data, nodemap[nid])
+                decoded_data = plug(data)
 
                 return self.scale(decoded_data)
         else:

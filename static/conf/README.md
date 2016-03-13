@@ -10,7 +10,7 @@ Główna konfiguracja aplikacji
    - __verbose__ - dodatkowe komunikaty w konsoli potrzebne w celu debugowania aplikacji
 
 ## serial
-Ustawienia dla komunikacji poprzez ser2net lub remserial.
+Ustawienia komunikacji poprzez ser2net lub remserial.
 
   - __port__ - port na jakim uruchomiony jest ser2net lub remerial
   - __host__ - j.w. ale hostname
@@ -50,4 +50,4 @@ Konfiguracja dla strony http://aqicn.org z danymi o jakości powietrza dla wybra
   - __station__ - nazwa stacji
 
 ### TODO
-  - dodać dla MQTT definiowanie topic'a; teraz jest /sesmon/< nodename > 
+  - dodać dla MQTT definiowanie topic'a; teraz jest /sesmon/< nodename >

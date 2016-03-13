@@ -3,22 +3,10 @@
 
 import time
 import datetime
+import inspect
 import simplejson as json
 
-def artekroom(data, name):
-    """Pomiar:
-    - swiatła,
-    - wlgotności
-    - temperatury
-    - ciśnienia
-    - stanu baterii
-    - napięcia beterii
-
-    >> a = "OK 2 0 0 70 1 242 0 201 38 0 15 17"
-    >> raw = a.split(" ")
-    >> weathernode(raw, "weathernode")
-    '{"name": "weathernode", "temp": "242", "lobat": "0", "humi": "326", "timestamp": 1364553092, "light": "0", "press": "9929", "batvol": "4367"}'
-    """
+def artekroom(data):
 
     a = int(data[2])
     b = int(data[3])
@@ -32,8 +20,8 @@ def artekroom(data, name):
     j = int(data[11])
     k = int(data[12])
 
-    #nodeid = str(data[1])
-    timestamp = int(time.mktime(datetime.datetime.now().timetuple())) #unix time
+    name = inspect.stack()[0][3] # z nazwy funcji
+    timestamp = int(time.mktime(datetime.datetime.now().timetuple())) # czas unixa
 
     template = ({
         'name':name,

@@ -3,9 +3,10 @@
 
 import time
 import datetime
+import inspect
 import simplejson as json
 
-def pirnode(data, name):
+def pirnode(data):
     """Czujka ruchu"""
 
     a = int(data[2])
@@ -13,7 +14,7 @@ def pirnode(data, name):
     c = int(data[4])
     d = int(data[5])
 
-    #nodeid = str(data[1])
+    name = inspect.stack()[0][3] # z nazwy funcji
     timestamp = int(time.mktime(datetime.datetime.now().timetuple())) #unix time
 
     template = ({
