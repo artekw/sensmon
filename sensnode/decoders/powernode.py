@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
+import datetime
 import simplejson as json
 
 def powernode(data, name):
@@ -19,7 +20,7 @@ def powernode(data, name):
     j = int(data[11])
 
     #nodeid = str(data[1])
-    timestamp  = int(time.time())
+    timestamp = int(time.mktime(datetime.datetime.now().timetuple())) #unix time
 
     power1 = ((256 * b) + a)
     power2 = ((256 * d) + c)

@@ -1,6 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html xmlns:ng="http://angularjs.org" ng-app="sensmon">
 <head>
+    <base href="/">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="sensmon - home automation">
@@ -8,6 +9,7 @@
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/styl.css">
+    <link rel="stylesheet" href="/static/plugins/owfont/css/owfont-regular.min.css" type="text/css">
     <link rel="stylesheet" href="http://getbootstrap.com/examples/signin/signin.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.css" type="text/css">
@@ -19,11 +21,15 @@
     <![endif]-->
     <script src="/static/js/jquery.min.js" type="text/javascript"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" type="text/javascript"></script>
-    <!--<script src="static/js/flotr2.min.js" type="text/javascript"></script>-->
-    <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.js"></script>
+    <script src="/static/js/highstock.src.js" type="text/javascript"></script>
+    <!--<script src="http://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.js"></script>-->
     <script src="/static/js/underscore-min.js" type="text/javascript"></script>
     <script src="https://code.angularjs.org/1.4.8/angular.min.js" type="text/javascript"></script>
     <script src="https://code.angularjs.org/1.4.8/angular-animate.min.js" type="text/javascript"></script>
+    <script src="https://code.angularjs.org/1.4.8/angular-route.js" type="text/javascript"></script>
+    <script src="/static/js/highcharts-ng.js" type="text/javascript"></script>
+    <script src="http://momentjs.com/downloads/moment-with-locales.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/0.10.3/angular-moment.js" type="text/javascript"></script>
     <script src="/static/js/require.js" type="text/javascript"></script>
     <script src="/static/js/sensmonjs.js" type="text/javascript"></script>
 
@@ -41,19 +47,18 @@
 					</button>
 					<a class="navbar-brand">sensmon</a>
 				</div>
-				<div class="navbar-collapse collapse" ng-controller="HeaderController">
+				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
-						<li ng-class="navClass('home')"><a href="/">Czujniki</a></li>
-						<!--<li ng-class="navClass('graphs')"><a href="/graphs">Wykresy</a></li>-->
+						<li><a target="_self" href="/">Intro</a></li>
+						<li><a target="_self" href="dash">Czujniki</a></li>
 						<!--<li ng-class="navClass('control')"><a href="/control">Sterowanie</a></li>-->
-						<!-- <li ng-class="navClass('logs')"><a href="/logs">Logi</a></li>-->
-						<li ng-class="navClass('info')"><a href="/info">System</a></li>
+						<li><a target="_self" href="info">Info</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						{% if current_user %}
-							<li><a href="/logout?next={{ url_escape(request.uri) }}">Wyloguj</a></li>
+							<li><a target="_self" href="/logout?next={{ url_escape(request.uri) }}">Wyloguj</a></li>
 						{% else %}
-							<li><a href="/login?next={{ url_escape(request.uri) }}">Zaloguj</a></li>
+							<li><a target="_self" href="/login?next={{ url_escape(request.uri) }}">Zaloguj</a></li>
 						{% end %}
 					</ul>
 				</div>

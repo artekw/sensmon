@@ -18,6 +18,12 @@
                 "desc": "Temperatura",
                 "scale": 1
             },
+            "lpg":
+            {   
+                "unit": "",
+                "desc": "LPG",
+                "scale": 1
+            },
             "batvol":
             {
                 "unit": "V",

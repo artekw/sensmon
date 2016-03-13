@@ -99,5 +99,6 @@ class history():
         data = []
         if self.dbconnected:
             values = self.get(nodename, timerange)
-            data = [[ast.literal_eval(v)['timestamp'], ast.literal_eval(v)[sensor]] for v in values]
+            # milliseconds for JavaScript
+            data = [[ast.literal_eval(v)['timestamp'] * 1000, ast.literal_eval(v)[sensor]] for v in values]
             return data

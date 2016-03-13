@@ -7,18 +7,11 @@ sensmon jest aplikacją przeglądarkową do monitorowania czujników z projektu 
 sensmon działa tylko na systemie Linuks. Do uruchomienia potrzebny jest Python 2.x oraz kilka innych zewnętrznych aplikacji/modułów m.in.
 
 - python
-- python-simplejson
 - python-pip
-- redis
+- redis-server
 - ser2net
-- tornado
-- tornado-redis
 - screen
 - git
-- plyvel
-- jsontree
-- pacho-mqtt
-- bokeh
 
 Debian potrzebuje jeszcze:
 
@@ -26,12 +19,12 @@ Debian potrzebuje jeszcze:
 - build-essential
 - libleveldb-dev
 
-Instalacja w dystrybucji Debiana/Ubuntu:
+Instalacja dla Debiana/Ubuntu:
 
     $ sudo apt-get install python redis-server screen git ser2net python-pip python-dev build-essential libleveldb-dev
     $ git clone https://github.com/artekw/sensmon
     $ cd sensmon
-    $ sudo pip-2.7 install -r requirements.txt
+    $ sudo pip install -r requirements.txt
 
 ### Ustawienie komunikacji między sensbase a aplikacją
 
@@ -48,7 +41,7 @@ Należy pamiętać, aby ustawić ten sam port w pliku settings.conf aplikacji se
 
 Pliki konfiguracyjne aplikacji znajdują się w *static/conf*.
 
-- settings.json - ustawienia aplikacji (tu ustaw poprawny port dla ser2net)
+- settings.json - ustawienia aplikacji - [dokumentacja](https://github.com/artekw/sensmon/tree/master/static/conf)
 - nodemap.json - mapa nodów oraz powiązanych z nim czujników
 - control.json - konfiguracja przekaźników
 
@@ -62,6 +55,7 @@ Wejdz przez przeglądarkę na adres http://adres-ip-hosta:8081
 
 - dashboard
 - wykresy (tylko dzienne)
+- prognoza pogody wg [OpenWatherMap](http://openweathermap.org/city/7530941)
 
 ### Plany
 
@@ -69,12 +63,11 @@ Wejdz przez przeglądarkę na adres http://adres-ip-hosta:8081
     - tygodniowe
     - miesięczne
     - roczne
-- prognoza pogody wg [OpenWatherMap](http://openweathermap.org/city/7530941)
-- dashboard jak w (https://github.com/AiGreek/Touchscreen-Automation)
 - kalendarz Google
 - [PushBulllet](https://www.pushbullet.com/)
 - panel administatora
 - sterowanie przekaźnikami
+- usunięcie pośrednika tj ser2net
 
 ### Znane problemy
    - "ConnectionError: Tried to read from non-existent connection" przy generowaniu wykresów
@@ -85,7 +78,7 @@ Wejdz przez przeglądarkę na adres http://adres-ip-hosta:8081
 ![sensmon wykresy](https://dl.dropboxusercontent.com/u/677573/Photos/sensmon/graphs.png)
 
 # Uwaga
-Aplikacja jest we wstępnym stanie rozwoju autor nie ponosi odpowiedzialności na niewłaściwe działanie programu i ewentualne uszkodzenia powstałe na skutek jego działania.
+Aplikacja jest we wstępnym stanie rozwoju autor nie ponosi odpowiedzialności za niewłaściwe działanie programu i ewentualne uszkodzenia powstałe na skutek jego działania.
 
 ## Licencja
 

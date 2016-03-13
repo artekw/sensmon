@@ -69,9 +69,7 @@ class Graphs(object):
         graph = figure(width=default_graph_config['width'],
                         height=default_graph_config['height'],
                         x_axis_type = "datetime",
-                        title=_title,
-                        tools="",
-                        toolbar_location=None
+                        title=_title
         )
         graph.xaxis.axis_label = "Czas"
         graph.yaxis.axis_label = _desc

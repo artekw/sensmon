@@ -12,7 +12,7 @@ https://github.com/ankane/chartkick.js
 */
 
 
-var sensmon = angular.module('sensmon', ['ngAnimate']);
+var sensmon = angular.module('sensmon', ['ngRoute', 'ngAnimate', 'highcharts-ng']);
 
 /* directives */
 
@@ -52,51 +52,6 @@ sensmon.directive('buttonsRadio', function() {
 });
 
 
-// http://jsfiddle.net/kurtteichman/KDYSN/
-// http://plnkr.co/edit/8Bo2YD9AWaUwLDXr6IGk?p=preview
-sensmon.directive("chart", function() {
-  return {
-    restrict: "E",
-    scope: {
-      data: "@",
-      options: "@",
-      id: "@"
-    },
-    link: function(scope, elem, attrs) {
-            //console.log(val);
-            var flot = {};
-            flot.id = (attrs.id !== undefined) ? attrs.id : (Math.random().toString().split(".")[1]);
-
-            attrs.$observe("data", function(nv) {
-               if (angular.isDefined(nv)) {
-                 flot.data = nv;
-               }
-            });
-            attrs.$observe("options", function(nv){
-              if(angular.isDefined(nv)){
-                flot.options = nv;
-              }
-              else { flot.options = {};}
-            });
-
-            scope.$watch(function(){
-              return flot;
-            }, function() {
-              console.log(flot);
-              // this works with no errors but without data/chart
-              //Flotr.draw(document.getElementById(attrs.id), [flot.data], flot.options);
-              //this results in an error "The target container must be visible"
-              //Flotr.draw(elem, [flot.data], flot.options);
-
-              elem.attr("id", flot.id);
-              Flotr.draw(document.getElementById(flot.id), [flot.data], flot.options);
-            }, true);
-    }
-  };
-});
-
-
-
 /* filters */
 
 sensmon.filter('parsedate', function(dateFilter) {
@@ -120,95 +75,20 @@ sensmon.filter('nodate', function() {
 });
 
 
-
-/* controllers */
-
-// graphs page
-sensmon.controller('graphsCtrl', function ($scope, $http) {
-    // ustawienia
-    var timezone_offset = 7200; // +2h - Europe/Warsaw
-    var offset = 86400;
-
-    var response = [];
-
-    $scope.limit = {'title': 'Godzina','offset': 3600};
-    $scope.sensor = {'title': 'Temperatura', 'name': 'temp'};
-    $scope.node = "test";
-
-    $scope.minimum = 0
-    $scope.maximum = 0
-    $scope.average = 0
-    $scope.points = 0
-
-
-    $scope.drawPlot = function() {
-        // zmienne
-        var response = $scope.response;
-        var flotr_data = [];
-        var data_values = [];
-        var unix_now = Math.round((new Date()).getTime() / 1000) + timezone_offset;
-        var last_day = (unix_now - offset ) - timezone_offset;
-
-
-        angular.forEach(response.data, function(v) {
-            flotr_data.push([v[0]*1000, v[1]]);
-            data_values.push(v[1])
-        });
-        
-        $scope.minimum = _.min(data_values)
-        $scope.maximum = _.max(data_values)
-        $scope.average = Math.round(_.reduce(data_values, function(memo, num){ return memo + num; }, 0) / data_values.length*100)/100;
-        $scope.points = data_values.length
-        //$scope.$apply();
-        
-        // opcje wykresu
-        $scope.flotr = {
-            data: flotr_data,
-
-                options: {
-                    title: $scope.sensor.title + ' dla ' + $scope.node.name + ', ostatnie ' + $scope.limit.offset/3600 + ' h',
-                    xaxis : {
-                        mode : 'time',
-                        title : 'Czas pomiaru',
-                        tickDecimals: 0,
-                        timeFormat : '%H:%M, %d/%m/%y',
-                        timeMode: 'local',
-                    },
-                    yaxis : {
-                        autoscale : true,
-                    },
-                    mouse: {
-                        track: true,
-                        sensibility: 10,
-                        trackFormatter: myFormatter
-                    }
-                }
+sensmon.filter('dayOfweekPL', function() {
+    return function(input) {
+        return moment(input*1000).locale('pl').format('dddd');
             }
-            Flotr.draw(document.getElementById("graph-chart"), [$scope.flotr.data], $scope.flotr.options);
-    }
-
-    $http.get('/static/conf/nodemap.json').success(function(data) { 
-        console.log('Pobrano mapę punktów(nodów)');
-        $scope.nodemap = data;
-    });
-
-
-    $http.get('/history/lab/humi/day').success(function(data) { 
-        console.log('Pobrano dane do wykresu');
-        $scope.response = data;
-        console.log(data);
-    });
 });
 
-// format daty na etykiecie w wykresie
-myFormatter = function(obj) {
-    var d, t;
-    d = new Date(Math.floor(obj.x));
-    t = Flotr.Date.format(d, '%b %d, %H:%M:%S', 'local');
-    return " " + t + ": " + obj.y + " ";
-};
 
+sensmon.filter('capitalize', function() {
+  return function(token) {
+      return token.charAt(0).toUpperCase() + token.slice(1);
+   }
+});
 
+/* controllers */
 sensmon.controller('logsCtrl', function ($scope) {
     var ws = new WebSocket("ws://"+document.location.hostname+":8081/websocket");
     msg = []
@@ -222,6 +102,18 @@ sensmon.controller('logsCtrl', function ($scope) {
             $scope.msg = msg
         });
     }
+});
+
+
+sensmon.controller('introCtrl', function ($scope, $interval, $http) {
+  $interval(function(){
+    $scope.clock = new Date();
+  },500);
+
+  $scope.today = function(date) {
+      return moment(date).locale('pl').format('dddd, DD MMMM YYYY');
+  }
+
 });
 
 
@@ -261,8 +153,8 @@ sensmon.controller('controlCtrl', function ($scope) {
 });
 
 
-/* 
-dashboard page - data in table 
+/*
+dashboard page
 $scope.array - array with data
 */
 sensmon.controller('dashCtrl', function ($scope, $http) {
@@ -318,14 +210,139 @@ sensmon.controller('dashCtrl', function ($scope, $http) {
 		console.log('Pobrano ostatnie wartości');
         parseJSON(data);
 	});
-
 });
 
 
-sensmon.controller('HeaderController', function ($scope, $location) 
-{ 
+sensmon.config(function ($routeProvider, $locationProvider) {
+    // configure the routing rules here
+    $routeProvider.when('/graphs/:nodename/:sensor/:timerange', {
+        controller: 'graphsCtrl'
+    });
+
+    // enable HTML5mode to disable hashbang urls
+    $locationProvider.html5Mode(true);
+});
+
+
+/*
+https://github.com/pablojim/highcharts-ng
+TODO:
+  * informację o ładowaniu danych: http://stackoverflow.com/questions/12148276/highcharts-how-to-show-loading-animation-at-set-data
+  * przyciski z zakresami danych: godzina, dzień, miesiąc itd
+*/
+sensmon.controller('graphsCtrl', function ($route, $routeParams, $scope, $http, $timeout) {
+
+  // punkty wykresu
+  var chartData = [];
+
+  // potrzebujemy 20ms opóźnienie
+  $timeout(function(){
+    var nodename = $routeParams.nodename; // nodename
+    var sensor = $routeParams.sensor; // sensor
+    var timerange = $routeParams.timerange; //timerage
+    // stwórz adres url
+    // /history/<nodename>/<sensor>/<timerange>
+    url = '/history/' + nodename + '/' + sensor + '/' + timerange;
+    // pobieram ustawienia nodów aby uzyskać dodatkowe informacje na ich temat
+    var getPlotInfo = $http.get('/static/conf/nodemap.json').success(function(data) {
+      console.log('Pobrano nodemap.json');
+      // format JSON
+      $scope.plotinfo = {
+          title: data[nodename]['title'],
+          sensor: data[nodename]['sensors'][sensor]['desc'],
+          timerange: timerange
+      };
+    });
+    // pobieramy nodemap i rysujemy wykres
+    // https://groups.google.com/forum/#!topic/angular/l47fnafQzlY
+    getPlotInfo.then(function () {
+      plot($scope.plotinfo);
+    })
+
+  }, 20);
+
+
+  /* funkcja rysująca wykres
+  // params - informacje o wykresie: title, sensor, timerage
+  */
+  function plot(params) {
+    // pobieram dane wykresu wg szablonu /history/<nodename>/<sensor>/<timerange>
+    $http.get(url).success(function(data) {
+      console.log('Rysuje wykres dla ' + params.title);
+      // punkty wykresu
+      chartData = data.data;
+      // ustawienia wykresu
+      Highcharts.setOptions({global : {useUTC : false}});
+      $scope.chartConfig = {
+        options: {
+          chart: {
+            zoomType: 'x',
+            backgroundColor: 'rgb(238, 238, 238)' // szary
+          },
+          rangeSelector: {
+            enabled: true,
+            buttons: [{
+              type: 'hour',
+              count: 1,
+              text: '1h'
+              },{
+              type: 'day',
+              count: 1,
+            	text: '1D'
+            }, {
+            	type: 'month',
+            	count: 1,
+            	text: '1M'
+            }, {
+            	type: 'year',
+            	count: 1,
+            	text: '1Y'
+            }, {
+            	type: 'all',
+            	text: 'All'
+            }],
+            selected: 4,
+            inputEnabled : false
+          },
+          scrollbar: {
+            enabled: false
+          },
+          navigator: {
+            enabled: false
+          }
+        },
+        series: [],
+        title: {
+          text: params.title
+        },
+        yAxis: {
+          title: {
+            text: params.sensor,
+            margin: 25,
+            opposite:false
+          }
+        },
+        useHighStocks: true
+      }
+    // dodajemy dane do wykresu
+    // FIXME: ustawienia serii danych odzielnie
+    $scope.chartConfig.series.push({
+          type: 'area',
+          data: chartData,
+          name: "Odczyt",
+          tooltip: {
+              valueDecimals: 2
+            }
+      });
+  });
+};
+});
+
+
+sensmon.controller('HeaderController', function ($scope, $location)
+{
     $scope.navClass = function (page) {
         var currentRoute = $location.path().substring(1) || '/';
         return page === currentRoute ? 'active' : '';
-    };    
+    };
 });

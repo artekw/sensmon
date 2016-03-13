@@ -31,5 +31,12 @@
       "password": "pass",
       "from": "sensmon",
       "tls": true
+    },
+    "weather": {
+      "city": "suwalki",
+      "appid": "123"
+    },
+    "aqi": {
+      "station": "u'Suwałki-Miejska, Polska'"
     }
 }

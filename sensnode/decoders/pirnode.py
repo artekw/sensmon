@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
+import datetime
 import simplejson as json
 
 def pirnode(data, name):
@@ -13,7 +14,7 @@ def pirnode(data, name):
     d = int(data[5])
 
     #nodeid = str(data[1])
-    timestamp  = int(time.time())
+    timestamp = int(time.mktime(datetime.datetime.now().timetuple())) #unix time
 
     template = ({
         'light': a,

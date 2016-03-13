@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
+import datetime
 import simplejson as json
 
 def lab(data, name):
@@ -30,15 +31,17 @@ def lab(data, name):
     i = int(data[10])
     j = int(data[11])
     k = int(data[12])
+    l = int(data[13])
 
     #nodeid = str(data[1])
-    timestamp = int(time.time()) #unix time
+    timestamp = int(time.mktime(datetime.datetime.now().timetuple())) #unix time
 
     template = ({
         'name':name,
         'humi': str((256 * d) + c),
         'temp': str(((256 * (f&3) + e) ^ 512) - 512),
-        'batvol':str((256 * k) + j),
+        'batvol':str((256 * j) + i),
+	'lpg':str((256 * l) + k),
         'timestamp':timestamp
          })
 

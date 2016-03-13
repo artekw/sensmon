@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
+import datetime
 import simplejson as json
 
 def babcia(data, name):
@@ -19,7 +20,7 @@ def babcia(data, name):
     j = int(data[11])
 
     #nodeid = str(data[1])
-    timestamp = int(time.time()) #unix time
+    timestamp = int(time.mktime(datetime.datetime.now().timetuple())) #unix time
 
     template = ({
         'name':name,

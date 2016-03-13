@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
+import datetime
 import simplejson as json
 
 def testnode(data, name):
@@ -33,7 +34,7 @@ def testnode(data, name):
     l = int(data[13])
 
     #nodeid = str(data[1])
-    timestamp = int(time.time()) #unix time
+    timestamp = int(time.mktime(datetime.datetime.now().timetuple())) #unix time
 
     template = ({
         'name':name,

@@ -34,6 +34,8 @@ import sensnode.common
 import sensnode.graphs
 import sensnode.logs as logs
 from sensnode.config import config
+from sensnode.weather import getWeather
+from sensnode.weather import getAQI
 
 # inicjalizacja menadżera konfiguracji
 ci = config(init=True)
@@ -128,12 +130,6 @@ class HomeHandler(BaseHandler):
     def get(self):
         self.render("home.tpl")
 
-# strona mobila
-class MobileHomeHandler(BaseHandler):
-
-    def get(self):
-        self.render("mbase.tpl")
-
 
 # panel administatora
 class AdminHandler(BaseHandler):
@@ -143,22 +139,12 @@ class AdminHandler(BaseHandler):
         self.render("admin.tpl")
 
 
-# zakładka wykresy
+# zakładka Wykresy
 class GraphsHandler(BaseHandler):
 
     def get(self, node, sensor, timerange):
-        content = ()
-        self.render("graphs.tpl",
-                    content=graphs.generate_graph(node, sensor, timerange))
-"""
-class GraphsHandler(BaseHandler):
-
-    @tornado.web.authenticated
-    def get(self):
-        self.set_header('Access-Control-Allow-Origin', '*')
         self.render("graphs.tpl")
 
-"""
 
 # zakładka Dashboard
 class DashHandler(BaseHandler):
@@ -191,6 +177,15 @@ class LogsHandler(BaseHandler):
         self.render("logs.tpl")
 
 
+# zakłatka Intro
+class IntroHandler(BaseHandler):
+
+    def get(self):
+        weather = getWeather('suwalki')
+        aqi = getAQI()
+        self.render("intro.tpl", w=weather,aqi=aqi)
+
+
 # zakładka System
 class InfoHandler(BaseHandler):
 
@@ -208,7 +203,7 @@ class InfoHandler(BaseHandler):
 
 
 # RESTful
-# history/node/sensor/timerange
+# history/<node>/<sensor>/<timerange>
 # rest/initv
 class GetHistoryData(BaseHandler):
 
@@ -283,12 +278,6 @@ class Websocket(tornado.websocket.WebSocketHandler):
             self.client.disconnect()
 
 
-class MiniDashHandler(BaseHandler):
-
-    def get(self):
-        self.write(".")
-
-
 def publish(jsondata):
 	"""
 	>> data = {'vrms': 220.39, 'timestamp': 1428338500, 'name': 'powernode', 'power': 246}
@@ -320,10 +309,11 @@ def main():
     application = tornado.web.Application([
         (r"/admin", AdminHandler),
         (r"/control", ControlHandler),
-        (r"/", DashHandler),
+        (r"/dash", DashHandler),
         (r"/graphs/(?P<node>[^\/]+)/?(?P<sensor>[^\/]+)?/?(?P<timerange>[^\/]+)?", GraphsHandler),
-        (r"/minidash", MiniDashHandler),
+		#(r"/graphs", GraphsHandler),
         (r"/info", InfoHandler),
+		(r"/", IntroHandler),
         (r"/logs", LogsHandler),
         (r"/login", LoginHandler),
         (r"/logout", LogoutHandler),
@@ -336,7 +326,7 @@ def main():
         static_path=os.path.join(os.path.dirname(__file__), "static"),
         cookie_secret="__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
         login_url="/login",
-        debug=False)
+        debug=True)
 
     httpServer = tornado.httpserver.HTTPServer(application)
     httpServer.listen(options.webapp_port)

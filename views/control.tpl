@@ -26,6 +26,6 @@
 {% end %}
 {% block scripts %}
 <script>
-    var initv = {{ init }}
+    var initv = {{! init }}
 </script>
 {% end %}
