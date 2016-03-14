@@ -13,17 +13,10 @@ import common
 import logging
 import config
 
-"""
-Redis DB szablon:
-- hash initv: dane chwilowe z czujnikow
-- kanał nodes(domyślnie) - pubsub
-- hash status: dane chwilowe przekaźników
-"""
-
 
 class redisdb():
 
-    """Temporary data"""
+    """Baza danych tymczasowych"""
     def __init__(self, debug=True):
         self.initdb()
         self.debug = debug
@@ -32,6 +25,10 @@ class redisdb():
         self.rdb = redis.Redis(host, port)
 
     def pubsub(self, data, channel='nodes'):
+        """
+        Hash initv: dane chwilowe z czujników
+        Kanał nodes(domyślnie) - kanał do wymiany danych po Websocket(przeglądarka-nody)
+        """
         if data:
             data_str = json.dumps(data)
             self.rdb.set("initv", data)  # name, value
@@ -41,17 +38,21 @@ class redisdb():
                 logging.debug('Submit init values')
 
     def setStatus(self, msg):
-        """{"name": "relaynode", "status": 0, "cmd": 1}"""
+        """
+        Hash status: dane chwilowe przekaźników
+        {"name": "relaynode", "status": 0, "cmd": 1}
+        """
         jmsg = json.loads(msg)
         self.rdb.hset('status', jmsg['name'] + "_" + jmsg['cmd'], str(msg))
 
     def getStatus(self, nodename):
+        """Spwardzanie statusu przekaźnika"""
         return self.rdb.hget("status", nodename)
 
 
 class history():
 
-    '''Store data in base for future use ie. graphs'''
+    """Baza danych historycznych"""
     def __init__(self, path, dbname):
         self.path = path
         self.dbname = dbname
@@ -68,10 +69,13 @@ class history():
         self.dbconnected = True
 
     def is_connected(self):
+        """Czy jest połączenie z bazą?"""
         return self.dbconnected
 
     def get(self, nodename, timerange):
+        """Pobierz zakresy danych"""
 
+        # zakresy
         ranges = {'1h' : 3600,
                 'day' : 86400,
                 '2days': 172800,
@@ -92,10 +96,12 @@ class history():
             return data
 
     def put(self, key, value):
+        """Wstawianie danych"""
         if self.dbconnected:
             self.lvldb.put(key, value)
 
     def get_toJSON(self, nodename, sensor, timerange='1h'):
+        """Pobierz zakres danych w formacie JSON"""
         data = []
         if self.dbconnected:
             values = self.get(nodename, timerange)

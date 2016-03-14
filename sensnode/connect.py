@@ -12,7 +12,7 @@ from config import config
 
 class Connect(multiprocessing.Process):
 
-    """Read data from wireless nodes"""
+    """Czytanie danych z nodów"""
     def __init__(self, taskQ, resultQ, debug=False):
         self._logger = logging.getLogger(__name__)
         multiprocessing.Process.__init__(self)
@@ -26,9 +26,9 @@ class Connect(multiprocessing.Process):
             port = config().get("app", ['serial', 'port'])
 
             if self.debug:
-                self._logger.debug('Trying connect to %s:%s' % (host, str(port)))
+                self._logger.debug('Próba połączenia z %s:%s' % (host, str(port)))
         except:
-            self._logger.warning("Can't read from config.")
+            self._logger.warning("Problem z odczytem ustawień")
             sys.exit(3)
 
         try:
@@ -37,12 +37,12 @@ class Connect(multiprocessing.Process):
             self.connected = True
 
             if self.debug:
-                self._logger.debug('Connected to %s:%s' % (host, str(port)))
+                self._logger.debug('Połączono z %s:%s' % (host, str(port)))
 
         except socket.error:
             self.connected = False
 
-            self._logger.warning("Can't connect to %s:%s" % (host, str(port)))
+            self._logger.warning("Nie można połączyć z %s:%s" % (host, str(port)))
             sys.exit(3)
 
     def is_connected(self):
@@ -82,7 +82,7 @@ class Connect(multiprocessing.Process):
             self._logger.warning("Not connected!")
 
     def serialread(self):
-        """Read from serial console"""
+        """Odczyt z konsoli ser2net"""
         line = ''
         while True:
             c = self.soc.recv(1)

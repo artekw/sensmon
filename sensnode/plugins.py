@@ -17,7 +17,7 @@ def plugins(init=False, basedir=None):
         if init:
             instance = Plugins(basedir)
         else:
-            raise ValueError("Plugins module not initialized correctly.")
+            raise ValueError("Mechanizm wtyczek nie został poprawnie zainicjalizowany.")
     return instance
 
 
@@ -44,7 +44,7 @@ class Plugins(object):
             if ext == ".py" and plugin_name != "__init__":
                 self.plugins_names.append(plugin_name)
 
-        self._logger.info("%s plugins was found" % len(self.plugins_names))
+        self._logger.info("Znaleziono %s dekoderów nodów" % len(self.plugins_names))
 
 
     def _load_plugins(self):
@@ -55,8 +55,8 @@ class Plugins(object):
             f, filename, description = imp.find_module(p, [filenamep])
             self.plugins[p] = imp.load_module(p, f, filename, description)
 
-        self._logger.info("%s plugins was loaded" % len(self.plugins))
-        self._logger.debug("Loaded plugins %s:" % self.plugins_names)
+        self._logger.info("Wczytano %s dekoderów" % len(self.plugins))
+        self._logger.debug("Wczytane dekodery %s:" % self.plugins_names)
 
 
     def plugin(self, plugin):

@@ -25,13 +25,14 @@ class Decoder(object):
 
 
     def decode(self, line):
-        """Decoder impelentation"""
+        """Dekoder"""
         decoders = []
 
+        # zaczyna się o OK
         if line.startswith("OK"):
             data = line.split(" ")
         else:
-            print("WARNING: No data!")
+            print("UWAGA: Brak danych!")
             return
 
         if data:
@@ -81,5 +82,5 @@ class Decoder(object):
 
         #return  dict((k,v) for (k,v) in template.iteritems())
 
-    def filter(self, data, fields):
-        return dict((k, v) for (k, v) in data.iteritems() if k in fields)
+#    def filter(self, data, fields):
+#        return dict((k, v) for (k, v) in data.iteritems() if k in fields)

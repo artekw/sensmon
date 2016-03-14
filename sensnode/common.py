@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 __author__ = 'Artur Wronowski'
-__version__ = '0.4-dev'
+__version__ = '0.41-dev'
 __appname__ = 'sensnode-core'
 __license__ = 'MIT'
 __email__ = 'arteqw@gmail.com'
@@ -98,7 +98,7 @@ def machine_detect():
 		temp_path = ""
 		scale = 0
 	return [machine, temp_path, scale]
-	
+
 
 def cpu_temp():
     machine_info = machine_detect()
@@ -110,31 +110,9 @@ def cpu_temp():
 
 #
 
-
 def getDigest(password):
     return hashlib.sha256(password).hexdigest()
 
 
 def isPassword(password, digest):
     return getDigest(password) == digest
-
-'''
-def qrcode_gen(node, url, out='static/img/qrcodes', replace=False):
-    if not os.path.isdir(out):
-        os.makedirs(out)
-
-    if not os.path.isfile('%s/%s.png' % (out, node)):
-        qr = QRCode(version=4,
-                    error_correction=constants.ERROR_CORRECT_M,
-                    box_size=5,
-                    border=1,
-                            )
-        qr.add_data('%s/%s.png' % (url, node))
-        qr.make(fit=True)
-
-        img = qr.make_image()
-        img.save('%s/%s.png' % (out, node))
-
-for n in config().get("nodes", ['keys']):
-    qrcode_gen(n, "http://192.168.88.20/rest")
-'''

@@ -24,7 +24,7 @@ def config(init=False,
         if init:
             instance = Config(debug, basedir, app_configfile, nodes_configfile)
         else:
-            raise ValueError("Settings module not initialize correctly.")
+            raise ValueError("Moduł ustawień nie został poprawnie zainicjalizowany.")
     return instance
 
 # TODO - wykorzystać domyślne ustawienia
@@ -97,8 +97,8 @@ class Config(object):
         if not self._nodeconfig:
             self._nodeconfig = {}
 
-        self._logger.info("Application config loaded %s" % self._app_configfile)
-        self._logger.info("Nodes config loaded %s" % self._nodes_configfile)
+        self._logger.info("Wczytano ustaw. aplikacji %s" % self._app_configfile)
+        self._logger.info("Wczytano ustaw. nodów %s" % self._nodes_configfile)
 
 
     def save(self):
