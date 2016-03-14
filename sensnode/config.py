@@ -64,7 +64,7 @@ class Config(object):
         else:
             appdir = os.path.expanduser(os.path.join('~', APPNAME.lower()))
             # TODO - inny katalog na ustawienia
-            self.settings_dir = os.path.join(appdir, 'static/conf')
+            self.settings_dir = os.path.join(appdir, '')
 
         # app
         if app_configfile is not None:
@@ -76,7 +76,7 @@ class Config(object):
         if nodes_configfile is not None:
             self._nodes_configfile = nodes_configfile
         else:
-            self._nodes_configfile = os.path.join(self.settings_dir, "nodemap.json")
+            self._nodes_configfile = os.path.join(os.path.join(appdir, 'static/conf'), "nodemap.json")
 
         self.load()
 
