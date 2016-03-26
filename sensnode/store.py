@@ -93,6 +93,7 @@ class history():
                                             include_start=True,
                                             include_stop=True)
             data = [value for key, value in iterator]
+            iterator.close()
             return data
 
     def put(self, key, value):
