@@ -1,12 +1,8 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-debug = True  # tryb developerski
-version = '0.41-dev'
-
 import os
 import logging
-from datetime import date
 
 # https://github.com/leporo/tornado-redis
 import tornadoredis
@@ -31,10 +27,13 @@ import sensnode.store
 import sensnode.decoder
 import sensnode.connect
 import sensnode.common
-import sensnode.logs as logs
+# import sensnode.logs as logs
 from sensnode.config import config
 from sensnode.weather import getWeather
-from sensnode.weather import getAQI
+
+
+debug = True  # tryb developerski
+version = '0.41-dev'
 
 # inicjalizacja menadżera konfiguracji
 ci = config(init=True)
@@ -150,8 +149,6 @@ class DashHandler(BaseHandler):
     @tornado.web.asynchronous
     @tornado.gen.engine
     def get(self):
-        c = tornadoredis.Client()
-        res = yield tornado.gen.Task(c.get, 'initv')
         self.render("dash.tpl")
 
 
@@ -180,8 +177,7 @@ class IntroHandler(BaseHandler):
 
     def get(self):
         weather = getWeather('suwalki')
-        aqi = getAQI()
-        self.render("intro.tpl", w=weather,aqi=aqi)
+        self.render("intro.tpl", w=weather)
 
 
 # zakładka System
@@ -289,7 +285,7 @@ def publish(jsondata):
 
 
 # funkcja główna
-def main():
+def main(): 
     taskQ = multiprocessing.Queue()
     resultQ = multiprocessing.Queue()
 
@@ -333,26 +329,25 @@ def main():
     @tornado.gen.engine
     def checkResults():
         if not resultQ.empty():
-			# suwówka
+            # suwówka
             result = resultQ.get()
-			# dane zdekodowane
+            # dane zdekodowane
             decoded = decoder.decode(result)
-			# dane zdekodowane + odczyty
+            # dane zdekodowane + odczyty
             update = decoder.update(decoded)
             # print ("RAW: %s" % (result))
             # print ("JSON %s" % (decoded))
             # print ("UPD %s" % (update))
 
-			# leveldb włączone?
+            # leveldb włączone?
             if options.leveldb_enable:
-				if decoded['name'] not in options.leveldb_forgot:
-					key = ('%s-%d' %  (decoded['name'], decoded['timestamp'])).encode('ascii')
-					value = ('%s' % decoded).encode('ascii')
-					history.put(key, value)
-					if debug:
-						logger.debug("LevelDB: %s %s" % (key, decoded))
-
-			# MQTT włączone?
+                if decoded['name'] not in options.leveldb_forgot:
+                    key = ('%s-%d' %  (decoded['name'],decoded['timestamp'])).encode('ascii')
+                    value = ('%s' % decoded).encode('ascii')
+                    history.put(key, value)
+                    if debug:
+                        logger.debug("LevelDB: %s %s" % (key, decoded))
+            # MQTT włączone?
             if options.mqtt_enable:
                 publish(decoded)
 
@@ -361,7 +356,6 @@ def main():
             for c in clients:
                 c.write_message(update)
 
-
     mainLoop = tornado.ioloop.IOLoop.instance()
     tornado.autoreload.start(mainLoop)
     scheduler = tornado.ioloop.PeriodicCallback(
@@ -369,6 +363,7 @@ def main():
 
     scheduler.start()
     mainLoop.start()
+
 
 if __name__ == "__main__":
     main()
