@@ -1,6 +1,5 @@
 Jinja2==2.8
 jsontree==0.4.3
-numpy==1.10.4
 paho-mqtt==1.1
 ply==3.4
 plyvel==0.9
