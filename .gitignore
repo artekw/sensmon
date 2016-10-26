@@ -18,3 +18,4 @@ develop-eggs
 .installed.cfg
 sync.py
 sync.sh
+settings.json
