@@ -39,10 +39,11 @@ version = '0.41-dev'
 ci = config(init=True)
 
 # ------------------------webapp settings--------------------#
-define("webapp_port",default=config().get("app", ['webapp', 'port']),
-		help="Run on the given port", type=int)
-define("webapp_host",default=sensnode.common.get_ip_address(config().get("app", ['webapp', 'iface'])),
-        help="Run on the given hostname")
+define("webapp_port", default=config().get("app", ['webapp', 'port']),
+                      help="Run on the given port", type=int)
+define("webapp_host", default=sensnode.common.get_ip_address(config().get("app", ['webapp', 'iface'])),
+                      help="Run on the given hostname")
+
 # leveldb
 define("leveldb_enable",default=config().get("app", ['leveldb', 'enable']),
 		help="LevelDB enabled")
@@ -52,6 +53,7 @@ define("leveldb_path",default=config().get("app", ['leveldb', 'path']),
 		help="LevelDB path do database")
 define("leveldb_forgot",default=config().get("app", ['leveldb', 'forgot']),
         help="Forgot nodes data")
+
 # MQTT
 define("mqtt_enable",default=config().get("app", ['mqtt', 'enable']),
 		help="MQTT enabled")
@@ -59,7 +61,15 @@ define("mqtt_broker",default=config().get("app", ['mqtt', 'broker']),
 		help="MQTT broker IP")
 define("mqtt_port",default=config().get("app", ['mqtt', 'port']),
 		help="MQTT broker port")
+
+#OpenWeatherMap
+define("city_name", default=config().get("app", ['weather', 'city']),
+                  help="City name", type=int)
+define("appid", default=config().get("app", ['weather', 'appid']),
+                help="APPID to OpenWeatherMap")
+
 # ----------------------end webapp settings------------------#
+
 
 # klient Redis
 c = tornadoredis.Client()
@@ -176,7 +186,7 @@ class LogsHandler(BaseHandler):
 class IntroHandler(BaseHandler):
 
     def get(self):
-        weather = getWeather('suwalki')
+        weather = getWeather('suwalki', appid=options.appid)
         self.render("intro.tpl", w=weather)
 
 

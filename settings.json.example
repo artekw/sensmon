@@ -17,7 +17,7 @@
       "enable": 1,
       "dbname": "_db",
       "path": ".",
-      "forgot": "powernode"
+      "forgot": "some_node"
     },
     "mqtt": {
       "enable": 1,
@@ -33,7 +33,7 @@
       "tls": true
     },
     "weather": {
-      "city": "suwalki",
-      "appid": "19355ee6d1cab3099dfb45e308ce7e8b"
+      "city": "london",
+      "appid": "your_openweathermap_appid"
     }
 }
