@@ -3,7 +3,7 @@
 {% block content %}
     <h1 class="page-header">Czujniki <small>Odczyty z czujników</small></h1>
     <div class="table-responsive" ng-controller="dashCtrl">
-
+        <div class="table-responsive">
         <table class="table">
   			<tbody>
             <tr ng-repeat="(k,v) in array">
@@ -22,5 +22,6 @@
                 </td>
             </tr>
 		</table>
-    </div>
+        </div>
+        </div>
 {% end %}

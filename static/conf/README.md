@@ -18,7 +18,7 @@ Ustawienia komunikacji poprzez ser2net lub remserial.
 ## redis
 Konfiguracja bazy Redis. Baza przechowuje dane tymczasowe z czujek.
 
-  - __host__ - hostname na jakim działa serwer Redis
+  - __host__ - hostname na jakim działa serwer Redis, domyślnie localhost
 
 ## leveldb
 Konfiguracja bazy LevelDB(by Google). Baza przechowuje dane historyczne.
@@ -44,10 +44,6 @@ Konfiguracja dla portalu http://openweathermap.org/ z prognozą pogody dla wybra
   - __city__ - miasto dla którego ma zostać pobrana prognoza pogody
   - __appid__ - identyfikator aplikacji; wymagana rejestracja
 
-## aqi
-Konfiguracja dla strony http://aqicn.org z danymi o jakości powietrza dla wybranego miasta
-
-  - __station__ - nazwa stacji
 
 ### TODO
   - dodać dla MQTT definiowanie topic'a; teraz jest /sesmon/< nodename >

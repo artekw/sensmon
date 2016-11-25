@@ -8,10 +8,10 @@
     <meta name="author" content="Artur Wronowski">
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/styl.css">
     <link rel="stylesheet" href="/static/plugins/owfont/css/owfont-regular.min.css" type="text/css">
     <link rel="stylesheet" href="http://getbootstrap.com/examples/signin/signin.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/styl.css">
 
     <title>{% block title %}{% end %} - sensmon</title>
     <link href='http://fonts.googleapis.com/css?family=Dosis:400,500,600,700|Lato:400,700,900,400italic|Monda:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
@@ -49,6 +49,7 @@
 						<li><a target="_self" href="/">Intro</a></li>
 						<li><a target="_self" href="dash">Czujniki</a></li>
 						<!--<li ng-class="navClass('control')"><a href="/control">Sterowanie</a></li>-->
+                        <li><a target="_self" href="events">Zdarzenia</a></li>
 						<li><a target="_self" href="info">Info</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">

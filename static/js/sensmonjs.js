@@ -168,6 +168,7 @@ sensmon.controller('dashCtrl', function ($scope, $http) {
 
         $scope.safeApply(function() {
             $scope.array = jsonParsed;
+            console.log($scope.array);
         });
     }
 

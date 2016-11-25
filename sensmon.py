@@ -175,6 +175,15 @@ class ControlHandler(BaseHandler):
                     init=[json.loads(x) for x in res])
 
 
+# zakładka Zdarzenia
+class EventsHandler(BaseHandler):
+
+    @tornado.web.asynchronous
+    @tornado.gen.engine
+    def get(self):
+        self.render("events.tpl")
+
+
 # zakłatka Logi
 class LogsHandler(BaseHandler):
 
@@ -313,6 +322,7 @@ def main():
         (r"/admin", AdminHandler),
         #(r"/control", ControlHandler),
         (r"/dash", DashHandler),
+        (r"/events", EventsHandler),
         (r"/graphs/(?P<node>[^\/]+)/?(?P<sensor>[^\/]+)?/?(?P<timerange>[^\/]+)?", GraphsHandler),
         (r"/info", InfoHandler),
 		(r"/", IntroHandler),
