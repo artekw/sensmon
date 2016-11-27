@@ -7,14 +7,14 @@
       <div class="clock">{{! clock | date:'HH:mm:ss'}}</div>
       <div class="date">Dziś jest {{! today(clock) }}</div>
   </div>
-  <div class="row" style="text-align:center; font-weight:bold;">
-  <!--row-->
-    <div class="panel panel-primary">
-      <div class="panel-heading ">Prognoza na dziś</div>
+  <div class="panel panel-primary">
+    <div class="panel-heading ">Prognoza na dziś</div>
       <div class="panel-body">
+        <!--row-->
+        <div class="row" style="text-align:center; font-weight:bold;">
         <div class="col-sm-4">
           <div class="panel panel-info">
-            <div class="panel-heading ">Temperatura</div>
+            <div class="panel-heading">Temperatura</div>
               <div class="panel-body">
                 <h1 class="text-primary">{% raw round((w['list'][0]['temp']['max'] + w['list'][0]['temp']['min'])/2, 1) %}°C</h1>
             </div>
@@ -40,11 +40,11 @@
     </div>
     <!--end-row-->
   </div>
-  <div class="row" style="text-align:center; font-weight:bold;">
+  <div class="panel panel-primary">
+    <div class="panel-heading ">Prognoza na dni kolejne</div>
+    <div class="panel-body">
+    <div class="row" style="text-align:center; font-weight:bold;">
     <!--row-->
-    <div class="panel panel-primary">
-      <div class="panel-heading ">Prognoza na dni kolejne</div>
-      <div class="panel-body">
         <div class="weather">
           {% for list in w['list'][1:5] %}
           <div class="col-sm-3">

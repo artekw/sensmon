@@ -32,8 +32,9 @@ from sensnode.config import config
 from sensnode.weather import getWeather
 
 
-debug = True  # tryb developerski
-version = '0.41-dev'
+# dev mode
+debug = False
+version = '0.42-dev'
 
 # inicjalizacja menadżera konfiguracji
 ci = config(init=True)
@@ -67,7 +68,6 @@ define("city_name", default=config().get("app", ['weather', 'city']),
                   help="City name", type=int)
 define("appid", default=config().get("app", ['weather', 'appid']),
                 help="APPID to OpenWeatherMap")
-
 # ----------------------end webapp settings------------------#
 
 
@@ -195,7 +195,7 @@ class LogsHandler(BaseHandler):
 class IntroHandler(BaseHandler):
 
     def get(self):
-        weather = getWeather('suwalki', appid=options.appid)
+        weather = getWeather(city=options.city_name, appid=options.appid)
         self.render("intro.tpl", w=weather)
 
 
@@ -209,8 +209,6 @@ class InfoHandler(BaseHandler):
                     lavg=sensnode.common.loadavg(),
                     uptime=sensnode.common.uptime(),
                     cpu_temp=sensnode.common.cpu_temp(),
-                    process=sensnode.common.process(),
-                    disksize=sensnode.common.disksize(),
                     machine=sensnode.common.machine_detect()[0]
                     )
 
@@ -304,7 +302,7 @@ def publish(jsondata):
 
 
 # funkcja główna
-def main(): 
+def main():
     taskQ = multiprocessing.Queue()
     resultQ = multiprocessing.Queue()
 
@@ -326,7 +324,7 @@ def main():
         (r"/graphs/(?P<node>[^\/]+)/?(?P<sensor>[^\/]+)?/?(?P<timerange>[^\/]+)?", GraphsHandler),
         (r"/info", InfoHandler),
 		(r"/", IntroHandler),
-        (r"/logs", LogsHandler),
+        #(r"/logs", LogsHandler),
         (r"/login", LoginHandler),
         (r"/logout", LogoutHandler),
         (r"/initv", GetInitData),
@@ -344,22 +342,22 @@ def main():
     httpServer = tornado.httpserver.HTTPServer(application)
     httpServer.listen(options.webapp_port)
     print "sensmon %s started at %s port" % (version, options.webapp_port)
-    print "Przejdz na stronę http://%s:%s" % (options.webapp_host, options.webapp_port)
+    print "Go to page http://%s:%s" % (options.webapp_host, options.webapp_port)
 
     @tornado.gen.engine
     def checkResults():
         if not resultQ.empty():
-            # suwówka
+            # RAW data
             result = resultQ.get()
-            # dane zdekodowane
+            # Decoded data
             decoded = decoder.decode(result)
-            # dane zdekodowane + odczyty
+            # Update sensors data
             update = decoder.update(decoded)
-            # print ("RAW: %s" % (result))
-            # print ("JSON %s" % (decoded))
-            # print ("UPD %s" % (update))
+            #print ("RAW: %s" % (result))
+            #print ("JSON %s" % (decoded))
+            #print ("JSON Updated %s" % (update))
 
-            # leveldb włączone?
+            # if LevelDB enabled store data
             if options.leveldb_enable:
                 if decoded['name'] not in options.leveldb_forgot:
                     key = ('%s-%d' %  (decoded['name'],decoded['timestamp'])).encode('ascii')
@@ -367,11 +365,11 @@ def main():
                     history.put(key, value)
                     if debug:
                         logger.debug("LevelDB: %s %s" % (key, decoded))
-            # MQTT włączone?
+            # If MQTT enabled publish
             if options.mqtt_enable:
                 publish(decoded)
 
-            # dane tymczasowe - initv
+            # initv - actual data from sensors store in Redis
             redisdb.pubsub(update)
             for c in clients:
                 c.write_message(update)

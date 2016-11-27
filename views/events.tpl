@@ -1,7 +1,7 @@
 {% extends "base.tpl" %}
 {% block title %}Zdarzenia{% end %}
 {% block content %}
-    <h1 class="page-header">Czujniki <small>Odczyty z czujników</small></h1>
+    <h1 class="page-header">Czujniki</h1>
     <div ng-controller="dashCtrl">
     <!-- Wiersz -->
     <div class="row">

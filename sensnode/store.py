@@ -7,6 +7,7 @@ import plyvel as leveldb
 import os
 import ast
 import time
+from itertools import islice
 import simplejson as json
 
 import common
@@ -78,7 +79,7 @@ class history():
         # zakresy
         ranges = {'1h' : 3600,
                 'day' : 86400,
-                '2days': 172800,
+                '2d': 172800,
                 'week' : 604800,
                 'month' : 2592000}
 
@@ -94,6 +95,22 @@ class history():
                                             include_stop=True)
             data = [value for key, value in iterator]
             iterator.close()
+
+            """
+            roblad
+
+            if (ts - ranges[timerange]) > (ts - 604900):
+                #print 'week'
+                return data
+            elif(ts - ranges[timerange]) < (ts - 604900) and (ts - ranges[timerange]) > (ts - 2593000):
+                data_filtered = [value for value in (islice(data,0,len(data), 10))]
+                #print 'month - 3month'
+                return data_filtered
+            elif (ts - ranges[timerange]) < (ts - 2593000):
+                #print 'above 3month'
+                data_filtered = [value for value in (islice(data,0,len(data), 100))]
+                return data_filtered
+            """
             return data
 
     def put(self, key, value):

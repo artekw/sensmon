@@ -1,12 +1,6 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-__author__ = 'Artur Wronowski'
-__version__ = '0.41-dev'
-__appname__ = 'sensnode-core'
-__license__ = 'MIT'
-__email__ = 'arteqw@gmail.com'
-
 import datetime
 import logging
 import platform
@@ -19,30 +13,10 @@ import simplejson as json
 import hashlib
 #from config import config
 import logs
-# from qrcode import *
-
-
-
-def get_version():
-        return __version__
-
-
-def get_author():
-        return __author__
-
-
-def get_license():
-        return __license__
-
-
-def get_email():
-        return __email__
-
-#
 
 
 def this_system():
-    return platform.system()
+    return "%s %s" % (platform.linux_distribution()[0].capitalize(), platform.linux_distribution()[1])
 
 
 def this_mach():
@@ -58,21 +32,6 @@ def uptime():
         uptime_seconds = float(f.readline().split()[0])
         uptime_string = str(datetime.timedelta(seconds=uptime_seconds))
     return uptime_string
-
-
-def disksize():
-    disk = subprocess.Popen(['df', '-H'], stdout=subprocess.PIPE)
-    grep = subprocess.Popen(
-        ['grep', 'root'], stdin=disk.stdout, stdout=subprocess.PIPE)
-    disk.stdout.close()
-    out = grep.communicate()[0]
-    return out
-
-
-def process():
-    ps = subprocess.Popen(['ps', 'x1'], stdout=subprocess.PIPE)
-    out, err = ps.communicate()
-    return out
 
 
 def get_ip_address(ifname):
@@ -108,7 +67,6 @@ def cpu_temp():
         temp = float(f.readline()) / int(machine_info[2])
     return int(temp)
 
-#
 
 def getDigest(password):
     return hashlib.sha256(password).hexdigest()

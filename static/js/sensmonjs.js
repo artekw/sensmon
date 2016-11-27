@@ -1,6 +1,8 @@
 /*
 TODO:
 - port websocket z konfiguracji
+- wczytywanie wykresu
+- przyciski zakresów
 */
 
 /*
@@ -23,7 +25,7 @@ sensmon.directive('animateOnChange', function($timeout) {
         element.addClass('changed');
         $timeout(function() {
           element.removeClass('changed');
-        }, 1000); // Could be enhanced to take duration as a parameter
+        }, 1000);
       }
     });
   };
@@ -87,6 +89,7 @@ sensmon.filter('capitalize', function() {
       return token.charAt(0).toUpperCase() + token.slice(1);
    }
 });
+
 
 /* controllers */
 sensmon.controller('logsCtrl', function ($scope) {
@@ -259,7 +262,6 @@ sensmon.controller('graphsCtrl', function ($route, $routeParams, $scope, $http, 
     getPlotInfo.then(function () {
       plot($scope.plotinfo);
     })
-
   }, 20);
 
 
@@ -273,7 +275,32 @@ sensmon.controller('graphsCtrl', function ($route, $routeParams, $scope, $http, 
       // punkty wykresu
       chartData = data.data;
       // ustawienia wykresu
-      Highcharts.setOptions({global : {useUTC : false}});
+      Highcharts.setOptions({
+        global : {
+          useUTC : false
+        },
+        lang: {
+          // polskie tłumaczenie
+          // http://stackoverflow.com/questions/7419358/highcharts-datetime-localization
+          loading: 'Ładowanie...',
+          months: ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'],
+          weekdays: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'],
+          shortMonths: ['Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrz', 'Paź','Lis', 'Gru'],
+          exportButtonTitle: "Export",
+          printButtonTitle: "Drukowanie",
+          rangeSelectorFrom: "Od",
+          rangeSelectorTo: "Do",
+          rangeSelectorZoom: "Przybliżenie",
+          downloadPNG: 'Pobierz obraz PNG',
+          downloadJPEG: 'Pobierz obraz JPEG',
+          downloadPDF: 'Pobierz dokument PDF',
+          downloadSVG: 'Pobierz obraz SVG',
+          thousandsSep: " ",
+          decimalPoint: ','
+          // resetZoom: "Reset",
+          // resetZoomTitle: "Reset,
+        }
+      });
       $scope.chartConfig = {
         options: {
           chart: {
@@ -314,11 +341,18 @@ sensmon.controller('graphsCtrl', function ($route, $routeParams, $scope, $http, 
             inputEnabled : false
           },
           scrollbar: {
-            enabled: false
+            enabled: true
           },
           navigator: {
-            enabled: false
+            enabled: true
           }
+        },
+        loading: false, // można uzyć do ładowania danych - poszukać!
+        credits: {
+          enabled: false
+        },
+        size: {
+          height :"550"
         },
         series: [],
         title: {
@@ -327,23 +361,36 @@ sensmon.controller('graphsCtrl', function ($route, $routeParams, $scope, $http, 
         yAxis: {
           title: {
             text: params.sensor,
-            opposite: false
+            opposite: false,
+            //gridLineColor: '#197F07',
+            minorTickInterval: 'auto'
           }
         },
+        //xAxis: {
+          //ridLineWidth: 1,
+          //gridZIndex: 4,
+          //gridLineColor: '#eee',
+        //},
         useHighStocks: true
       }
-    // dodajemy dane do wykresu
-    // FIXME: ustawienia serii danych odzielnie
-    $scope.chartConfig.series.push({
-          type: 'area',
-          data: chartData,
-          name: "Odczyt",
-          tooltip: {
-              valueDecimals: 2
-            }
+      // dodajemy dane do wykresu
+      // FIXME: ustawienia serii danych odzielnie
+      $scope.chartConfig.series.push({
+        type: 'area',
+        //marginRight: 130,
+        //marginBottom: 25,
+        lineWidth: 2,
+        data: chartData,
+        threshold: 0,
+        color: 'green',
+        negativeColor: 'blue',
+        name: "Odczyt",
+        tooltip: {
+          valueDecimals: 2
+        }
       });
-  });
-};
+    });
+  };
 });
 
 

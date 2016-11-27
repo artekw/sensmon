@@ -3,7 +3,7 @@
 
 {% block content %}
     <div ng-controller="graphsCtrl">
-    <h1 class="page-header">Historia <small>Wykresy odczytów</small></h1>
+    <h1 class="page-header">Historia</h1>
     <div class="row">
       <!--<div class="btn-group" role="group" aria-label="...">
         <button type="button" class="btn btn-default">Godzina</button>
