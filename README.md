@@ -74,6 +74,7 @@ Wejdz przez przeglądarkę na adres http://adres-ip-hosta:8081
 
 ## Zrzuty ekranu
 
+![sensmon info](https://dl.dropboxusercontent.com/u/677573/Photos/sensmon/intro.png)
 ![sensmon dashboard](https://dl.dropboxusercontent.com/u/677573/Photos/sensmon/dashboard.png)
 ![sensmon wykresy](https://dl.dropboxusercontent.com/u/677573/Photos/sensmon/graphs.png)
 
