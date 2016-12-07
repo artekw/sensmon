@@ -70,9 +70,18 @@ sensmon.filter('parsedate', function(dateFilter) {
 });
 
 
+/* drop timestamp from array */
 sensmon.filter('nodate', function() {
     return function(input) {
         return _.omit(input, 'timestamp');
+            }
+});
+
+
+/* drop timestamp from array */
+sensmon.filter('nobatvol', function() {
+    return function(input) {
+        return _.omit(input, 'batvol');
             }
 });
 

@@ -46,11 +46,11 @@
 				</div>
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
-						<li><a target="_self" href="/">Intro</a></li>
-						<li><a target="_self" href="dash">Czujniki</a></li>
+						<li><a target="_self" href="/"><i class="fa fa-home fa-fw" aria-hidden="true"></i>&nbsp;Intro</a></li>
+						<li><a target="_self" href="dash"><i class="fa fa-tachometer fa-fw" aria-hidden="true"></i>&nbsp;Czujniki</a></li>
 						<!--<li ng-class="navClass('control')"><a href="/control">Sterowanie</a></li>-->
-                        <li><a target="_self" href="events">Zdarzenia</a></li>
-						<li><a target="_self" href="info">Info</a></li>
+            <li><a target="_self" href="events"><i class="fa fa-flash fa-fw" aria-hidden="true"></i>&nbsp;Zdarzenia</a></li>
+						<li><a target="_self" href="info"><i class="fa fa-info fa-fw" aria-hidden="true"></i>&nbsp;Info</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						{% if current_user %}
