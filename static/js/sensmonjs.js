@@ -91,6 +91,20 @@ sensmon.filter('capitalize', function() {
 });
 
 
+//Inputs a number and outputs an array with that length.
+//(3 | array) => [0,1,2]
+sensmon.filter('group', function() {
+    return function(arrayLength) {
+        arrayLength = Math.ceil(arrayLength);
+        var arr = new Array(arrayLength), i = 0;
+        for (; i < arrayLength; i++) {
+            arr[i] = i;
+        }
+        return arr;
+    };
+})
+
+
 /* controllers */
 sensmon.controller('logsCtrl', function ($scope) {
     var ws = new WebSocket("ws://"+document.location.hostname+":8081/websocket");
