@@ -419,8 +419,7 @@ sensmon.controller('graphsCtrl', function ($route, $routeParams, $scope, $http, 
 
 sensmon.controller('HeaderController', function ($scope, $location)
 {
-    $scope.navClass = function (page) {
-        var currentRoute = $location.path().substring(1) || '/';
-        return page === currentRoute ? 'active' : '';
-    };
+    $scope.isActive = function (viewLocation) {
+      return viewLocation === $location.path();
+      };
 });

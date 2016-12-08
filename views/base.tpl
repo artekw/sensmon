@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/plugins/owfont/css/owfont-regular.min.css" type="text/css">
+    <link rel="stylesheet" href="/static/plugins/weathericons/css/weather-icons.min.css" type="text/css">
     <link rel="stylesheet" href="http://getbootstrap.com/examples/signin/signin.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/css/styl.css">
@@ -44,22 +45,23 @@
 					</button>
 					<a class="navbar-brand">sensmon</a>
 				</div>
-				<div class="navbar-collapse collapse">
+				<div class="navbar-collapse collapse" ng-controller="HeaderController">
 					<ul class="nav navbar-nav">
-						<li><a target="_self" href="/"><i class="fa fa-home fa-fw" aria-hidden="true"></i>&nbsp;Intro</a></li>
-						<li><a target="_self" href="dash"><i class="fa fa-tachometer fa-fw" aria-hidden="true"></i>&nbsp;Czujniki</a></li>
+						<li ng-class="{ active: isActive('/')}"><a target="_self" href="/"><i class="fa fa-home fa-fw" aria-hidden="true"></i>&nbsp;Intro</a></li>
+						<li ng-class="{ active: isActive('/dash')}"><a target="_self" href="dash"><i class="fa fa-tachometer fa-fw" aria-hidden="true"></i>&nbsp;Czujniki</a></li>
 						<!--<li ng-class="navClass('control')"><a href="/control">Sterowanie</a></li>-->
-            <li><a target="_self" href="events"><i class="fa fa-flash fa-fw" aria-hidden="true"></i>&nbsp;Zdarzenia</a></li>
-						<li><a target="_self" href="info"><i class="fa fa-info fa-fw" aria-hidden="true"></i>&nbsp;Info</a></li>
+            <li ng-class="{ active: isActive('/events')}"><a target="_self" href="events"><i class="fa fa-flash fa-fw" aria-hidden="true"></i>&nbsp;Zdarzenia</a></li>
+						<li ng-class="{ active: isActive('/info')}"><a target="_self" href="info"><i class="fa fa-info fa-fw" aria-hidden="true"></i>&nbsp;Info</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						{% if current_user %}
-							<li><a target="_self" href="/logout?next={{ url_escape(request.uri) }}">Wyloguj</a></li>
+							<li ng-class="{ active: isActive('/logout?next={{ url_escape(request.uri) }}')}"><a target="_self" href="/logout?next={{ url_escape(request.uri) }}"><i class="fa fa-sign-in fa-fw" aria-hidden="true"></i>&nbsp;Wyloguj</a></li>
 						{% else %}
-							<li><a target="_self" href="/login?next={{ url_escape(request.uri) }}">Zaloguj</a></li>
+							<li ng-class="{ active: isActive('/login?next={{ url_escape(request.uri) }}')}"><a target="_self" href="/login?next={{ url_escape(request.uri) }}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>&nbsp;Zaloguj</a></li>
 						{% end %}
 					</ul>
 				</div>
+        <div ng-view></div>
 			</div>
         </div>
 
