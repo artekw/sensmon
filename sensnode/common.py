@@ -15,7 +15,12 @@ import logs
 
 
 def this_system():
-    return "%s %s" % (platform.linux_distribution()[0].capitalize(), platform.linux_distribution()[1])
+    dist = get_dist()
+    if dist == "OpenWrt":
+        cmd = os.popen('cat /etc/openwrt_release | awk "/DISTRIB_RELEASE/{print substr ($1,18,5)}"')
+        return "%s %s" % ("OpenWrt", cmd)
+    else:
+        return "%s %s" % (platform.linux_distribution()[0].capitalize(), platform.linux_distribution()[1])
 
 
 def this_mach():
@@ -24,6 +29,15 @@ def this_mach():
 
 def loadavg():
     return os.getloadavg()
+
+
+def get_dist():
+    d = platform.linux_distribution()[0]
+    if d == '':
+        dist = "OpenWrt" # FIXME
+    else:
+        dist = d
+    return dist
 
 
 def uptime():
