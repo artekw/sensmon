@@ -3,7 +3,6 @@
       "host": "0.0.0.0",
       "port": 8081,
       "password": "admin",
-      "iface": "eth0",
       "verbose": 1
     },
     "serial": {
@@ -14,13 +13,13 @@
       "host": "localhost"
     },
     "leveldb": {
-      "enable": 1,
+      "enable": 0,
       "dbname": "_db",
       "path": ".",
       "forgot": "some_node"
     },
     "mqtt": {
-      "enable": 1,
+      "enable": 0,
       "broker": "localhost",
       "port": 1883
     },
