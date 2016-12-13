@@ -42,7 +42,7 @@ ci = config(init=True)
 # ------------------------webapp settings--------------------#
 define("webapp_port", default=config().get("app", ['webapp', 'port']),
                       help="Run on the given port", type=int)
-define("webapp_host", default=sensnode.common.get_ip_address(config().get("app", ['webapp', 'iface'])),
+define("webapp_host", default=sensnode.common.get_ip_address(),
                       help="Run on the given hostname")
 
 # leveldb
@@ -163,6 +163,7 @@ class DashHandler(BaseHandler):
 
 
 # zakładka Sterowanie
+"""
 class ControlHandler(BaseHandler):
 
     @tornado.web.asynchronous
@@ -173,22 +174,25 @@ class ControlHandler(BaseHandler):
         res = yield tornado.gen.Task(c.hvals, 'status')
         self.render("control.tpl",
                     init=[json.loads(x) for x in res])
+"""
 
 
-# zakładka Zdarzenia
-class EventsHandler(BaseHandler):
+# zakładka Przełaczniki
+class SwitchesHandler(BaseHandler):
 
     @tornado.web.asynchronous
     @tornado.gen.engine
     def get(self):
-        self.render("events.tpl")
+        self.render("switches.tpl")
 
 
 # zakłatka Logi
+"""
 class LogsHandler(BaseHandler):
 
     def get(self):
         self.render("logs.tpl")
+"""
 
 
 # zakłatka Intro
@@ -318,13 +322,11 @@ def main():
     tornado.options.parse_command_line()
     application = tornado.web.Application([
         (r"/admin", AdminHandler),
-        #(r"/control", ControlHandler),
         (r"/dash", DashHandler),
-        (r"/events", EventsHandler),
+        (r"/switches", SwitchesHandler),
         (r"/graphs/(?P<node>[^\/]+)/?(?P<sensor>[^\/]+)?/?(?P<timerange>[^\/]+)?", GraphsHandler),
         (r"/info", InfoHandler),
 		(r"/", IntroHandler),
-        #(r"/logs", LogsHandler),
         (r"/login", LoginHandler),
         (r"/logout", LogoutHandler),
         (r"/initv", GetInitData),

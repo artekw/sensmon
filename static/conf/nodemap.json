@@ -19,7 +19,7 @@
                 "scale": 1
             },
             "lpg":
-            {   
+            {
                 "unit": "",
                 "desc": "LPG",
                 "scale": 1
@@ -62,38 +62,13 @@
             }
         }
     },
-    "salon":   
-    {   
+    "salon":
+    {
         "id": 4,
         "title": "Foliowiec",
         "type": "output",
         "sensors":
         {
-            "batvol":
-            {
-                "unit": "V",
-                "desc": "Nap. baterii",
-                "scale": 3
-            },
-            "temp":
-            { 
-                "unit": "  C",
-                "desc": "Temperatura",
-                "scale": 1 
-            },
-            "timestamp":
-            {
-                "desc": "Aktualizacja"
-            } 
-        }
-    },
-    "babcia":
-    {   
-        "id": 6,
-        "title": "U Babci",
-        "type": "output",
-        "sensors":
-        {   
             "batvol":
             {
                 "unit": "V",
@@ -107,11 +82,36 @@
                 "scale": 1
             },
             "timestamp":
-            {   
+            {
                 "desc": "Aktualizacja"
             }
         }
-    },   
+    },
+    "babcia":
+    {
+        "id": 6,
+        "title": "Pokój Kamila",
+        "type": "output",
+        "sensors":
+        {
+            "batvol":
+            {
+                "unit": "V",
+                "desc": "Nap. baterii",
+                "scale": 3
+            },
+            "temp":
+            {
+                "unit": "  C",
+                "desc": "Temperatura",
+                "scale": 1
+            },
+            "timestamp":
+            {
+                "desc": "Aktualizacja"
+            }
+        }
+    },
     "artekroom":
     {
         "id": 2,

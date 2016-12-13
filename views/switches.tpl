@@ -1,9 +1,9 @@
 {% extends "base.tpl" %}
-{% block title %}Zdarzenia{% end %}
+{% block title %}Przełączniki{% end %}
 
 {% block content %}
     <div ng-controller="eventsCtrl">
-    <h1 class="page-header">Zdarzenia</h1>
+    <h1 class="page-header">Przełączniki</h1>
     <div class="row">
     <!-- Panel -->
     <div class="col-sm-4">
