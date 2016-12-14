@@ -23,10 +23,10 @@ import tornado.autoreload
 from tornado.options import define, options
 
 # sesnode engine
-import sensnode.store
 import sensnode.decoder
 import sensnode.connect
 import sensnode.common
+import sensnode.store
 # import sensnode.logs as logs
 from sensnode.config import config
 from sensnode.weather import getWeather
@@ -76,7 +76,8 @@ c = tornadoredis.Client()
 c.connect()
 clients = []
 
-history = sensnode.store.history(options.leveldb_path, options.leveldb_dbname)
+if options.leveldb_enable:
+    history = sensnode.store.history(options.leveldb_path, options.leveldb_dbname)
 
 
 # --------------------------webapp code-----------------------#

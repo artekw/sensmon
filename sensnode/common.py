@@ -5,12 +5,9 @@ import datetime
 import logging
 import platform
 import os
-import subprocess
-import struct
 import socket
 import simplejson as json
 import hashlib
-#from config import config
 import logs
 
 

@@ -1,18 +1,13 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-import redis
-# https://plyvel.readthedocs.org
-import plyvel as leveldb
+
 import os
 import ast
 import time
 from itertools import islice
 import simplejson as json
-
-import common
-import logging
-import config
+import redis
 
 
 class redisdb():
@@ -55,6 +50,9 @@ class history():
 
     """Baza danych historycznych"""
     def __init__(self, path, dbname):
+        # https://plyvel.readthedocs.org
+        import plyvel as leveldb
+
         self.path = path
         self.dbname = dbname
         #self.create_db = create_db

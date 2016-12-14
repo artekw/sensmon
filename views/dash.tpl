@@ -25,7 +25,7 @@
             <div class="panel-body">
             <!-- Table -->
               <table class="table">
-              <th ng-repeat="(i,j) in v.sensors|nodate|nobatvol"><h5><a href="/graphs/{{! k}}/{{! i}}/day" target="_self" title="Wykres">{{! j.desc}}</a></h5></th>
+              <th ng-repeat="(i,j) in v.sensors|nodate|nobatvol"><h5><a href="/graphs/{{! k}}/{{! i}}/week" target="_self" title="Wykres">{{! j.desc}}</a></h5></th>
                 <tr>
                   <!-- cels -->
                 <td ng-repeat="(i,j) in v.sensors|nodate|nobatvol"
