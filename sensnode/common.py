@@ -25,7 +25,11 @@ def this_mach():
 
 
 def loadavg():
-    return os.getloadavg()
+    dist = get_dist()
+    if dist == "OpenWrt":
+        return os.popen('cat /proc/loadavg | awk "{print $1,$2,$3}"')
+    else:
+        return os.getloadavg()
 
 
 def get_dist():
