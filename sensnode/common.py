@@ -14,8 +14,8 @@ import logs
 def this_system():
     dist = get_dist()
     if dist == "OpenWrt":
-        cmd = os.popen('cat /etc/openwrt_release | awk "/DISTRIB_RELEASE/{print substr ($1,18,5)}"')
-        return "%s %s" % ("OpenWrt", cmd.read())
+        cmd = os.popen("cat /etc/openwrt_release | awk '/DISTRIB_RELEASE/{print substr ($1,18,5)}'")
+        return "%s %s" % ("OpenWrt", cmd.read().rstrip())
     else:
         return "%s %s" % (platform.linux_distribution()[0].capitalize(), platform.linux_distribution()[1])
 
@@ -27,7 +27,7 @@ def this_mach():
 def loadavg():
     dist = get_dist()
     if dist == "OpenWrt":
-        return os.popen('cat /proc/loadavg | awk "{print $1,$2,$3}"').read()
+        return os.popen("cat /proc/loadavg | awk '{print $1,$2,$3}'").read().rstrip()
     else:
         return os.getloadavg()
 
