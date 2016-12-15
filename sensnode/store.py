@@ -50,21 +50,17 @@ class history():
 
     """Baza danych historycznych"""
     def __init__(self, path, dbname):
-        # https://plyvel.readthedocs.org
-        import plyvel as leveldb
+        import lmdb
 
         self.path = path
         self.dbname = dbname
-        #self.create_db = create_db
 
         dirname = self.path + "/" + self.dbname
 
         if not os.path.exists(dirname):
             os.makedirs(dirname)
 
-        self.lvldb = leveldb.DB("%s/%s" % (self.path,
-                                        self.dbname),
-                                        create_if_missing=True)
+        self.env = lmdb.open("%s/%s/history.lmdb" % (self.path, self.dbname))
         self.dbconnected = True
 
     def is_connected(self):
@@ -114,7 +110,8 @@ class history():
     def put(self, key, value):
         """Wstawianie danych"""
         if self.dbconnected:
-            self.lvldb.put(key, value)
+            with env.begin(write=True) as txn:
+                txn.put(key, value)
 
     def get_toJSON(self, nodename, sensor, timerange='1h'):
         """Pobierz zakres danych w formacie JSON"""
