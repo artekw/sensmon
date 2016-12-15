@@ -42,7 +42,7 @@ class redisdb():
         self.rdb.hset('status', jmsg['name'] + "_" + jmsg['cmd'], str(msg))
 
     def getStatus(self, nodename):
-        """Spwardzanie statusu przekaźnika"""
+        """Sprawdzanie statusu przekaźnika"""
         return self.rdb.hget("status", nodename)
 
 
