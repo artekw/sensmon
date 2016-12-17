@@ -81,14 +81,12 @@ class history():
             data = []
             ts = int(time.time())
             start_key = '%s-%s' % (nodename, ts-ranges[timerange])
-            stop_key = '%s-%s' % (nodename, ts)
 
-            iterator = self.lvldb.iterator(start=(start_key).encode('ascii'),
-                                            stop=(stop_key).encode('ascii'),
-                                            include_start=True,
-                                            include_stop=True)
-            data = [value for key, value in iterator]
-            iterator.close()
+            with self.env.begin() as txn:
+                cursor = txn.cursor()
+                cursor.set_range(start_key.encode('ascii'))
+                
+                data = [value for key, value in cursor if nodename in key]
 
             """
             roblad
@@ -110,7 +108,7 @@ class history():
     def put(self, key, value):
         """Wstawianie danych"""
         if self.dbconnected:
-            with env.begin(write=True) as txn:
+            with self.env.begin(write=True) as txn:
                 txn.put(key, value)
 
     def get_toJSON(self, nodename, sensor, timerange='1h'):
