@@ -34,7 +34,7 @@ from sensnode.weather import getWeather
 
 # dev mode
 debug = False
-version = '0.42-dev'
+version = '0.45-dev'
 
 # inicjalizacja menadżera konfiguracji
 ci = config(init=True)
@@ -45,14 +45,14 @@ define("webapp_port", default=config().get("app", ['webapp', 'port']),
 define("webapp_host", default=sensnode.common.get_ip_address(),
                       help="Run on the given hostname")
 
-# leveldb
-define("leveldb_enable",default=config().get("app", ['leveldb', 'enable']),
+# lmdb
+define("lmdb_enable",default=config().get("app", ['lmdb', 'enable']),
 		help="LevelDB enabled")
-define("leveldb_dbname",default=config().get("app", ['leveldb', 'dbname']),
+define("lmdb_dbname",default=config().get("app", ['lmdb', 'dbname']),
 		help="LevelDB database name")
-define("leveldb_path",default=config().get("app", ['leveldb', 'path']),
+define("lmdb_path",default=config().get("app", ['lmdb', 'path']),
 		help="LevelDB path do database")
-define("leveldb_forgot",default=config().get("app", ['leveldb', 'forgot']),
+define("lmdb_forgot",default=config().get("app", ['lmdb', 'forgot']),
         help="Forgot nodes data")
 
 # MQTT
@@ -76,8 +76,8 @@ c = tornadoredis.Client()
 c.connect()
 clients = []
 
-if options.leveldb_enable:
-    history = sensnode.store.history(options.leveldb_path, options.leveldb_dbname)
+if options.lmdb_enable:
+    history = sensnode.store.history(options.lmdb_path, options.lmdb_dbname)
 
 
 # --------------------------webapp code-----------------------#
@@ -361,8 +361,8 @@ def main():
             #print ("JSON Updated %s" % (update))
 
             # if LevelDB enabled store data
-            if options.leveldb_enable:
-                if decoded['name'] not in options.leveldb_forgot:
+            if options.lmdb_enable:
+                if decoded['name'] not in options.lmdb_forgot:
                     key = ('%s-%d' %  (decoded['name'],decoded['timestamp'])).encode('ascii')
                     value = ('%s' % decoded).encode('ascii')
                     history.put(key, value)

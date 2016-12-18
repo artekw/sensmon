@@ -12,7 +12,7 @@
     "redis": {
       "host": "localhost"
     },
-    "leveldb": {
+    "lmdb": {
       "enable": 0,
       "dbname": "_db",
       "path": ".",
