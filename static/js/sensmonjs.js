@@ -88,7 +88,7 @@ sensmon.filter('nobatvol', function() {
 
 sensmon.filter('dayOfweekPL', function() {
     return function(input) {
-        return moment(input*1000).locale('pl').format('dddd');
+        return moment(input*1000).locale('us').format('dddd');
             }
 });
 
@@ -137,7 +137,7 @@ sensmon.controller('introCtrl', function ($scope, $interval, $http) {
   },500);
 
   $scope.today = function(date) {
-      return moment(date).locale('pl').format('dddd, DD MMMM YYYY');
+      return moment(date).locale('us').format('dddd, DD MMMM YYYY');
   }
 
 });

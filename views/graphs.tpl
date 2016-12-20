@@ -1,9 +1,9 @@
 {% extends "base.tpl" %}
-{% block title %}Wykresy{% end %}
+{% block title %}Graphs{% end %}
 
 {% block content %}
     <div ng-controller="graphsCtrl">
-    <h1 class="page-header">Wykresy</h1>
+    <h1 class="page-header">Graphs</h1>
     <div class="row">
       <!--<div class="btn-group" role="group" aria-label="...">
         <button type="button" class="btn btn-default">Godzina</button>

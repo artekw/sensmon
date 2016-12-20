@@ -6,7 +6,7 @@ import requests
 url = 'http://api.openweathermap.org/data/2.5/forecast/daily?q='
 
 
-def getWeather(city, appid, units='metric', lang='pl'):
+def getWeather(city, appid, units='metric', lang='us'):
     """
     :params city srt: city name
     """

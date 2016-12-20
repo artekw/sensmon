@@ -1,7 +1,7 @@
 {% extends "base.tpl" %}
-{% block title %}Czujniki{% end %}
+{% block title %}Sensors{% end %}
 {% block content %}
-    <h1 class="page-header">Czujniki</h1>
+    <h1 class="page-header">Sensors</h1>
     <div ng-controller="dashCtrl">
     <!-- Row -->
     <div class="row">

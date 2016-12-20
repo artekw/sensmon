@@ -1,17 +1,17 @@
 {
    "lab":{
       "id":19,
-      "title":"Garage",
+      "title":"Garaż",
       "output":{
          "sensors":{
             "humi":{
                "unit":"%",
-               "desc":"Humidity",
+               "desc":"Wilgotność",
                "scale":1
             },
             "temp":{
                "unit":"°C",
-               "desc":"Temperature",
+               "desc":"Temperatura",
                "scale":1
             },
             "lpg":{
@@ -26,14 +26,14 @@
             },
             "timestamp":{
                "unit":"",
-               "desc":"Update"
+               "desc":"Aktualizacja"
             }
          }
       },
       "input":{
          "relay":{
-            "lamp2":{
-               "desc":"Lamp",
+            "lampa":{
+               "desc":"Lampa",
                "default":0,
                "state":0,
                "cmd":"02"
@@ -43,7 +43,7 @@
    },
    "outnode":{
       "id":3,
-      "title":"Outside",
+      "title":"Na zewnątrz",
       "output":{
          "sensors":{
             "batvol":{
@@ -53,18 +53,18 @@
             },
             "temp":{
                "unit":"°C",
-               "desc":"Temperature",
+               "desc":"Temperatura",
                "scale":1
             },
             "timestamp":{
-               "desc":"Update"
+               "desc":"Aktualizacja"
             }
          }
       }
    },
-   "babcia":{
-      "id":6,
-      "title":"Kamil's room",
+   "salon":{
+      "id":4,
+      "title":"Foliowiec",
       "output":{
          "sensors":{
             "batvol":{
@@ -74,43 +74,70 @@
             },
             "temp":{
                "unit":"  C",
-               "desc":"Temperature",
+               "desc":"Temperatura",
                "scale":1
             },
             "timestamp":{
-               "desc":"Update"
+               "desc":"Aktualizacja"
+            }
+         }
+      }
+   },
+   "babcia":{
+      "id":6,
+      "title":"Pokój Kamila",
+      "output":{
+         "sensors":{
+            "batvol":{
+               "unit":"V",
+               "desc":"Nap. baterii",
+               "scale":3
+            },
+            "temp":{
+               "unit":"  C",
+               "desc":"Temperatura",
+               "scale":1
+            },
+            "timestamp":{
+               "desc":"Aktualizacja"
             }
          }
       },
       "input":{
          "relay":{
-            "lamp1":{
-               "desc":"Lamp",
+            "dioda":{
+               "desc":"Dioda",
                "default":1,
                "state":0,
                "cmd":"00"
+            },
+            "wentylator":{
+               "desc":"Wentylator",
+               "default":1,
+               "state":0,
+               "cmd":"01"
             }
          }
       }
    },
    "artekroom":{
       "id":2,
-      "title":"Arthur's room",
+      "title":"Pokoj Artura",
       "output":{
          "sensors":{
             "press":{
                "unit":"kPa",
-               "desc":"Pressure",
+               "desc":"Ciśnienie",
                "scale":1
             },
             "humi":{
                "unit":"%",
-               "desc":"Humidity",
+               "desc":"Wilgotność",
                "scale":1
             },
             "temp":{
                "unit":"°C",
-               "desc":"Temperature",
+               "desc":"Temperatura",
                "scale":1
             },
             "batvol":{
@@ -120,7 +147,7 @@
             },
             "timestamp":{
                "unit":"",
-               "desc":"Update"
+               "desc":"Aktualizacja"
             }
          }
       }
@@ -132,16 +159,16 @@
          "sensors":{
             "vrms":{
                "unit":"V",
-               "desc":"Voltage",
+               "desc":"Napięcie sieci",
                "scale":2
             },
             "power":{
                "unit":"W",
-               "desc":"Power"
+               "desc":"Moc bierna"
             },
             "timestamp":{
                "unit":"",
-               "desc":"Update"
+               "desc":"Aktualizacja"
             }
          }
       }

@@ -5,16 +5,16 @@
   <div class="intro" ng-controller="introCtrl">
     <div class="row">
       <div class="clock">{{! clock | date:'HH:mm:ss'}}</div>
-      <div class="date">Dziś jest {{! today(clock) }}</div>
+      <div class="date">Today is {{! today(clock) }}</div>
   </div>
   <div class="panel panel-primary">
-    <div class="panel-heading ">Prognoza na dziś</div>
+    <div class="panel-heading ">Forecast now</div>
       <div class="panel-body">
         <!--row-->
         <div class="row" style="text-align:center; font-weight:bold;">
         <div class="col-sm-4">
           <div class="panel panel-info">
-            <div class="panel-heading">Temperatura</div>
+            <div class="panel-heading">Temperature</div>
               <div class="panel-body">
                 <h1 class="text-primary">{% raw round((w['list'][0]['temp']['max'] + w['list'][0]['temp']['min'])/2, 1) %}°C</h1>
             </div>
@@ -22,7 +22,7 @@
         </div>
         <div class="col-sm-4">
           <div class="panel panel-info">
-            <div class="panel-heading">Ciśnienie</div>
+            <div class="panel-heading">Pressure</div>
             <div class="panel-body">
               <h1 class="text-primary">{% raw w['list'][0]['pressure']%}  hPa</h1>
             </div>
@@ -30,7 +30,7 @@
         </div>
         <div class="col-sm-4">
           <div class="panel panel-info">
-            <div class="panel-heading">Wilgotość</div>
+            <div class="panel-heading">Humidity</div>
             <div class="panel-body">
               <h1 class="text-primary">{% raw w['list'][0]['humidity']%}%</h1>
             </div>
@@ -41,7 +41,7 @@
     <!--end-row-->
   </div>
   <div class="panel panel-primary">
-    <div class="panel-heading ">Prognoza na dni kolejne</div>
+    <div class="panel-heading ">Forecast for the next days</div>
     <div class="panel-body">
     <div class="row" style="text-align:center; font-weight:bold;">
     <!--row-->
