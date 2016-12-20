@@ -162,18 +162,19 @@ class Config(object):
         """Tworzy slownik sensor : skala"""
         keys = []
         scales = []
-        for (k, v) in self.get("nodes", [name,'sensors']).iteritems():
+        for (k, v) in self.get("nodes", [name,'output','sensors']).iteritems():
             if "scale" in v:
                 keys.append(k)
                 scales.append(v['scale'])
         return dict(zip(keys, scales))
 
 
-    def getMap(self, type=None):
-        """Tworzy słownik {id : name} dla wybranego typu sensora (output lub control)"""
-        if type == None:
-            type = ['output', 'control']
-        ids = [self.get("nodes", [k,'id']) for k in self.get("nodes", ['fkeys']) if self.get("nodes", [k,'type']) in type]
+    def getMap(self):
+        """Tworzy słownik {id : name} dla wybranego typu sensora (output lub input)"""
+        #if type == None:
+        #    type = ['output', 'input']
+        # ids = [self.get("nodes", [k,'id']) for k in self.get("nodes", ['fkeys']) if self.get("nodes", [k,'type']) in type]
+        ids = [self.get("nodes", [k,'id']) for k in self.get("nodes", ['fkeys'])]
         names = [k for k in self.get("nodes", ['fkeys']) if self.get("nodes", [k,'id' ]) in ids]
         return dict(zip(ids, names))
 

@@ -142,7 +142,75 @@ sensmon.controller('introCtrl', function ($scope, $interval, $http) {
 
 });
 
+sensmon.controller('relayCtrl', function ($scope, $http) {
+    var ws = new WebSocket("ws://"+document.location.hostname+":8081/websocket");
 
+    function parseJSON(jsonObj) {
+		jsonParsed = JSON.parse(jsonObj);
+        if (_.isEmpty(jsonParsed)) {
+            return // pustym "obiektom" dziekujemy :)
+        }
+
+        $scope.safeApply(function() {
+            // array in switches.tpl
+            nodes_with_output = []
+            //var obj = {}
+            _.each(_.keys(jsonParsed), function(k) {
+              var v = jsonParsed[k];
+              // filter nodes with 'input'
+              if (_.has(v, 'input')){
+                var obj = nodes_with_output.push(v);
+              };
+
+            });
+            if (!_.isEmpty(nodes_with_output)) {
+              // console.log(nodes_with_output);
+              $scope.array = nodes_with_output;
+          }
+        });
+    }
+
+    $scope.safeApply = function(fn) {
+        var phase = this.$root.$$phase;
+        if(phase == '$apply' || phase == '$digest') {
+            if(fn && (typeof(fn) === 'function')) {
+                fn();
+            }
+        } else {
+            this.$apply(fn);
+        }
+    };
+
+    ws.onmessage = function (evt) {
+      jsonObj = parseJSON(evt.data);
+      console.log('Otrzymano nowe dane')
+    };
+
+    // http://stackoverflow.com/questions/13077320/angularjs-trigger-when-radio-button-is-selected
+    // realcja na zmianę stanu przekaźnika
+    $scope.change = function(v, name, cmd) {
+        //console.log({"state": v, "name": name, "cmd": cmd})
+        ws.send(JSON.stringify({state: v, name: name, cmd: cmd}));
+    }
+
+    // z redis dane chwilowe
+    $scope.init = function() {
+        switches = []
+        angular.forEach(initv, function(v) {
+            switches.push(v)
+        })
+        console.log('Wczytuję wartosci wstępne z Redis')
+        $scope.switches = switches;
+    }
+
+    $http.get('/initv').success(function(data) {
+  		console.log('Pobrano ostatnie wartości');
+          parseJSON(data);
+  	});
+    //$scope.init();
+});
+
+/*
 sensmon.controller('controlCtrl', function ($scope) {
     var ws = new WebSocket("ws://"+document.location.hostname+":8081/websocket");
 
@@ -177,7 +245,7 @@ sensmon.controller('controlCtrl', function ($scope) {
     }
     $scope.init();
 });
-
+*/
 
 /*
 dashboard page
@@ -193,6 +261,7 @@ sensmon.controller('dashCtrl', function ($scope, $http) {
         }
 
         $scope.safeApply(function() {
+            // array in dash.tpl
             $scope.array = jsonParsed;
             console.log($scope.array);
         });
@@ -276,7 +345,7 @@ sensmon.controller('graphsCtrl', function ($route, $routeParams, $scope, $http, 
       // format JSON
       $scope.plotinfo = {
           title: data[nodename]['title'],
-          sensor: data[nodename]['sensors'][sensor]['desc'],
+          sensor: data[nodename]['output']['sensors'][sensor]['desc'],
           timerange: timerange
       };
     });

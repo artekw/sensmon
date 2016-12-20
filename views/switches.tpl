@@ -2,73 +2,32 @@
 {% block title %}Przełączniki{% end %}
 
 {% block content %}
-    <div ng-controller="eventsCtrl">
+    <div ng-controller="relayCtrl">
     <h1 class="page-header">Przełączniki</h1>
-    <div class="row">
-    <!-- Panel -->
-    <div class="col-sm-4">
-    <div class="panel panel-primary">
-     <div class="panel-heading">Termostat P4</div>
-     <div class="panel-body">
-      <!-- Table -->
-      <table class="table">
-        <th>Teraz</th><th>Nastawa</th><th>Status</th>
-        <tr>
-        <td>40</td><td>54</td><td>Włączony</td>
-        </tr>
-      </table>
-      <!-- Koniec Table -->
-     </div>
-    </div>
-    </div>
-     <!-- Koniec Panel -->
-    </div>
-    <div class="row">
-    <div class="col-sm-4">
-    <div class="panel panel-primary">
-    <div class="panel-heading">Pokój Artura</div>
-  <div class="panel-body">
-         <table class="table">
-        <th>Nap. baterii</th><th>Temperatura</th><th>Ciśnienie</th>
-        <tr>
-        <td>3,900</td><td>23*C</td><td>1000hPa</td>
-        </tr>
-      </table>
-  </div>
-  <div class="panel-footer panel-primary">16:32:12 | 20/11</div>
-</div>
-</div>
-
-<div class="col-sm-4">
-    <div class="panel panel-primary">
-    <div class="panel-heading"><b>Pokój Artura</b></div>
-  <div class="panel-body">
-         <table class="table">
-        <th>Nap. baterii</th><th>Temperatura</th><th>Ciśnienie</th>
-        <tr>
-        <td>3,900</td><td>23*C</td><td>1000hPa</td>
-        </tr>
-      </table>
-  </div>
-  <div class="panel-footer panel-primary">16:32:12 | 20/11</div>
-</div>
-</div>
-
-<div class="col-sm-4">
-    <div class="panel panel-primary">
-    <div class="panel-heading"><b>Pokój Artura</b></div>
-  <div class="panel-body">
-         <table class="table">
-        <th>Nap. baterii</th><th>Temperatura</th><th>Ciśnienie</th><th>Wilgotność</th>
-        <tr>
-        <td><h5>3,900</h5</td><td><h5>23*C</h5></td><td><h5>1000hPa</h5></td><td><h5>47%</h5></td>
-        </tr>
-      </table>
-  </div>
-  <div class="panel-footer panel-primary">16:32:12 | 20/11</div>
-</div>
-</div>
-
-</div>
+      <div class="row">
+        <div ng-repeat="(k,v) in array">
+          <div class="clearfix" ng-if="$index % 3 == 0"></div>
+          <div class="col-sm-4">
+            <div class="panel panel-default">
+              <div class="panel-heading"><b>{{! v.title}}</b></div>
+              <div class="panel-body">
+                <span>
+                  <!-- switches -->
+                  <!-- http://ziscloud.github.io/angular-bootstrap-toggle/ -->
+                  <span ng-repeat="(i,j) in v.input.relay">
+                    <div class="half">{{! j.desc }}</div>
+                      <div class="half">
+                        <span ng-init="j.cmd= j.state" class="btn-group" data-toggle="buttons">
+                          <button class="btn" buttons-radio="" ng-model="j.cmd" ng-change='change(j.cmd, name=i, cmd=j.cmd)' value="1">Wł</button>
+                          <button class="btn" buttons-radio="" ng-model="j.cmd" ng-change='change(j.cmd, name=i, cmd=j.cmd)' value="0">Wył</button>
+                        </span>
+                      </div>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 {% end %}

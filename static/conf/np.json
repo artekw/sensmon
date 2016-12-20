@@ -1,0 +1,177 @@
+{
+    "lab":
+    {
+        "id": 19,
+        "title": "Garaż",
+        "type": "output",
+        "sensors":
+        {
+            "humi":
+            {
+                "unit": "%",
+                "desc": "Wilgotność",
+                "scale": 1
+            },
+            "temp":
+            {
+                "unit": "°C",
+                "desc": "Temperatura",
+                "scale": 1
+            },
+            "lpg":
+            {
+                "unit": "",
+                "desc": "LPG",
+                "scale": 1
+            },
+            "batvol":
+            {
+                "unit": "V",
+                "desc": "Nap. baterii",
+                "scale": 3
+            },
+            "timestamp":
+            {
+                "unit": "",
+                "desc": "Aktualizacja"
+            }
+        }
+    },
+    "outnode":
+    {
+        "id": 3,
+        "title": "Na zewnątrz",
+        "type": "output",
+        "sensors":
+        {
+            "batvol":
+            {
+                "unit": "V",
+                "desc": "Nap. baterii",
+                "scale": 3
+            },
+            "temp":
+            {
+                "unit": "°C",
+                "desc": "Temperatura",
+                "scale": 1
+            },
+            "timestamp":
+            {
+                "desc": "Aktualizacja"
+            }
+        }
+    },
+    "salon":
+    {
+        "id": 4,
+        "title": "Foliowiec",
+        "type": "output",
+        "sensors":
+        {
+            "batvol":
+            {
+                "unit": "V",
+                "desc": "Nap. baterii",
+                "scale": 3
+            },
+            "temp":
+            {
+                "unit": "  C",
+                "desc": "Temperatura",
+                "scale": 1
+            },
+            "timestamp":
+            {
+                "desc": "Aktualizacja"
+            }
+        }
+    },
+    "babcia":
+    {
+        "id": 6,
+        "title": "Pokój Kamila",
+        "type": "output",
+        "sensors":
+        {
+            "batvol":
+            {
+                "unit": "V",
+                "desc": "Nap. baterii",
+                "scale": 3
+            },
+            "temp":
+            {
+                "unit": "  C",
+                "desc": "Temperatura",
+                "scale": 1
+            },
+            "timestamp":
+            {
+                "desc": "Aktualizacja"
+            }
+        }
+    },
+    "artekroom":
+    {
+        "id": 2,
+        "title": "Pokoj Artura",
+        "type": "output",
+        "sensors":
+        {
+            "press":
+            {
+                "unit": "kPa",
+                "desc": "Ciśnienie",
+                "scale": 1
+            },
+            "humi":
+            {
+                "unit": "%",
+                "desc": "Wilgotność",
+                "scale": 1
+            },
+            "temp":
+            {
+                "unit": "°C",
+                "desc": "Temperatura",
+                "scale": 1
+            },
+            "batvol":
+            {
+                "unit": "V",
+                "desc": "Nap. baterii",
+                "scale": 3
+            },
+            "timestamp":
+            {
+                "unit": "",
+                "desc": "Aktualizacja"
+            }
+        }
+    },
+    "powernode": {
+        "id": 25,
+        "title": "Power@Home",
+        "type": "output",
+        "sensors":
+        {
+            "vrms":
+            {
+                "unit": "V",
+                "desc": "Napięcie sieci",
+                "scale": 2
+            },
+            "power":
+            {
+                "unit": "W",
+                "desc": "Moc bierna"
+            },
+            "timestamp":
+            {
+                "unit": "",
+                "desc": "Aktualizacja"
+            }
+        }
+    }
+}

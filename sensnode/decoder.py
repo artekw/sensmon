@@ -56,9 +56,10 @@ class Decoder(object):
 
         new_value = jsontree.clone(_new_value)
 
+        # FIXME - rozróznianie output i input
         if self.nodescfg.has_key(new_value.name):
-            for k,v in self.nodescfg[new_value.name].sensors.iteritems():
-                self.nodescfg[new_value.name].sensors[k].raw = new_value[k]
+            for k,v in self.nodescfg[new_value.name].output.sensors.iteritems():
+                self.nodescfg[new_value.name].output.sensors[k].raw = new_value[k]
         else:
             return
 
