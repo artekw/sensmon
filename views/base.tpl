@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/static/plugins/weathericons/css/weather-icons.min.css" type="text/css">
     <link rel="stylesheet" href="http://getbootstrap.com/examples/signin/signin.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/angular-toggle-switch-bootstrap-3.css">
     <link rel="stylesheet" href="/static/css/styl.css">
 
     <title>{% block title %}{% end %} - sensmon</title>
@@ -26,6 +27,8 @@
     <script src="https://code.angularjs.org/1.4.8/angular.min.js" type="text/javascript"></script>
     <script src="https://code.angularjs.org/1.4.8/angular-animate.min.js" type="text/javascript"></script>
     <script src="https://code.angularjs.org/1.4.8/angular-route.js" type="text/javascript"></script>
+    <!-- https://libraries.io/bower/angular-bootstrap-toggle-switch -->
+    <script src="/static/js/angular-toggle-switch.min.js" type="text/javascript"></script>
     <script src="/static/js/highcharts-ng.js" type="text/javascript"></script>
     <script src="http://momentjs.com/downloads/moment-with-locales.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/0.10.3/angular-moment.js" type="text/javascript"></script>

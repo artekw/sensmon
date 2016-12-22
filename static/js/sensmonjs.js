@@ -14,7 +14,7 @@ https://github.com/ankane/chartkick.js
 */
 
 
-var sensmon = angular.module('sensmon', ['ngRoute', 'ngAnimate', 'highcharts-ng']);
+var sensmon = angular.module('sensmon', ['ngRoute', 'ngAnimate', 'highcharts-ng', 'toggle-switch']);
 
 /* directives */
 
@@ -180,20 +180,21 @@ sensmon.controller('relayCtrl', function ($scope, $http) {
             this.$apply(fn);
         }
     };
-
+    /*
     ws.onmessage = function (evt) {
       jsonObj = parseJSON(evt.data);
       console.log('Otrzymano nowe dane')
     };
-
+    */
     // http://stackoverflow.com/questions/13077320/angularjs-trigger-when-radio-button-is-selected
     // realcja na zmianę stanu przekaźnika
-    $scope.change = function(v, name, cmd) {
-        //console.log({"state": v, "name": name, "cmd": cmd})
-        ws.send(JSON.stringify({state: v, name: name, cmd: cmd}));
+    $scope.changeState = function(state, device) {
+        console.log({"state": state, "device": device})
+        //ws.send(JSON.stringify({state: v, name: name, cmd: cmd}));
     }
 
     // z redis dane chwilowe
+    /*
     $scope.init = function() {
         switches = []
         angular.forEach(initv, function(v) {
@@ -202,7 +203,7 @@ sensmon.controller('relayCtrl', function ($scope, $http) {
         console.log('Wczytuję wartosci wstępne z Redis')
         $scope.switches = switches;
     }
-
+*/
     $http.get('/initv').success(function(data) {
   		console.log('Pobrano ostatnie wartości');
           parseJSON(data);
@@ -227,7 +228,7 @@ sensmon.controller('controlCtrl', function ($scope) {
     };
 
     // http://stackoverflow.com/questions/13077320/angularjs-trigger-when-radio-button-is-selected
-    // realcja na zmianę stanu przekaźnika
+    // realcja na zmianę stanu przycisku
     $scope.change = function(v, name, cmd) {
         //console.log({"state": v, "name": name, "cmd": cmd})
         ws.send(JSON.stringify({state: v, name: name, cmd: cmd}));

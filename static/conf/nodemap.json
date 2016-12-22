@@ -35,7 +35,7 @@
             "lampa":{
                "desc":"Lampa",
                "default":0,
-               "state":0,
+               "state":1,
                "cmd":"02"
             }
          }
