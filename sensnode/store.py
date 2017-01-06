@@ -72,7 +72,7 @@ class history():
         if not os.path.exists(dirname):
             os.makedirs(dirname)
 
-        self.env = lmdb.open("%s/%s/history.lmdb" % (self.path, self.dbname))
+        self.env = lmdb.open("%s/%s/history.lmdb" % (self.path, self.dbname), map_size=51200000)
         self.dbconnected = True
 
     def is_connected(self):

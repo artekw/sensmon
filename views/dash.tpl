@@ -40,7 +40,7 @@
             <!-- End Table -->
             </div>
           <div class="panel-footer panel-primary">
-            <i class="fa fa-refresh fa-spin fa fa-fw"></i> <b>{{! v.output.sensors.timestamp.raw|parsedate }}</b>
+            <i class="fa fa-refresh"></i> <b>{{! v.output.sensors.timestamp.raw|parsedate }}</b>
           </div>
         </div>
       </div>
