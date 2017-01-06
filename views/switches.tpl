@@ -18,7 +18,7 @@
                                         ng-model="state"
                                         on-label="Wł."
                                         off-label="Wył."
-                                        ng-change='changeState(state, i)'>
+                                        ng-change='changeState(state, i, j.cmd, v.node_name)'>
                                       </div>
                     <br>
                   </span>

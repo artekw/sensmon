@@ -163,21 +163,6 @@ class DashHandler(BaseHandler):
         self.render("dash.tpl")
 
 
-# zakładka Sterowanie
-"""
-class ControlHandler(BaseHandler):
-
-    @tornado.web.asynchronous
-    @tornado.gen.engine
-    @tornado.web.authenticated
-    def get(self):
-        c = tornadoredis.Client()
-        res = yield tornado.gen.Task(c.hvals, 'status')
-        self.render("control.tpl",
-                    init=[json.loads(x) for x in res])
-"""
-
-
 # zakładka Przełaczniki
 class SwitchesHandler(BaseHandler):
 
@@ -185,15 +170,6 @@ class SwitchesHandler(BaseHandler):
     @tornado.gen.engine
     def get(self):
         self.render("switches.tpl")
-
-
-# zakłatka Logi
-"""
-class LogsHandler(BaseHandler):
-
-    def get(self):
-        self.render("logs.tpl")
-"""
 
 
 # zakłatka Intro
@@ -248,6 +224,19 @@ class GetInitData(BaseHandler):
         self.finish()
 
 
+class GetStatus(BaseHandler):
+
+    @tornado.web.asynchronous
+    @tornado.gen.engine
+    def get(self):
+        self.set_header("Content-Type", "application/json")
+        _cl = tornadoredis.Client()
+        status = yield tornado.gen.Task(_cl.get, 'relays_status')
+        data_json = tornado.escape.json_encode(status)
+        self.write(data_json)
+        self.finish()
+
+
 # Websocket
 class Websocket(tornado.websocket.WebSocketHandler):
 
@@ -283,8 +272,6 @@ class Websocket(tornado.websocket.WebSocketHandler):
         # wrzuć w kolejkę
         q = self.application.settings.get('queue')
         q.put(msg)
-        self.write_message('{"control":"You send: %s"}' % (
-            json.loads(str(msg))))
 
     def on_close(self):
         if self.client.subscribed:
@@ -331,6 +318,7 @@ def main():
         (r"/login", LoginHandler),
         (r"/logout", LogoutHandler),
         (r"/initv", GetInitData),
+        (r"/status", GetStatus),
         (r"/history/(?P<node>[^\/]+)/?(?P<sensor>[^\/]+)?/?(?P<timerange>[^\/]+)?", GetHistoryData),
         (r"/websocket", Websocket),
         (r'/favicon.ico', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")})],
@@ -360,7 +348,7 @@ def main():
             #print ("JSON %s" % (decoded))
             #print ("JSON Updated %s" % (update))
 
-            # if LevelDB enabled store data
+            # if lmdb enabled store data
             if options.lmdb_enable:
                 if decoded['name'] not in options.lmdb_forgot:
                     key = ('%s-%d' %  (decoded['name'],decoded['timestamp'])).encode('ascii')

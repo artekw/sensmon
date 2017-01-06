@@ -78,7 +78,7 @@ sensmon.filter('nodate', function() {
 });
 
 
-/* drop timestamp from array */
+/* drop batvol from array */
 sensmon.filter('nobatvol', function() {
     return function(input) {
         return _.omit(input, 'batvol');
@@ -115,22 +115,6 @@ sensmon.filter('group', function() {
 
 
 /* controllers */
-sensmon.controller('logsCtrl', function ($scope) {
-    var ws = new WebSocket("ws://"+document.location.hostname+":8081/websocket");
-    msg = []
-    ws.onmessage = function (evt) {
-        jsonObj = JSON.parse(evt.data);
-        if (_.has(jsonObj, 'name')) {
-            msg.push(jsonObj)
-        }
-
-        $scope.$apply(function() {
-            $scope.msg = msg
-        });
-    }
-});
-
-
 sensmon.controller('introCtrl', function ($scope, $interval, $http) {
   $interval(function(){
     $scope.clock = new Date();
@@ -139,8 +123,8 @@ sensmon.controller('introCtrl', function ($scope, $interval, $http) {
   $scope.today = function(date) {
       return moment(date).locale('pl').format('dddd, DD MMMM YYYY');
   }
-
 });
+
 
 sensmon.controller('relayCtrl', function ($scope, $http) {
     var ws = new WebSocket("ws://"+document.location.hostname+":8081/websocket");
@@ -157,14 +141,15 @@ sensmon.controller('relayCtrl', function ($scope, $http) {
             //var obj = {}
             _.each(_.keys(jsonParsed), function(k) {
               var v = jsonParsed[k];
+              v["node_name"] = k; // FIXME
               // filter nodes with 'input'
               if (_.has(v, 'input')){
-                var obj = nodes_with_output.push(v);
+                nodes_with_output.push(v);
               };
 
             });
             if (!_.isEmpty(nodes_with_output)) {
-              // console.log(nodes_with_output);
+              console.log(nodes_with_output);
               $scope.array = nodes_with_output;
           }
         });
@@ -180,73 +165,47 @@ sensmon.controller('relayCtrl', function ($scope, $http) {
             this.$apply(fn);
         }
     };
-    /*
+
     ws.onmessage = function (evt) {
-      jsonObj = parseJSON(evt.data);
+      //jsonObj = parseJSON(evt.data);
       console.log('Otrzymano nowe dane')
     };
-    */
+
+    ws.onopen = function() {
+        console.log('Sesja websocket rozpoczęta')
+    }
+
+    ws.onclose = function() {
+        console.log('Narazie :)')
+    }
     // http://stackoverflow.com/questions/13077320/angularjs-trigger-when-radio-button-is-selected
     // realcja na zmianę stanu przekaźnika
-    $scope.changeState = function(state, device) {
-        console.log({"state": state, "device": device})
-        //ws.send(JSON.stringify({state: v, name: name, cmd: cmd}));
+    $scope.changeState = function(state, relay_name, cmd, node_name) {
+      // plus przed 'state' zamienia na 1 bądz 0
+      // http://stackoverflow.com/questions/7820683/convert-boolean-result-into-number-integer
+      console.log({"state": +state, "relay_name": relay_name, "node_name":node_name,"cmd": cmd});
+      ws.send(JSON.stringify({"node_name":node_name, "relay_name": relay_name, "state": +state, "cmd": cmd}));
     }
 
     // z redis dane chwilowe
     /*
     $scope.init = function() {
-        switches = []
-        angular.forEach(initv, function(v) {
-            switches.push(v)
+        switches_states = []
+        angular.forEach(status, function(v) {
+            switches_states.push(v)
         })
         console.log('Wczytuję wartosci wstępne z Redis')
-        $scope.switches = switches;
+        console.log(switches_states);
+        $scope.switches = switches_states;
     }
-*/
-    $http.get('/initv').success(function(data) {
+    */
+    $http.get('/status').success(function(data) {
   		console.log('Pobrano ostatnie wartości');
-          parseJSON(data);
+      parseJSON(data);
   	});
     //$scope.init();
 });
 
-/*
-sensmon.controller('controlCtrl', function ($scope) {
-    var ws = new WebSocket("ws://"+document.location.hostname+":8081/websocket");
-
-    // załadowanie listy przekaźników
-    // TODO
-
-
-    // filtr
-    ws.onmessage = function (evt) {
-        jsonObj = JSON.parse(evt.data)
-        if (_.has(jsonObj, 'control')){
-            console.log(jsonObj.control)
-        }
-    };
-
-    // http://stackoverflow.com/questions/13077320/angularjs-trigger-when-radio-button-is-selected
-    // realcja na zmianę stanu przycisku
-    $scope.change = function(v, name, cmd) {
-        //console.log({"state": v, "name": name, "cmd": cmd})
-        ws.send(JSON.stringify({state: v, name: name, cmd: cmd}));
-    }
-
-    // z redis dane chwilowe
-    $scope.init = function() {
-        switches = []
-        angular.forEach(initv, function(v) {
-            switches.push(v)
-        })
-        console.log('Wczytuję wartosci wstępne z Redis')
-        $scope.switches = switches;
-
-    }
-    $scope.init();
-});
-*/
 
 /*
 dashboard page
@@ -264,7 +223,7 @@ sensmon.controller('dashCtrl', function ($scope, $http) {
         $scope.safeApply(function() {
             // array in dash.tpl
             $scope.array = jsonParsed;
-            console.log($scope.array);
+            // console.log($scope.array);
         });
     }
 
@@ -305,7 +264,7 @@ sensmon.controller('dashCtrl', function ($scope, $http) {
 
 	$http.get('/initv').success(function(data) {
 		console.log('Pobrano ostatnie wartości');
-        parseJSON(data);
+    parseJSON(data);
 	});
 });
 

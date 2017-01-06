@@ -35,7 +35,6 @@
             "lampa":{
                "desc":"Lampa",
                "default":0,
-               "state":1,
                "cmd":"02"
             }
          }
@@ -108,13 +107,11 @@
             "dioda":{
                "desc":"Dioda",
                "default":1,
-               "state":0,
                "cmd":"00"
             },
             "wentylator":{
                "desc":"Wentylator",
                "default":1,
-               "state":0,
                "cmd":"01"
             }
          }

@@ -8,17 +8,22 @@ import time
 from itertools import islice
 import simplejson as json
 import redis
+import jsontree
+from config import config
 
 
 class redisdb():
 
     """Baza danych tymczasowych"""
     def __init__(self, debug=True):
-        self.initdb()
         self.debug = debug
+        self.initdb()
 
     def initdb(self, host="localhost", port=6379):
         self.rdb = redis.Redis(host, port)
+        # init data - json
+        if not self.rdb.exists('relays_status'):
+            self.rdb.set('relays_status', json.dumps(config().getConfig('nodes')))
 
     def pubsub(self, data, channel='nodes'):
         """
@@ -26,7 +31,6 @@ class redisdb():
         Kanał nodes(domyślnie) - kanał do wymiany danych po Websocket(przeglądarka-nody)
         """
         if data:
-            data_str = json.dumps(data)
             self.rdb.set("initv", data)  # name, value
             self.rdb.publish(channel, data)  # channel, value
             if self.debug:
@@ -35,11 +39,25 @@ class redisdb():
 
     def setStatus(self, msg):
         """
-        Hash status: dane chwilowe przekaźników
-        {"name": "relaynode", "status": 0, "cmd": 1}
+        Hash status: dane statusów przekaźników
+        Input:
+        {"relay_name": name, "state": state, "cmd": cmd}
+        {"relay_name": "lamp", "state": 1, "cmd": 01}
         """
-        jmsg = json.loads(msg)
-        self.rdb.hset('status', jmsg['name'] + "_" + jmsg['cmd'], str(msg))
+        # json format
+        incoming_statuses = json.loads(msg)
+        # jsontree format
+        prevoius_statuses = json.loads(self.rdb.get('relays_status'))
+        prevoius_statuses = jsontree.clone(prevoius_statuses)
+
+        # update statuses of realys
+        if prevoius_statuses[incoming_statuses['node_name']].input.relay[incoming_statuses["relay_name"]].has_key:
+            for k, v in prevoius_statuses[incoming_statuses['node_name']].input.relay.iteritems():
+                prevoius_statuses[incoming_statuses['node_name']].input.relay[incoming_statuses["relay_name"]].state = incoming_statuses["state"]
+        else:
+            return
+
+        self.rdb.set('relays_status', jsontree.dumps(prevoius_statuses))
 
     def getStatus(self, nodename):
         """Sprawdzanie statusu przekaźnika"""
@@ -85,7 +103,7 @@ class history():
             with self.env.begin() as txn:
                 cursor = txn.cursor()
                 cursor.set_range(start_key.encode('ascii'))
-                
+
                 data = [value for key, value in cursor if nodename in key]
 
             """

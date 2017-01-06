@@ -52,15 +52,12 @@ class Connect(multiprocessing.Process):
         self.soc.close()
 
     def parseInput(self, line):
+        '''Dekodowanie przychodzących z nodów danych'''
         msg = json.loads(line)
-        node = msg['name']
-        node = node.split('rn')[1]
-        if int(node) < 9:
-            node = "0%s" % (node)
-
+        node = msg['relay_name']
         cmd = msg['cmd']
         state = msg['state']
-
+        # data format for node with relay
         output = "%s%s%s" % (node, cmd, state)
         return output
 
@@ -71,6 +68,7 @@ class Connect(multiprocessing.Process):
                 # wysyłanie
                 if not self.taskQ.empty():
                     task = self.parseInput(self.taskQ.get())
+                    # send to node
                     self.soc.sendall(task)
                     if self.debug:
                         self._logger.info("Put task in queue: %s" % task)
