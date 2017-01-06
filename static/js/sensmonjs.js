@@ -149,7 +149,7 @@ sensmon.controller('relayCtrl', function ($scope, $http) {
 
             });
             if (!_.isEmpty(nodes_with_output)) {
-              console.log(nodes_with_output);
+              // console.log(nodes_with_output);
               $scope.array = nodes_with_output;
           }
         });
@@ -167,7 +167,7 @@ sensmon.controller('relayCtrl', function ($scope, $http) {
     };
 
     ws.onmessage = function (evt) {
-      //jsonObj = parseJSON(evt.data);
+      update();
       console.log('Otrzymano nowe dane')
     };
 
@@ -183,27 +183,16 @@ sensmon.controller('relayCtrl', function ($scope, $http) {
     $scope.changeState = function(state, relay_name, cmd, node_name) {
       // plus przed 'state' zamienia na 1 bądz 0
       // http://stackoverflow.com/questions/7820683/convert-boolean-result-into-number-integer
-      console.log({"state": +state, "relay_name": relay_name, "node_name":node_name,"cmd": cmd});
+      // console.log({"state": +state, "relay_name": relay_name, "node_name":node_name,"cmd": cmd});
       ws.send(JSON.stringify({"node_name":node_name, "relay_name": relay_name, "state": +state, "cmd": cmd}));
     }
 
-    // z redis dane chwilowe
-    /*
-    $scope.init = function() {
-        switches_states = []
-        angular.forEach(status, function(v) {
-            switches_states.push(v)
-        })
-        console.log('Wczytuję wartosci wstępne z Redis')
-        console.log(switches_states);
-        $scope.switches = switches_states;
-    }
-    */
+  function update() {
     $http.get('/status').success(function(data) {
-  		console.log('Pobrano ostatnie wartości');
+      console.log('Pobrano ostatnie wartości');
       parseJSON(data);
-  	});
-    //$scope.init();
+    });
+  };
 });
 
 
@@ -240,8 +229,7 @@ sensmon.controller('dashCtrl', function ($scope, $http) {
     };
 
     ws.onmessage = function (evt) {
-        jsonObj = evt.data;
-        parseJSON(jsonObj);
+        parseJSON(evt.data);
         console.log('Otrzymano nowe dane')
     }
 

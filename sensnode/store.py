@@ -21,13 +21,13 @@ class redisdb():
 
     def initdb(self, host="localhost", port=6379):
         self.rdb = redis.Redis(host, port)
-        # init data - json
+        # init data - inf not exist get data from nodescfg
         if not self.rdb.exists('relays_status'):
             self.rdb.set('relays_status', json.dumps(config().getConfig('nodes')))
 
     def pubsub(self, data, channel='nodes'):
         """
-        Hash initv: dane chwilowe z czujników
+        Set initv: dane czujników
         Kanał nodes(domyślnie) - kanał do wymiany danych po Websocket(przeglądarka-nody)
         """
         if data:
@@ -40,9 +40,7 @@ class redisdb():
     def setStatus(self, msg):
         """
         Hash status: dane statusów przekaźników
-        Input:
-        {"relay_name": name, "state": state, "cmd": cmd}
-        {"relay_name": "lamp", "state": 1, "cmd": 01}
+        {"node_name": "lab', relay_name": "lamp", "state": 1, "cmd": 01}
         """
         # json format
         incoming_statuses = json.loads(msg)
@@ -50,7 +48,7 @@ class redisdb():
         prevoius_statuses = json.loads(self.rdb.get('relays_status'))
         prevoius_statuses = jsontree.clone(prevoius_statuses)
 
-        # update statuses of realys
+        # update statuses of realys and add to redis(set)
         if prevoius_statuses[incoming_statuses['node_name']].input.relay[incoming_statuses["relay_name"]].has_key:
             for k, v in prevoius_statuses[incoming_statuses['node_name']].input.relay.iteritems():
                 prevoius_statuses[incoming_statuses['node_name']].input.relay[incoming_statuses["relay_name"]].state = incoming_statuses["state"]
@@ -58,10 +56,6 @@ class redisdb():
             return
 
         self.rdb.set('relays_status', jsontree.dumps(prevoius_statuses))
-
-    def getStatus(self, nodename):
-        """Sprawdzanie statusu przekaźnika"""
-        return self.rdb.hget("status", nodename)
 
 
 class history():

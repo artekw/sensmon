@@ -40,6 +40,7 @@ version = '0.45-dev'
 ci = config(init=True)
 
 # ------------------------webapp settings--------------------#
+# app
 define("webapp_port", default=config().get("app", ['webapp', 'port']),
                       help="Run on the given port", type=int)
 define("webapp_host", default=sensnode.common.get_ip_address(),
@@ -89,7 +90,7 @@ class BaseHandler(tornado.web.RequestHandler):
         return self.get_secure_cookie("user")
 
 
-# wylogowywanie
+# Wylogowywanie
 class LogoutHandler(BaseHandler):
 
     def get(self):
@@ -98,7 +99,7 @@ class LogoutHandler(BaseHandler):
         self.redirect(self.get_argument("next", "/"))
 
 
-# logowanie
+# Logowanie
 class LoginHandler(BaseHandler):
 
     def get(self):
@@ -211,6 +212,7 @@ class GetHistoryData(BaseHandler):
             self.finish("%s nie znaleziono" % e)
 
 
+# /initv/
 class GetInitData(BaseHandler):
 
     @tornado.web.asynchronous
@@ -224,6 +226,7 @@ class GetInitData(BaseHandler):
         self.finish()
 
 
+# /status/
 class GetStatus(BaseHandler):
 
     @tornado.web.asynchronous
