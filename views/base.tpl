@@ -26,9 +26,9 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="/static/js/highstock.src.js" type="text/javascript"></script>
     <script src="/static/js/underscore-min.js" type="text/javascript"></script>
-    <script src="https://code.angularjs.org/1.4.8/angular.min.js" type="text/javascript"></script>
-    <script src="https://code.angularjs.org/1.4.8/angular-animate.min.js" type="text/javascript"></script>
-    <script src="https://code.angularjs.org/1.4.8/angular-route.js" type="text/javascript"></script>
+    <script src="https://code.angularjs.org/1.5.0/angular.min.js" type="text/javascript"></script>
+    <script src="https://code.angularjs.org/1.5.0/angular-animate.min.js" type="text/javascript"></script>
+    <script src="https://code.angularjs.org/1.5.0/angular-route.js" type="text/javascript"></script>
     <!-- https://libraries.io/bower/angular-bootstrap-toggle-switch -->
     <script src="/static/js/angular-toggle-switch.min.js" type="text/javascript"></script>
     <script src="/static/js/highcharts-ng.js" type="text/javascript"></script>

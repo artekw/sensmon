@@ -20,7 +20,7 @@
                                         ng-model="state"
                                         on-label="Wł."
                                         off-label="Wył."
-                                        ng-change='changeState(state, i, j.cmd, v.node_name)'>
+                                        ng-change='changeState(state, i, j.cmd, v.node_name, v.id)'>
                           </toggle-switch>
                       </div>
                     </div>

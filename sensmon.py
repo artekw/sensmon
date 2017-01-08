@@ -341,32 +341,38 @@ def main():
     @tornado.gen.engine
     def checkResults():
         if not resultQ.empty():
-            # RAW data
+            # RAW data - binary
             result = resultQ.get()
-            # Decoded data
+            # Decoded data - dict
             decoded = decoder.decode(result)
-            # Update sensors data
+            # Update sensors data - JSON
             update = decoder.update(decoded)
             #print ("RAW: %s" % (result))
-            #print ("JSON %s" % (decoded))
+            #print ("Dict %s" % (decoded))
             #print ("JSON Updated %s" % (update))
 
-            # if lmdb enabled store data
-            if options.lmdb_enable:
-                if decoded['name'] not in options.lmdb_forgot:
-                    key = ('%s-%d' %  (decoded['name'],decoded['timestamp'])).encode('ascii')
-                    value = ('%s' % decoded).encode('ascii')
-                    history.put(key, value)
-                    if debug:
-                        logger.debug("LevelDB: %s %s" % (key, decoded))
-            # If MQTT enabled publish
-            if options.mqtt_enable:
-                publish(decoded)
 
-            # initv - actual data from sensors store in Redis
-            redisdb.pubsub(update)
-            for c in clients:
-                c.write_message(update)
+            # decoded must be dictionary
+            if isinstance(decoded, dict):
+                # if lmdb enabled store data
+                if options.lmdb_enable:
+                    if decoded['name'] not in options.lmdb_forgot:
+                        key = ('%s-%d' %  (decoded['name'],decoded['timestamp'])).encode('ascii')
+                        value = ('%s' % decoded).encode('ascii')
+                        history.put(key, value)
+                        if debug:
+                            logger.debug("LevelDB: %s %s" % (key, decoded))
+                # If MQTT enabled publish
+                if options.mqtt_enable:
+                    publish(decoded)
+
+                # initv - actual data from sensors store in Redis
+                redisdb.pubsub(update)
+                for c in clients:
+                    c.write_message(update)
+            else:
+                print("Decoded is not dictionary!")
+                print("RAW: %s") % result
 
     mainLoop = tornado.ioloop.IOLoop.instance()
     tornado.autoreload.start(mainLoop)

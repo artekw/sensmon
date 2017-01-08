@@ -54,11 +54,15 @@ class Connect(multiprocessing.Process):
     def parseInput(self, line):
         '''Dekodowanie przychodzących z nodów danych'''
         msg = json.loads(line)
-        node = msg['relay_name']
+        node_id = msg['node_id']
+        if int(node_id) < 9:
+            node_id = "0%s" % (node_id)
         cmd = msg['cmd']
         state = msg['state']
         # data format for node with relay
-        output = "%s%s%s" % (node, cmd, state)
+        # 060100
+        output = "%s%s%s" % (node_id, cmd, state)
+        print output
         return output
 
     def run(self):

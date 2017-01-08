@@ -17,11 +17,10 @@ Debian potrzebuje jeszcze:
 
 - python-dev
 - build-essential
-- libleveldb-dev
 
 Instalacja dla Debiana/Ubuntu:
 
-    $ sudo apt-get install python redis-server screen git ser2net python-pip python-dev build-essential libleveldb-dev
+    $ sudo apt-get install python redis-server screen git ser2net python-pip python-dev build-essential lmdb
     $ git clone https://github.com/artekw/sensmon
     $ cd sensmon
     $ sudo pip install -r requirements.txt
@@ -56,6 +55,7 @@ Wejdz przez przeglądarkę na adres http://adres-ip-hosta:8081
 - dashboard
 - wykresy (tylko dzienne)
 - prognoza pogody wg [OpenWatherMap](http://openweathermap.org/city/7530941)
+- sterowanie przekaźnikami
 
 ### Plany
 
@@ -66,8 +66,8 @@ Wejdz przez przeglądarkę na adres http://adres-ip-hosta:8081
 - kalendarz Google
 - [PushBulllet](https://www.pushbullet.com/)
 - panel administatora
-- sterowanie przekaźnikami
 - usunięcie pośrednika tj ser2net
+- zastosowanie jsonschema do walidacji JSON
 
 ### Znane problemy
    - "ConnectionError: Tried to read from non-existent connection" przy generowaniu wykresów

@@ -180,11 +180,11 @@ sensmon.controller('relayCtrl', function ($scope, $http) {
     }
     // http://stackoverflow.com/questions/13077320/angularjs-trigger-when-radio-button-is-selected
     // realcja na zmianę stanu przekaźnika
-    $scope.changeState = function(state, relay_name, cmd, node_name) {
+    $scope.changeState = function(state, relay_name, cmd, node_name, node_id) {
       // plus przed 'state' zamienia na 1 bądz 0
       // http://stackoverflow.com/questions/7820683/convert-boolean-result-into-number-integer
-      // console.log({"state": +state, "relay_name": relay_name, "node_name":node_name,"cmd": cmd});
-      ws.send(JSON.stringify({"node_name":node_name, "relay_name": relay_name, "state": +state, "cmd": cmd}));
+      console.log({"state": +state, "relay_name": relay_name, "node_name":node_name,"cmd": cmd, "node_id": node_id});
+      ws.send(JSON.stringify({"node_name":node_name, "relay_name": relay_name, "state": +state, "cmd": cmd, "node_id": node_id}));
     }
 
   function update() {

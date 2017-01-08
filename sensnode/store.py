@@ -40,7 +40,7 @@ class redisdb():
     def setStatus(self, msg):
         """
         Hash status: dane statusów przekaźników
-        {"node_name": "lab', relay_name": "lamp", "state": 1, "cmd": 01}
+        {"node_id": 19, "node_name": "lab', relay_name": "lamp", "state": 1, "cmd": 01}
         """
         # json format
         incoming_statuses = json.loads(msg)

@@ -32,7 +32,8 @@ class Decoder(object):
         if line.startswith("OK"):
             data = line.split(" ")
         else:
-            print("WARNING: No data!")
+            print("WARNING: Bad data!")
+            print("Source: %s") % line
             return
 
         if data:
@@ -57,15 +58,16 @@ class Decoder(object):
         '''Copy node config and add to output
         sensors "raw" key with received data'''
 
-        new_value = jsontree.clone(_new_value)
+        if _new_value != None:
+            new_value = jsontree.clone(_new_value)
 
-        if self.nodescfg.has_key(new_value.name):
-            for k,v in self.nodescfg[new_value.name].output.sensors.iteritems():
-                self.nodescfg[new_value.name].output.sensors[k].raw = new_value[k]
-        else:
-            return
+            if self.nodescfg.has_key(new_value.name):
+                for k,v in self.nodescfg[new_value.name].output.sensors.iteritems():
+                    self.nodescfg[new_value.name].output.sensors[k].raw = new_value[k]
+            else:
+                return
 
-        return jsontree.dumps(self.nodescfg)
+            return jsontree.dumps(self.nodescfg)
 
     def scale(self, data):
         '''Scale data'''
