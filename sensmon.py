@@ -167,6 +167,7 @@ class DashHandler(BaseHandler):
 # zakładka Przełaczniki
 class SwitchesHandler(BaseHandler):
 
+    @tornado.web.authenticated
     @tornado.web.asynchronous
     @tornado.gen.engine
     def get(self):
