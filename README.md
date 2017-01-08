@@ -42,7 +42,6 @@ Pliki konfiguracyjne aplikacji znajdują się w *static/conf*.
 
 - settings.json - ustawienia aplikacji - [dokumentacja](https://github.com/artekw/sensmon/tree/master/static/conf)
 - nodemap.json - mapa nodów oraz powiązanych z nim czujników
-- control.json - konfiguracja przekaźników
 
 ### Uruchomienie
 
@@ -77,6 +76,7 @@ Wejdz przez przeglądarkę na adres http://adres-ip-hosta:8081
 ![sensmon info](https://dl.dropboxusercontent.com/u/677573/Photos/sensmon/intro.png)
 ![sensmon dashboard](https://dl.dropboxusercontent.com/u/677573/Photos/sensmon/dashboard.png)
 ![sensmon wykresy](https://dl.dropboxusercontent.com/u/677573/Photos/sensmon/graphs.png)
+![sensmon switchs](https://dl.dropboxusercontent.com/u/677573/Photos/sensmon/switches.png)
 
 # Uwaga
 Aplikacja jest we wstępnym stanie rozwoju autor nie ponosi odpowiedzialności za niewłaściwe działanie programu i ewentualne uszkodzenia powstałe na skutek jego działania.
