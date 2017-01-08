@@ -85,7 +85,7 @@ Aplikacja jest we wstępnym stanie rozwoju autor nie ponosi odpowiedzialności z
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2016 Artur Wronowski
+Copyright (c) 2015-2017 Artur Wronowski
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
