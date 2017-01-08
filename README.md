@@ -1,10 +1,10 @@
 # sensmon - home automation
 
-sensmon jest aplikacją przeglądarkową do monitorowania czujników z projektu sensnode. Aplikacja działa w oparciu o techologię [Websocket](http://pl.wikipedia.org/wiki/WebSocket). Została napisana w frameworku [Tornado](http://www.tornadoweb.org/en/stable/) oraz [AngularJS](https://angularjs.org/).
+sensmon jest aplikacją monitorowania czujników z projektu sensnode oraz sterowania przekaźnikami. Aplikacja działa w oparciu o techologię [Websocket](http://pl.wikipedia.org/wiki/WebSocket). Została napisana w frameworku [Tornado](http://www.tornadoweb.org/en/stable/) oraz [AngularJS](https://angularjs.org/). Do przechowywania danych wykorzystano bazę [LMDB](https://lmdb.readthedocs.io/en/release/) oraz [Redis](https://redis.io/).
 
 ## Wymagania
 
-sensmon działa tylko na systemie Linuks. Do uruchomienia potrzebny jest Python 2.x oraz kilka innych zewnętrznych aplikacji/modułów m.in.
+sensmon działa tylko na systemie Linuks. Do uruchomienia potrzebny jest Python 2.6.x/2.7.x oraz kilka innych zewnętrznych aplikacji/modułów m.in.
 
 - python
 - python-pip
@@ -36,12 +36,15 @@ Zalecane ustawienie w pliku /etc/ser2net.conf:
 Należy pamiętać, aby ustawić ten sam port w pliku settings.conf aplikacji sensmon (patrz niżej)
 
 ## Aplikacja Web
+
+Do używania aplikacji zaleca się Chrome/Chromium lub Firefox. Dostosowana jest do pracy na urządzeniach mobilnych.
+
 ### Konfiguracja
 
 Pliki konfiguracyjne aplikacji znajdują się w *static/conf*.
 
 - settings.json - ustawienia aplikacji - [dokumentacja](https://github.com/artekw/sensmon/tree/master/static/conf)
-- nodemap.json - mapa nodów oraz powiązanych z nim czujników
+- nodemap.json - mapa nodów oraz powiązanych z nim czujników oraz przekaźników
 
 ### Uruchomienie
 
