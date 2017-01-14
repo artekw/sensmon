@@ -179,6 +179,8 @@ class SwitchesHandler(BaseHandler):
 # zakłatka Intro
 class IntroHandler(BaseHandler):
 
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def get(self):
         feeds = getFeeds()
         self.render("intro.tpl", f=feeds)
@@ -195,7 +197,7 @@ class InfoHandler(BaseHandler):
                     uptime=sensnode.common.uptime(),
                     cpu_temp=sensnode.common.cpu_temp(),
                     machine=sensnode.common.machine_detect()[0]
-                    )
+                   )
 
 
 # zakłatka Pogoda
@@ -215,7 +217,7 @@ class GetHistoryData(BaseHandler):
         response = []
 
         try:
-            response = { 'data' :  history.get_toJSON(node, sensor, timerange) }
+            response = {'data' :  history.get_toJSON(node, sensor, timerange) }
             self.write(response)
             self.finish()
         except KeyError, e:
@@ -251,6 +253,24 @@ class GetStatus(BaseHandler):
         self.finish()
 
 
+# /alarm/<list>
+class GetAlarm(BaseHandler):
+
+    @tornado.web.asynchronous
+    @tornado.gen.engine
+    def get(self, list):
+        self.set_header("Content-Type", "application/json")
+        _cl = tornadoredis.Client()
+        if list == 'min':
+            status = yield tornado.gen.Task(_cl.lpop, 'min')
+            data_json = tornado.escape.json_encode(status)
+        if list == 'max':
+            status = yield tornado.gen.Task(_cl.lpop, 'max')
+            data_json = tornado.escape.json_encode(status)
+        self.write(data_json)
+        self.finish()
+
+
 # Websocket
 class Websocket(tornado.websocket.WebSocketHandler):
 
@@ -273,7 +293,7 @@ class Websocket(tornado.websocket.WebSocketHandler):
     def open(self):
         _logger.info("WebSocket opened")
 
-    """Wyślij wiadomość do klienta"""
+    """Wyślij wiadomość do przeglądarki"""
     def sendmsg(self, msg):
         if hasattr(msg, "body"):
             self.write_message(str(msg.body))
@@ -284,7 +304,7 @@ class Websocket(tornado.websocket.WebSocketHandler):
                                'due to a Redis server error.')
             self.close()
 
-    """Odbierz wiadomość od klienta"""
+    """Odbierz wiadomość od przeglądarki"""
     def on_message(self, msg):
         '''Example https://github.com/leporo/tornado-redis/blob/master/demos/websockets/app.py'''
         rdb = sensnode.store.redisdb()
@@ -302,16 +322,17 @@ class Websocket(tornado.websocket.WebSocketHandler):
 
 
 def publish(jsondata):
-	"""
-	>> data = {'vrms': 220.39, 'timestamp': 1428338500, 'name': 'powernode', 'power': 246}
-	>> publish(data, hostname="localhost" port="1883")
-	/powernode/vrms 220.39
-	/powernode/power 246
-	/powernode/timestamp 1428338500
-	"""
-	name = jsondata['name']
-	for k, v in jsondata.iteritems():
-		mqtt.single("/sensmon/%s/%s" % (name, k), v, hostname=options.mqtt_broker, port=options.mqtt_port)
+    """
+    >> data = {'vrms': 220.39, 'timestamp': 1428338500, 'name': 'powernode', 'power': 246}
+    >> publish(data, hostname="localhost" port="1883")
+    /powernode/vrms 220.39
+    /powernode/power 246
+    /powernode/timestamp 1428338500
+    """
+    name = jsondata['name']
+    for k, v in jsondata.iteritems():
+        mqtt.single("/sensmon/%s/%s" % (name, k), v, hostname=options.mqtt_broker,
+                                                     port=options.mqtt_port)
 
 
 # funkcja główna
@@ -332,6 +353,7 @@ def main():
     tornado.options.parse_command_line()
     application = tornado.web.Application([
         (r"/admin", AdminHandler),
+        (r"/alarm/(?P<list>[^\/]+)?", GetAlarm),
         (r"/dash", DashHandler),
         (r"/switches", SwitchesHandler),
         (r"/graphs/(?P<node>[^\/]+)/?(?P<sensor>[^\/]+)?/?(?P<timerange>[^\/]+)?", GraphsHandler),
@@ -393,7 +415,7 @@ def main():
                     publish(decoded)
 
                 # initv - actual data from sensors store in Redis
-                redisdb.pubsub(update)
+                redisdb.websocket_channel(update)
                 for c in clients:
                     c.write_message(update)
             else:

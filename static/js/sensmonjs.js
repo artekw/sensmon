@@ -116,13 +116,14 @@ sensmon.filter('group', function() {
 
 /* controllers */
 sensmon.controller('introCtrl', function ($scope, $interval, $http) {
-  $interval(function(){
-    $scope.clock = new Date();
-  },500);
+    // clock
+    $interval(function(){
+        $scope.clock = new Date();
+    },500);
 
-  $scope.today = function(date) {
-      return moment(date).locale('pl').format('dddd, DD MMMM YYYY');
-  }
+    $scope.today = function(date) {
+        return moment(date).locale('pl').format('dddd, DD MMMM YYYY');
+    }
 });
 
 

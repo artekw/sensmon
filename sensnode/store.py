@@ -27,7 +27,7 @@ class redisdb():
         if not self.rdb.exists('relays_status'):
             self.rdb.set('relays_status', json.dumps(config().getConfig('nodes')))
 
-    def pubsub(self, data, channel='nodes'):
+    def websocket_channel(self, data, channel='nodes'):
         """
         Set initv: dane czujników
         Kanał nodes(domyślnie) - kanał do wymiany danych po Websocket(przeglądarka-nody)
@@ -43,10 +43,21 @@ class redisdb():
         """Return initv"""
         return self.rdb.get("initv")
 
-    def set_key_timeout(self, set, string, timeout):
+    def append_key(self, list, string):
+        """Add to list"""
+        self.rdb.lpush(list, string)
+        # trim list to 2 items
+        self.rdb.ltrim(list, 0, 2)
+
+    def pop_key(self, list, string):
+        """Pop item from list"""
+        self.rdb.lpush(list, string)
+        # trim list to 2 items
+        self.rdb.ltrim(list, 0, 2)
+
+    def alarm_channel(self, string, channel='alarm'):
         """Set string in base with timeout"""
-        self.rdb.set(set, string)
-        self.rdb.expire(set, timeout)
+        self.rdb.publish(channel, string)
 
     def setStatus(self, msg):
         """
