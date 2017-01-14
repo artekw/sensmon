@@ -140,7 +140,8 @@
             "batvol":{
                "unit":"V",
                "desc":"Nap. baterii",
-               "scale":3
+               "scale":3,
+               "min":3.3
             },
             "timestamp":{
                "unit":"",

@@ -27,9 +27,11 @@ import sensnode.decoder
 import sensnode.connect
 import sensnode.common
 import sensnode.store
-# import sensnode.logs as logs
+import sensnode.events
+import sensnode.logs as logs
 from sensnode.config import config
 from sensnode.weather import getWeather
+from sensnode.feeds import getFeeds
 
 
 # dev mode
@@ -80,6 +82,7 @@ clients = []
 if options.lmdb_enable:
     history = sensnode.store.history(options.lmdb_path, options.lmdb_dbname)
 
+_logger = logging.getLogger(__name__)
 
 # --------------------------webapp code-----------------------#
 
@@ -108,7 +111,6 @@ class LoginHandler(BaseHandler):
     def post(self):
         username = self.get_argument('name', '')
         password = self.get_argument('pass', '')
-        print username, password
 
         settings_pass = config().get("app", ['webapp', 'password'])
 
@@ -178,8 +180,8 @@ class SwitchesHandler(BaseHandler):
 class IntroHandler(BaseHandler):
 
     def get(self):
-        weather = getWeather(city=options.city_name, appid=options.appid)
-        self.render("intro.tpl", w=weather)
+        feeds = getFeeds()
+        self.render("intro.tpl", f=feeds)
 
 
 # zakładka System
@@ -194,6 +196,14 @@ class InfoHandler(BaseHandler):
                     cpu_temp=sensnode.common.cpu_temp(),
                     machine=sensnode.common.machine_detect()[0]
                     )
+
+
+# zakłatka Pogoda
+class WeatherHandler(BaseHandler):
+
+    def get(self):
+        weather = getWeather(city=options.city_name, appid=options.appid)
+        self.render("weather.tpl", w=weather)
 
 
 # RESTful
@@ -261,15 +271,22 @@ class Websocket(tornado.websocket.WebSocketHandler):
         return True
 
     def open(self):
-        print "WebSocket opened"
+        _logger.info("WebSocket opened")
 
     """Wyślij wiadomość do klienta"""
     def sendmsg(self, msg):
         if hasattr(msg, "body"):
             self.write_message(str(msg.body))
+        if msg.kind == 'disconnect':
+            # Do not try to reconnect, just send a message back
+            # to the client and close the client connection
+            self.write_message('The connection terminated '
+                               'due to a Redis server error.')
+            self.close()
 
     """Odbierz wiadomość od klienta"""
     def on_message(self, msg):
+        '''Example https://github.com/leporo/tornado-redis/blob/master/demos/websockets/app.py'''
         rdb = sensnode.store.redisdb()
         # zapisz status w bazie redis
         rdb.setStatus(msg)
@@ -279,9 +296,9 @@ class Websocket(tornado.websocket.WebSocketHandler):
 
     def on_close(self):
         if self.client.subscribed:
-            print "WebSocket closed"
             self.client.unsubscribe('nodes')
             self.client.disconnect()
+            _logger.info("WebSocket closed")
 
 
 def publish(jsondata):
@@ -308,8 +325,9 @@ def main():
 
     redisdb = sensnode.store.redisdb(debug=debug)
     decoder = sensnode.decoder.Decoder(debug=debug)
+    events = sensnode.events.Events(redisdb, dedug=debug)
 
-    logger = logging.getLogger()
+    #logger = logging.getLogger()
 
     tornado.options.parse_command_line()
     application = tornado.web.Application([
@@ -318,13 +336,14 @@ def main():
         (r"/switches", SwitchesHandler),
         (r"/graphs/(?P<node>[^\/]+)/?(?P<sensor>[^\/]+)?/?(?P<timerange>[^\/]+)?", GraphsHandler),
         (r"/info", InfoHandler),
-		(r"/", IntroHandler),
+        (r"/", IntroHandler),
         (r"/login", LoginHandler),
         (r"/logout", LogoutHandler),
         (r"/initv", GetInitData),
         (r"/status", GetStatus),
         (r"/history/(?P<node>[^\/]+)/?(?P<sensor>[^\/]+)?/?(?P<timerange>[^\/]+)?", GetHistoryData),
         (r"/websocket", Websocket),
+        (r"/weather", WeatherHandler),
         (r'/favicon.ico', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")})],
         queue=taskQ,
         template_path=os.path.join(os.path.dirname(__file__), "views"),
@@ -348,9 +367,15 @@ def main():
             decoded = decoder.decode(result)
             # Update sensors data - JSON
             update = decoder.update(decoded)
-            #print ("RAW: %s" % (result))
-            #print ("Dict %s" % (decoded))
-            #print ("JSON Updated %s" % (update))
+
+            # check data for min and max values
+            # if reached inform about it
+            events.alarm(update)
+
+            if debug:
+                _logger.info("RAW: %s" % (result))
+                _logger.info("Dict %s" % (decoded))
+                _logger.info("JSON Updated %s" % (update))
 
 
             # decoded must be dictionary
@@ -358,11 +383,11 @@ def main():
                 # if lmdb enabled store data
                 if options.lmdb_enable:
                     if decoded['name'] not in options.lmdb_forgot:
-                        key = ('%s-%d' %  (decoded['name'],decoded['timestamp'])).encode('ascii')
+                        key = ('%s-%d' %  (decoded['name'], decoded['timestamp'])).encode('ascii')
                         value = ('%s' % decoded).encode('ascii')
                         history.put(key, value)
                         if debug:
-                            logger.debug("LevelDB: %s %s" % (key, decoded))
+                            _logger.debug("LMDB: %s %s" % (key, decoded))
                 # If MQTT enabled publish
                 if options.mqtt_enable:
                     publish(decoded)
@@ -372,8 +397,8 @@ def main():
                 for c in clients:
                     c.write_message(update)
             else:
-                print("Decoded is not dictionary!")
-                print("RAW: %s") % result
+                _logger.info("Decoded is not dictionary!")
+                _logger.info("RAW: %s" % result)
 
     mainLoop = tornado.ioloop.IOLoop.instance()
     tornado.autoreload.start(mainLoop)

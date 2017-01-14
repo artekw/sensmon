@@ -9,6 +9,7 @@ from itertools import islice
 import simplejson as json
 import redis
 import jsontree
+import logging
 from config import config
 
 
@@ -20,6 +21,7 @@ class redisdb():
         self.initdb()
 
     def initdb(self, host="localhost", port=6379):
+        """Init redis"""
         self.rdb = redis.Redis(host, port)
         # init data - inf not exist get data from nodescfg
         if not self.rdb.exists('relays_status'):
@@ -36,6 +38,10 @@ class redisdb():
             if self.debug:
                 logging.debug('Data publish on channel')
                 logging.debug('Submit init values')
+
+    def get_initv(self):
+        """Return initv"""
+        return self.rdb.get("initv")
 
     def setStatus(self, msg):
         """
@@ -84,10 +90,10 @@ class history():
 
         # zakresy
         ranges = {'1h' : 3600,
-                'day' : 86400,
-                '2d': 172800,
-                'week' : 604800,
-                'month' : 2592000}
+                  'day' : 86400,
+                  '2d': 172800,
+                  'week' : 604800,
+                  'month' : 2592000}
 
         if self.dbconnected:
             data = []
