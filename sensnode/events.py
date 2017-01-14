@@ -27,14 +27,30 @@ class Events(object):
             for sensor in tclone[key].output.sensors.keys():
                 # check for 'max' key
                 if tclone[key].output.sensors[sensor].has_key('max'):
+                    sensor_data = tclone[key].output.sensors[sensor]
                     if self.debug:
                         print "MAX \n%s" % tclone[key].output.sensors[sensor]
-                    if tclone[key].output.sensors[sensor].raw >= tclone[key].output.sensors[sensor].max:
+                    if sensor_data.raw >= sensor_data.max:
+                        # copy timestamp and push to jsontree obj
+                        sensor_data.timestamp = tclone[key].output.sensors.timestamp.raw
                         print "Warning, %s maximum reached!" % key
+                        # set key in base
+                        # eg. max_powernode <data>
+                        self.store.set_key_timeout("max" + "_" + key,
+                                                   jsontree.dumps(sensor_data),
+                                                   60)
                 # check for 'min' key
                 if tclone[key].output.sensors[sensor].has_key('min'):
+                    sensor_data = tclone[key].output.sensors[sensor]
                     if self.debug:
                         print "MIN \n%s" % tclone[key].output.sensors[sensor]
-                    if tclone[key].output.sensors[sensor].raw <= tclone[key].output.sensors[sensor].min:
+                    if sensor_data.raw <= sensor_data.min:
+                        # copy timestamp and push to jsontree obj
+                        sensor_data.timestamp = tclone[key].output.sensors.timestamp.raw
                         print "Warning, %s minimum reached!" % key
+                        # set key in base
+                        # eg. min_powernode <data>
+                        self.store.set_key_timeout("min" + "_" + key,
+                                                   jsontree.dumps(sensor_data),
+                                                   60)
 

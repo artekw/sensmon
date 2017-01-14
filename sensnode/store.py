@@ -43,6 +43,11 @@ class redisdb():
         """Return initv"""
         return self.rdb.get("initv")
 
+    def set_key_timeout(self, set, string, timeout):
+        """Set string in base with timeout"""
+        self.rdb.set(set, string)
+        self.rdb.expire(set, timeout)
+
     def setStatus(self, msg):
         """
         Hash status: dane statusów przekaźników

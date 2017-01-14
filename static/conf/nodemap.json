@@ -162,7 +162,8 @@
             },
             "power":{
                "unit":"W",
-               "desc":"Moc bierna"
+               "desc":"Moc bierna",
+               "max": 200
             },
             "timestamp":{
                "unit":"",
