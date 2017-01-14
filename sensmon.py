@@ -325,7 +325,7 @@ def main():
 
     redisdb = sensnode.store.redisdb(debug=debug)
     decoder = sensnode.decoder.Decoder(debug=debug)
-    events = sensnode.events.Events(redisdb, dedug=debug)
+    events = sensnode.events.Events(redisdb, debug=debug)
 
     #logger = logging.getLogger()
 

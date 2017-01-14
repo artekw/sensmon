@@ -27,13 +27,13 @@ class Events(object):
             for sensor in tclone[key].output.sensors.keys():
                 # check for 'max' key
                 if tclone[key].output.sensors[sensor].has_key('max'):
-                    if debug:
+                    if self.debug:
                         print "MAX \n%s" % tclone[key].output.sensors[sensor]
                     if tclone[key].output.sensors[sensor].raw >= tclone[key].output.sensors[sensor].max:
                         print "Warning, %s maximum reached!" % key
                 # check for 'min' key
                 if tclone[key].output.sensors[sensor].has_key('min'):
-                    if debug:
+                    if self.debug:
                         print "MIN \n%s" % tclone[key].output.sensors[sensor]
                     if tclone[key].output.sensors[sensor].raw <= tclone[key].output.sensors[sensor].min:
                         print "Warning, %s minimum reached!" % key
