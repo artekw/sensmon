@@ -35,10 +35,11 @@ class Events(object):
                         sensor_data.timestamp = tclone[key].output.sensors.timestamp.raw
                         # copy node name and push to jsontree obj
                         sensor_data.name = key
-                        print "Warning, %s maximum reached!" % key
+                        if self.debug:
+                            print "Warning, %s maximum reached!" % key
                         # set key in base
                         # eg. max_powernode <data>
-                        self.store.append_key("max",
+                        self.store.append_key("alarm",
                                               jsontree.dumps(sensor_data))
 
                 # check for 'min' key
@@ -51,8 +52,9 @@ class Events(object):
                         sensor_data.timestamp = tclone[key].output.sensors.timestamp.raw
                         # copy node name and push to jsontree obj
                         sensor_data.name = key
-                        print "Warning, %s minimum reached!" % key
+                        if self.debug:
+                            print "Warning, %s minimum reached!" % key
                         # set key in base
                         # eg. min_powernode <data>
-                        self.store.append_key("min",
+                        self.store.append_key("alarm",
                                               jsontree.dumps(sensor_data))

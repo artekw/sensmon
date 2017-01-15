@@ -115,10 +115,10 @@ sensmon.filter('group', function() {
 
 
 /* controllers */
-sensmon.controller('introCtrl', function ($scope, $interval, $http) {
+sensmon.controller('introCtrl', function ($scope, $interval) {
     // clock
     $interval(function(){
-        $scope.clock = new Date();
+        $scope.clock = new Date();    
     },500);
 
     $scope.today = function(date) {

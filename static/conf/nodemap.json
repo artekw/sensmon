@@ -12,7 +12,9 @@
             "temp":{
                "unit":"°C",
                "desc":"Temperatura",
-               "scale":1
+               "scale":1,
+               "min":15,
+               "max":28
             },
             "lpg":{
                "unit":"",
@@ -22,7 +24,8 @@
             "batvol":{
                "unit":"V",
                "desc":"Nap. baterii",
-               "scale":3
+               "scale":3,
+               "min":3.3
             },
             "timestamp":{
                "unit":"",
@@ -48,7 +51,8 @@
             "batvol":{
                "unit":"V",
                "desc":"Nap. baterii",
-               "scale":3
+               "scale":3,
+               "min":3.3
             },
             "temp":{
                "unit":"°C",
@@ -69,7 +73,8 @@
             "batvol":{
                "unit":"V",
                "desc":"Nap. baterii",
-               "scale":3
+               "scale":3,
+               "min":3.3
             },
             "temp":{
                "unit":"  C",
@@ -90,7 +95,8 @@
             "batvol":{
                "unit":"V",
                "desc":"Nap. baterii",
-               "scale":3
+               "scale":3,
+               "min":3.3
             },
             "temp":{
                "unit":"  C",
@@ -163,7 +169,7 @@
             "power":{
                "unit":"W",
                "desc":"Moc bierna",
-               "max": 200
+               "max": 1000
             },
             "timestamp":{
                "unit":"",

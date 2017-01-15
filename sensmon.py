@@ -130,7 +130,7 @@ class LoginHandler(BaseHandler):
             self.redirect(self.get_argument("next", "/"))
         else:
             login_response = {
-                'msg': 'Zły login i hasło!'
+                'msg': 'Błędny login lub hasło!'
             }
             self.render("login.tpl", resp=login_response)
 
@@ -183,7 +183,13 @@ class IntroHandler(BaseHandler):
     @tornado.gen.engine
     def get(self):
         feeds = getFeeds()
-        self.render("intro.tpl", f=feeds)
+        try:
+            _cl = tornadoredis.Client()
+            status = yield tornado.gen.Task(_cl.lpop, 'alarm')
+            alarm_json = json.loads(status)
+        except TypeError, e:
+            alarm_json = 'null'
+        self.render("intro.tpl", f=feeds, alarm=alarm_json)
 
 
 # zakładka System
@@ -253,20 +259,16 @@ class GetStatus(BaseHandler):
         self.finish()
 
 
-# /alarm/<list>
+# /alarm
 class GetAlarm(BaseHandler):
 
     @tornado.web.asynchronous
     @tornado.gen.engine
-    def get(self, list):
+    def get(self):
         self.set_header("Content-Type", "application/json")
         _cl = tornadoredis.Client()
-        if list == 'min':
-            status = yield tornado.gen.Task(_cl.lpop, 'min')
-            data_json = tornado.escape.json_encode(status)
-        if list == 'max':
-            status = yield tornado.gen.Task(_cl.lpop, 'max')
-            data_json = tornado.escape.json_encode(status)
+        status = yield tornado.gen.Task(_cl.lpop, 'alarm')
+        data_json = tornado.escape.json_encode(status)
         self.write(data_json)
         self.finish()
 
@@ -306,7 +308,7 @@ class Websocket(tornado.websocket.WebSocketHandler):
 
     """Odbierz wiadomość od przeglądarki"""
     def on_message(self, msg):
-        '''Example https://github.com/leporo/tornado-redis/blob/master/demos/websockets/app.py'''
+        """Example https://github.com/leporo/tornado-redis/blob/master/demos/websockets/app.py"""
         rdb = sensnode.store.redisdb()
         # zapisz status w bazie redis
         rdb.setStatus(msg)
@@ -353,7 +355,7 @@ def main():
     tornado.options.parse_command_line()
     application = tornado.web.Application([
         (r"/admin", AdminHandler),
-        (r"/alarm/(?P<list>[^\/]+)?", GetAlarm),
+        (r"/alarm", GetAlarm),
         (r"/dash", DashHandler),
         (r"/switches", SwitchesHandler),
         (r"/graphs/(?P<node>[^\/]+)/?(?P<sensor>[^\/]+)?/?(?P<timerange>[^\/]+)?", GraphsHandler),
