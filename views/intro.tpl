@@ -6,7 +6,7 @@
   <div class="intro" ng-controller="introCtrl">
     <div class="row">
           <div class="clock">{{! clock | date:'HH:mm:ss'}}</div>
-          <div class="date">Dziś jest {{! today(clock) }}</div>
+          <div class="date">Today is {{! today(clock) }}</div>
         </div>
 
     <div class="row">

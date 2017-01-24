@@ -53,16 +53,16 @@
 				<div class="navbar-collapse collapse" ng-controller="HeaderController">
 					<ul class="nav navbar-nav">
 						<li ng-class="{ active: isActive('/')}"><a target="_self" href="/"><i class="fa fa-home fa-fw" aria-hidden="true"></i>&nbsp;Intro</a></li>
-                        <li ng-class="{ active: isActive('/weather')}"><a target="_self" href="/weather"><i class="fa fa-sun-o fa-fw" aria-hidden="true"></i>&nbsp;Pogoda</a></li>
-						<li ng-class="{ active: isActive('/dash')}"><a target="_self" href="dash"><i class="fa fa-tachometer fa-fw" aria-hidden="true"></i>&nbsp;Czujniki</a></li>
-                        <li ng-class="{ active: isActive('/switches')}"><a target="_self" href="switches"><i class="fa fa-flash fa-fw" aria-hidden="true"></i>&nbsp;Przełączniki</a></li>
+                        <li ng-class="{ active: isActive('/weather')}"><a target="_self" href="/weather"><i class="fa fa-sun-o fa-fw" aria-hidden="true"></i>&nbsp;Weather</a></li>
+						<li ng-class="{ active: isActive('/dash')}"><a target="_self" href="dash"><i class="fa fa-tachometer fa-fw" aria-hidden="true"></i>&nbsp;Sensors</a></li>
+                        <li ng-class="{ active: isActive('/switches')}"><a target="_self" href="switches"><i class="fa fa-flash fa-fw" aria-hidden="true"></i>&nbsp;Switches</a></li>
 						<li ng-class="{ active: isActive('/info')}"><a target="_self" href="info"><i class="fa fa-info fa-fw" aria-hidden="true"></i>&nbsp;Info</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						{% if current_user %}
-							<li ng-class="{ active: isActive('/logout?next={{ url_escape(request.uri) }}')}"><a target="_self" href="/logout?next={{ url_escape(request.uri) }}"><i class="fa fa-sign-in fa-fw" aria-hidden="true"></i>&nbsp;Wyloguj</a></li>
+							<li ng-class="{ active: isActive('/logout?next={{ url_escape(request.uri) }}')}"><a target="_self" href="/logout?next={{ url_escape(request.uri) }}"><i class="fa fa-sign-in fa-fw" aria-hidden="true"></i>&nbsp;Logout</a></li>
 						{% else %}
-							<li ng-class="{ active: isActive('/login?next={{ url_escape(request.uri) }}')}"><a target="_self" href="/login?next={{ url_escape(request.uri) }}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>&nbsp;Zaloguj</a></li>
+							<li ng-class="{ active: isActive('/login?next={{ url_escape(request.uri) }}')}"><a target="_self" href="/login?next={{ url_escape(request.uri) }}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>&nbsp;Login</a></li>
 						{% end %}
 					</ul>
 				</div>

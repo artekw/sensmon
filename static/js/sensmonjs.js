@@ -150,7 +150,7 @@ sensmon.controller('relayCtrl', function ($scope, $http) {
 
             });
             if (!_.isEmpty(nodes_with_output)) {
-              // console.log(nodes_with_output);
+              console.log(nodes_with_output);
               $scope.array = nodes_with_output;
           }
         });

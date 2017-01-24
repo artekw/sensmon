@@ -394,7 +394,7 @@ def main():
 
             # check data for min and max values
             # if reached inform about it
-            events.alarm(update)
+            # events.alarm(update)
 
             if debug:
                 _logger.info("RAW: %s" % (result))

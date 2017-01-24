@@ -1,17 +1,17 @@
 {
    "lab":{
       "id":19,
-      "title":"Garaż",
+      "title":"Garage",
       "output":{
          "sensors":{
             "humi":{
                "unit":"%",
-               "desc":"Wilgotność",
+               "desc":"Humidity",
                "scale":1
             },
             "temp":{
                "unit":"°C",
-               "desc":"Temperatura",
+               "desc":"Temperature",
                "scale":1,
                "min":15,
                "max":28
@@ -32,20 +32,11 @@
                "desc":"Aktualizacja"
             }
          }
-      },
-      "input":{
-         "relay":{
-            "lampa":{
-               "desc":"Lampa",
-               "default":0,
-               "cmd":"02"
-            }
-         }
       }
    },
    "outnode":{
       "id":3,
-      "title":"Na zewnątrz",
+      "title":"Outside",
       "output":{
          "sensors":{
             "batvol":{
@@ -56,29 +47,7 @@
             },
             "temp":{
                "unit":"°C",
-               "desc":"Temperatura",
-               "scale":1
-            },
-            "timestamp":{
-               "desc":"Aktualizacja"
-            }
-         }
-      }
-   },
-   "salon":{
-      "id":4,
-      "title":"Foliowiec",
-      "output":{
-         "sensors":{
-            "batvol":{
-               "unit":"V",
-               "desc":"Nap. baterii",
-               "scale":3,
-               "min":3.3
-            },
-            "temp":{
-               "unit":"  C",
-               "desc":"Temperatura",
+               "desc":"Temperature",
                "scale":1
             },
             "timestamp":{
@@ -89,7 +58,7 @@
    },
    "babcia":{
       "id":6,
-      "title":"Pokój Kamila",
+      "title":"Kamil's Room",
       "output":{
          "sensors":{
             "batvol":{
@@ -100,7 +69,7 @@
             },
             "temp":{
                "unit":"  C",
-               "desc":"Temperatura",
+               "desc":"Temperature",
                "scale":1
             },
             "timestamp":{
@@ -111,12 +80,7 @@
       "input":{
          "relay":{
             "dioda":{
-               "desc":"Dioda",
-               "default":1,
-               "cmd":"00"
-            },
-            "wentylator":{
-               "desc":"Wentylator",
+               "desc":"SSR",
                "default":1,
                "cmd":"01"
             }
@@ -125,7 +89,7 @@
    },
    "artekroom":{
       "id":2,
-      "title":"Pokoj Artura",
+      "title":"Arthur's Room",
       "output":{
          "sensors":{
             "press":{
@@ -135,12 +99,12 @@
             },
             "humi":{
                "unit":"%",
-               "desc":"Wilgotność",
+               "desc":"Humidity",
                "scale":1
             },
             "temp":{
                "unit":"°C",
-               "desc":"Temperatura",
+               "desc":"Temperature",
                "scale":1
             },
             "batvol":{
@@ -163,12 +127,12 @@
          "sensors":{
             "vrms":{
                "unit":"V",
-               "desc":"Napięcie sieci",
+               "desc":"Voltage",
                "scale":2
             },
             "power":{
                "unit":"W",
-               "desc":"Moc bierna",
+               "desc":"Power",
                "max": 1000
             },
             "timestamp":{

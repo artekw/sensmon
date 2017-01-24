@@ -1,9 +1,9 @@
 {% extends "base.tpl" %}
-{% block title %}Przełączniki{% end %}
+{% block title %}Switches{% end %}
 
 {% block content %}
     <div ng-controller="relayCtrl">
-    <h1 class="page-header">Przełączniki</h1>
+    <h1 class="page-header">Switches</h1>
       <div class="row">
         <div ng-repeat="(k,v) in array">
           <div class="clearfix" ng-if="$index % 2 == 0"></div>
@@ -18,8 +18,8 @@
                           <toggle-switch class="switch-primary"
                                         ng-init="state=j.state"
                                         ng-model="state"
-                                        on-label="Wł."
-                                        off-label="Wył."
+                                        on-label="On"
+                                        off-label="Off"
                                         ng-change='changeState(state, i, j.cmd, v.node_name, v.id)'>
                           </toggle-switch>
                       </div>

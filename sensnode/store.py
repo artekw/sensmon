@@ -24,6 +24,7 @@ class redisdb():
         """Init redis"""
         self.rdb = redis.Redis(host, port)
         # init data - inf not exist get data from nodescfg
+        # FIXME
         if not self.rdb.exists('relays_status'):
             self.rdb.set('relays_status', json.dumps(config().getConfig('nodes')))
 
