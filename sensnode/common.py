@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 import datetime
@@ -8,7 +8,7 @@ import os
 import socket
 import simplejson as json
 import hashlib
-import logs
+import logging
 
 
 def this_system():

@@ -1,13 +1,14 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 import socket
 import sys
-import common
 import multiprocessing
-import logging
 import simplejson as json
-from config import config
+
+import sensnode.common
+import logging
+from sensnode.config import config
 
 
 class Connect(multiprocessing.Process):
@@ -62,7 +63,7 @@ class Connect(multiprocessing.Process):
         # data format for node with relay
         # 060100
         output = "%s%s%s" % (node_id, cmd, state)
-        print output
+        print(output)
         return output
 
     def run(self):

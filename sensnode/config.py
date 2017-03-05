@@ -1,10 +1,9 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 import os
 import simplejson as json
 import logging
-import logs
 
 # na podstawie
 # https://github.com/foosel/OctoPrint/blob/master/octoprint/settings.py

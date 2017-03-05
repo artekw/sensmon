@@ -1,15 +1,14 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 import os
-import jsontree
 import simplejson as json
 from collections import OrderedDict
 
-import common
+import sensnode.common
 import logging
-from config import config
-from plugins import plugins
+from sensnode.config import config
+from sensnode.plugins import plugins
 
 
 class Decoder(object):

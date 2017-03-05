@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 
@@ -8,17 +8,17 @@ import time
 from itertools import islice
 import simplejson as json
 import redis
-import jsontree
 import logging
-from config import config
+from sensnode.config import config
 
 
 class redisdb():
 
     """Baza danych tymczasowych"""
-    def __init__(self, debug=True):
+    def __init__(self, host="localhost", debug=True):
         self.debug = debug
-        self.initdb()
+        self.host = host
+        self.initdb(self.host)
 
     def initdb(self, host="localhost", port=6379):
         """Init redis"""

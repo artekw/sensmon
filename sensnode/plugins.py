@@ -1,10 +1,9 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 import imp
 import os
 import logging
-import logs
 
 APPNAME = os.path.abspath(".")
 

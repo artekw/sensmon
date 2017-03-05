@@ -1,16 +1,34 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 import os
 import logging
 
-# https://github.com/leporo/tornado-redis
-import tornadoredis
-import paho.mqtt.publish as mqtt
 
-import simplejson as json
+import asyncio
+
+# http://aioredis.readthedocs.io
+try:
+    import aioredis
+except ImportError:
+    print("Please install aioredis: pip install aioredis")
+    exit(0)
+
+try:
+    import paho.mqtt.publish as mqtt
+except ImportError:
+    print("Please install paho-mqtt: pip install paho-mqtt")
+    exit(0)
+
+try:
+    import simplejson as json
+except ImportError:
+    print("Please install paho-mqtt: pip install paho-mqtt")
+    exit(0)
+
 # http://pymotw.com/2/multiprocessing
 import multiprocessing
+import logging as logs
 
 import tornado.ioloop
 import tornado.web
@@ -27,8 +45,7 @@ import sensnode.decoder
 import sensnode.connect
 import sensnode.common
 import sensnode.store
-import sensnode.events
-import sensnode.logs as logs
+
 from sensnode.config import config
 from sensnode.weather import getWeather
 from sensnode.feeds import getFeeds
@@ -36,7 +53,7 @@ from sensnode.feeds import getFeeds
 
 # dev mode
 debug = False
-version = '0.45-dev'
+version = '0.5-dev'
 
 # inicjalizacja menadżera konfiguracji
 ci = config(init=True)
@@ -46,6 +63,10 @@ ci = config(init=True)
 define("webapp_port", default=config().get("app", ['webapp', 'port']),
                       help="Run on the given port", type=int)
 define("webapp_host", default=sensnode.common.get_ip_address(),
+                      help="Run on the given hostname")
+
+#redis
+define("redis_host", default=config().get("app", ['redis', 'host']),
                       help="Run on the given hostname")
 
 # lmdb
@@ -73,11 +94,6 @@ define("appid", default=config().get("app", ['weather', 'appid']),
                 help="APPID to OpenWeatherMap")
 # ----------------------end webapp settings------------------#
 
-
-# klient Redis
-c = tornadoredis.Client()
-c.connect()
-clients = []
 
 if options.lmdb_enable:
     history = sensnode.store.history(options.lmdb_path, options.lmdb_dbname)
@@ -187,7 +203,7 @@ class IntroHandler(BaseHandler):
             _cl = tornadoredis.Client()
             status = yield tornado.gen.Task(_cl.lpop, 'alarm')
             alarm_json = json.loads(status)
-        except TypeError, e:
+        except TypeError:
             alarm_json = 'null'
         self.render("intro.tpl", f=feeds, alarm=alarm_json)
 
@@ -226,7 +242,7 @@ class GetHistoryData(BaseHandler):
             response = {'data' :  history.get_toJSON(node, sensor, timerange) }
             self.write(response)
             self.finish()
-        except KeyError, e:
+        except KeyError:
             self.set_status(404)
             self.finish("%s nie znaleziono" % e)
 
@@ -346,7 +362,7 @@ def main():
     connect.daemon = True
     connect.start()
 
-    redisdb = sensnode.store.redisdb(debug=debug)
+    redisdb = sensnode.store.redisdb(host=options.redis_host, debug=debug)
     decoder = sensnode.decoder.Decoder(debug=debug)
     events = sensnode.events.Events(redisdb, debug=debug)
 
@@ -379,8 +395,8 @@ def main():
 
     httpServer = tornado.httpserver.HTTPServer(application)
     httpServer.listen(options.webapp_port)
-    print "sensmon %s started at %s port" % (version, options.webapp_port)
-    print "Go to page http://%s:%s" % (options.webapp_host, options.webapp_port)
+    print("sensmon %s started at %s port") % (version, options.webapp_port)
+    print("Go to page http://%s:%s") % (options.webapp_host, options.webapp_port)
 
     @tornado.gen.engine
     def checkResults():
