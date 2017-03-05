@@ -4,7 +4,6 @@
 import time
 import datetime
 import inspect
-import simplejson as json
 
 def testnode(data):
     """testnode"""
@@ -31,6 +30,6 @@ def testnode(data):
         'batvol':str((256 * j) + i),
         'air':str((256 * l) + k),
         'timestamp':timestamp
-         })
+    })
 
-    return  dict((k,v) for (k,v) in template.iteritems())
+    return template

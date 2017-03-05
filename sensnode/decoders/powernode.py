@@ -4,7 +4,6 @@
 import time
 import datetime
 import inspect
-import simplejson as json
 
 def powernode(data):
     """Punkt mierzący pobór mocy biernej"""
@@ -33,5 +32,6 @@ def powernode(data):
         'power': power,
         'vrms': ((256 * j) + i),
         'timestamp':timestamp
-        })
-    return dict((k,v) for (k,v) in template.iteritems())
+    })
+
+    return template

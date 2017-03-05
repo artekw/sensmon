@@ -4,7 +4,6 @@
 import time
 import datetime
 import inspect
-import simplejson as json
 
 def weathernode(data):
     """weathernode"""
@@ -33,6 +32,6 @@ def weathernode(data):
         'lobat': str(i),
         'batvol':str((256 * k) + j),
         'timestamp':timestamp
-         })
+    })
 
-    return  dict((k,v) for (k,v) in template.iteritems())
+    return template

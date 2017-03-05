@@ -4,7 +4,6 @@
 import time
 import datetime
 import inspect
-import simplejson as json
 
 def artekroom(data):
 
@@ -30,6 +29,6 @@ def artekroom(data):
         'press': str((256 * h) + g),
         'batvol':str((256 * k) + j),
         'timestamp':timestamp
-         })
+    })
 
-    return  dict((k,v) for (k,v) in template.iteritems())
+    return template

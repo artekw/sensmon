@@ -89,8 +89,9 @@ class Connect(multiprocessing.Process):
         line = ''
         while True:
             c = self.soc.recv(1)
-            if c == '\n' or c == '':
+            stringdata = c.decode('utf-8')
+            if stringdata == '\n' or stringdata == '':
                 break
             else:
-                line += c
+                line += stringdata
         return line

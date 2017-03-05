@@ -4,7 +4,6 @@
 import time
 import datetime
 import inspect
-import simplejson as json
 
 def lab(data):
     """lab"""
@@ -30,8 +29,8 @@ def lab(data):
         'humi': str((256 * d) + c),
         'temp': str(((256 * (f&3) + e) ^ 512) - 512),
         'batvol':str((256 * j) + i),
-	'lpg':str((256 * l) + k),
+        'lpg':str((256 * l) + k),
         'timestamp':timestamp
-         })
+    })
 
-    return  dict((k,v) for (k,v) in template.iteritems())
+    return template

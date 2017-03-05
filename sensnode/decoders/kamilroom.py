@@ -4,7 +4,6 @@
 import time
 import datetime
 import inspect
-import simplejson as json
 
 def kamilroom(data):
     """kamilroom"""
@@ -33,6 +32,6 @@ def kamilroom(data):
         'batvol':str((256 * k) + j),
         'air':str((256 * m) + l),
         'timestamp':timestamp
-         })
+    })
 
-    return  dict((k,v) for (k,v) in template.iteritems())
+    return template

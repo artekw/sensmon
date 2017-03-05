@@ -161,7 +161,7 @@ class Config(object):
         """Tworzy slownik sensor : skala"""
         keys = []
         scales = []
-        for (k, v) in self.get("nodes", [name,'output','sensors']).iteritems():
+        for (k, v) in self.get("nodes", [name,'output','sensors']).items():
             if "scale" in v:
                 keys.append(k)
                 scales.append(v['scale'])

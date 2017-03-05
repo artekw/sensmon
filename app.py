@@ -52,7 +52,7 @@ from sensnode.feeds import getFeeds
 
 
 # dev mode
-debug = False
+debug = True
 version = '0.5-dev'
 
 # inicjalizacja menadżera konfiguracji
@@ -364,7 +364,7 @@ def main():
 
     redisdb = sensnode.store.redisdb(host=options.redis_host, debug=debug)
     decoder = sensnode.decoder.Decoder(debug=debug)
-    events = sensnode.events.Events(redisdb, debug=debug)
+    #events = sensnode.events.Events(redisdb, debug=debug)
 
     #logger = logging.getLogger()
 
@@ -395,8 +395,8 @@ def main():
 
     httpServer = tornado.httpserver.HTTPServer(application)
     httpServer.listen(options.webapp_port)
-    print("sensmon %s started at %s port") % (version, options.webapp_port)
-    print("Go to page http://%s:%s") % (options.webapp_host, options.webapp_port)
+    print("sensmon %s started at %s port" % (version, options.webapp_port))
+    print("Go to page http://%s:%s" % (options.webapp_host, options.webapp_port))
 
     @tornado.gen.engine
     def checkResults():
@@ -406,16 +406,16 @@ def main():
             # Decoded data - dict
             decoded = decoder.decode(result)
             # Update sensors data - JSON
-            update = decoder.update(decoded)
+            #update = decoder.update(decoded)
 
             # check data for min and max values
             # if reached inform about it
-            events.alarm(update)
+            # events.alarm(update)
 
             if debug:
                 _logger.info("RAW: %s" % (result))
                 _logger.info("Dict %s" % (decoded))
-                _logger.info("JSON Updated %s" % (update))
+                #_logger.info("JSON Updated %s" % (update))
 
 
             # decoded must be dictionary
@@ -433,9 +433,9 @@ def main():
                     publish(decoded)
 
                 # initv - actual data from sensors store in Redis
-                redisdb.websocket_channel(update)
-                for c in clients:
-                    c.write_message(update)
+                redisdb.websocket_channel(decoded)
+                #for c in clients:
+                #    c.write_message(update)
             else:
                 _logger.info("Decoded is not dictionary!")
                 _logger.info("RAW: %s" % result)

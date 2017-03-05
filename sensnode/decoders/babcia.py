@@ -4,7 +4,6 @@
 import time
 import datetime
 import inspect
-import simplejson as json
 
 def babcia(data):
     """Babcia"""
@@ -28,6 +27,6 @@ def babcia(data):
         'temp': str(((256 * (f&3) + e) ^ 512) - 512),
         'batvol':str((256 * j) + i),
         'timestamp':timestamp
-         })
+    })
 
-    return  dict((k,v) for (k,v) in template.iteritems())
+    return template

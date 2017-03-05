@@ -1,23 +1,19 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
-import simplejson as json
-from collections import OrderedDict
-
-import sensnode.common
 import logging
+from collections import OrderedDict
+import simplejson as json
+
 from sensnode.config import config
 from sensnode.plugins import plugins
 
 
 class Decoder(object):
-
     '''Decoders of binary packets from wireless node'''
     def __init__(self, debug=False):
         self._logger = logging.getLogger(__name__)
         self.debug = debug
-        self.nodescfg = jsontree.clone(config().getConfig('nodes'))
 
         # inicjalizacja systemu pluginów - dekoderów nodów
         p = plugins(init=True)
@@ -25,7 +21,6 @@ class Decoder(object):
 
     def decode(self, line):
         '''Decoder'''
-        decoders = []
 
         # data must have OK on front
         if line.startswith("OK"):
@@ -73,7 +68,7 @@ class Decoder(object):
         scales = config().getScale(data['name'])
         scaled_values = []
 
-        for (k, v) in data.iteritems():
+        for (k, v) in data.items():
             if k in scales.keys():
                 if scales[k] > 0:
                     v = float(data[k])
