@@ -23,7 +23,7 @@ except ImportError:
 try:
     import simplejson as json
 except ImportError:
-    print("Please install paho-mqtt: pip install paho-mqtt")
+    print("Please install paho-mqtt: pip install simplejson")
     exit(0)
 
 # http://pymotw.com/2/multiprocessing
