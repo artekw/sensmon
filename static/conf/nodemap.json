@@ -87,6 +87,28 @@
          }
       }
    },
+   "pepper":{
+      "id":20,
+      "title":"Papryczka",
+      "output":{
+         "sensors":{
+            "batvol":{
+               "unit":"V",
+               "desc":"Nap. baterii",
+               "scale":3,
+               "min":3.3
+            },
+            "soil":{
+               "unit":"%",
+               "desc":"Wilgotnosc gleby",
+               "scale":0
+            },
+            "timestamp":{
+               "desc":"Aktualizacja"
+            }
+         }
+      }
+   },
    "babcia":{
       "id":6,
       "title":"Pokój Kamila",

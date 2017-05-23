@@ -405,21 +405,20 @@ def main():
             result = resultQ.get()
             # Decoded data - dict
             decoded = decoder.decode(result)
-            # Update sensors data - JSON
-            #update = decoder.update(decoded)
-
-            # check data for min and max values
-            # if reached inform about it
-            # events.alarm(update)
-
-            if debug:
-                _logger.info("RAW: %s" % (result))
-                _logger.info("Dict %s" % (decoded))
-                #_logger.info("JSON Updated %s" % (update))
-
-
             # decoded must be dictionary
             if isinstance(decoded, dict):
+                # Update sensors data - JSON
+                #update = decoder.update(decoded)
+
+                # check data for min and max values
+                # if reached inform about it
+                # events.alarm(update)
+
+                if debug:
+                    _logger.info("Binary: %s" % (result))
+                    _logger.info("Dict %s" % (decoded))
+                    #_logger.info("JSON Updated %s" % (update))
+
                 # if lmdb enabled store data
                 if options.lmdb_enable:
                     if decoded['name'] not in options.lmdb_forgot:
@@ -437,7 +436,7 @@ def main():
                 #for c in clients:
                 #    c.write_message(update)
             else:
-                _logger.info("Decoded is not dictionary!")
+                _logger.info("Decoder not found!")
                 _logger.info("RAW: %s" % result)
 
     mainLoop = tornado.ioloop.IOLoop.instance()
